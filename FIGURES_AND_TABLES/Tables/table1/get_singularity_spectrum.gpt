@@ -1,0 +1,156 @@
+reset
+set auto
+set fit noerrorscaling
+
+set xrange [*:60]
+set yrange [*:*]
+
+print "T=0.7"
+
+print "tau_2:"
+
+n1=system('cat OBC/INDEPENDENT//16x48/xi_2R_over_xi_2nR_f1_g1_n1_NBLOCKS_16384.txt \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$1}"')
+n1_err=system('cat OBC/INDEPENDENT//16x48/xi_2R_over_xi_2nR_f1_g1_n1_NBLOCKS_16384.txt \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$2}"')
+ 
+pr "L=16", n1, n1_err
+
+n1=system('cat OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n1_NBLOCKS_2048.txt \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$1}"')
+n1_err=system('cat OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n1_NBLOCKS_2048.txt \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$2}"')
+ 
+pr "L=24", n1, n1_err, 4./3
+ 
+plot \
+"< awk '($1==0 && $5!=\"-nan\"){print $3,$4,$5}' PBC/16x512/xi01_2R_over_xi01_2nR_f1_g1_n1_NBLOCKS_1024.txt" u 1:2:3 w yerror t "L=16 (PBC, xi01)",\
+"< awk '($1==0 && $5!=\"-nan\"){print $3,$4,$5}' PBC/16x512/xi12_2R_over_xi12_2nR_f1_g1_n1_NBLOCKS_1024.txt" u 1:2:3 w yerror t "L=16 (PBC, xi12)",\
+"< awk '($1==0 && $5!=\"-nan\"){print $3,$4,$5}' OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n1_NBLOCKS_2048.txt" u 1:2:3 w yerror t "L=24 (OBC)",\
+"< awk '($1==0 && $5!=\"-nan\"){print $3,$4,$5}' OBC/INDEPENDENT/16x48/xi_2R_over_xi_2nR_f1_g1_n1_NBLOCKS_16384.txt" u 1:2:3 w yerror t "L=16 (OBC)",\
+n1+n1_err,n1-n1_err, n1+0
+
+pause -1
+
+print "tau_3:"
+
+n1=system('cat OBC/INDEPENDENT//16x48/xi_2R_over_xi_2nR_f1_g1_n2_NBLOCKS_16384.txt \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$1}"')
+n1_err=system('cat OBC/INDEPENDENT//16x48/xi_2R_over_xi_2nR_f1_g1_n2_NBLOCKS_16384.txt \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$2}"')
+ 
+pr "L=16", n1, n1_err
+
+n1=system('cat OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n2_NBLOCKS_2048.txt \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$1}"')
+n1_err=system('cat OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n2_NBLOCKS_2048.txt \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$2}"')
+ 
+pr "L=24", n1, n1_err, 23./15
+ 
+plot \
+"< awk '($1==0 && $5!=\"-nan\"){print $3,$4,$5}' PBC/16x512/xi01_2R_over_xi01_2nR_f1_g1_n2_NBLOCKS_1024.txt" u 1:2:3 w yerror t "L=16 (PBC, xi01)",\
+"< awk '($1==0 && $5!=\"-nan\"){print $3,$4,$5}' PBC/16x512/xi12_2R_over_xi12_2nR_f1_g1_n2_NBLOCKS_1024.txt" u 1:2:3 w yerror t "L=16 (PBC, xi12)",\
+"< awk '($1==0 && $5!=\"-nan\"){print $3,$4,$5}' OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n2_NBLOCKS_2048.txt" u 1:2:3 w yerror t "L=24 (OBC)",\
+"< awk '($1==0 && $5!=\"-nan\"){print $3,$4,$5}' OBC/INDEPENDENT/16x48/xi_2R_over_xi_2nR_f1_g1_n2_NBLOCKS_16384.txt" u 1:2:3 w yerror t "L=16 (OBC)",\
+n1+n1_err,n1-n1_err, n1+0
+
+pause -1
+
+print "tau_4:"
+
+n1=system('cat OBC/INDEPENDENT//16x48/xi_2R_over_xi_2nR_f1_g1_n3_NBLOCKS_16384.txt \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$1}"')
+n1_err=system('cat OBC/INDEPENDENT//16x48/xi_2R_over_xi_2nR_f1_g1_n3_NBLOCKS_16384.txt \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$2}"')
+ 
+pr "L=16", n1, n1_err
+
+n1=system('cat OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n3_NBLOCKS_2048.txt \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$1}"')
+n1_err=system('cat OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n3_NBLOCKS_2048.txt \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$2}"')
+ 
+pr "L=24", n1, n1_err, 176/105.
+ 
+plot \
+"< awk '($1==0 && $5!=\"-nan\"){print $3,$4,$5}' PBC/16x512/xi01_2R_over_xi01_2nR_f1_g1_n3_NBLOCKS_1024.txt" u 1:2:3 w yerror t "L=16 (PBC, xi01)",\
+"< awk '($1==0 && $5!=\"-nan\"){print $3,$4,$5}' PBC/16x512/xi12_2R_over_xi12_2nR_f1_g1_n3_NBLOCKS_1024.txt" u 1:2:3 w yerror t "L=16 (PBC, xi12)",\
+"< awk '($1==0 && $5!=\"-nan\"){print $3,$4,$5}' OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n3_NBLOCKS_2048.txt" u 1:2:3 w yerror t "L=24 (OBC)",\
+"< awk '($1==0 && $5!=\"-nan\"){print $3,$4,$5}' OBC/INDEPENDENT/16x48/xi_2R_over_xi_2nR_f1_g1_n3_NBLOCKS_16384.txt" u 1:2:3 w yerror t "L=16 (OBC)",\
+n1+n1_err,n1-n1_err, n1+0
+
+print "T=1.1019"
+
+print "tau_2:"
+
+n1=system('cat OBC/INDEPENDENT//16x48/xi_2R_over_xi_2nR_f1_g1_n1_NBLOCKS_16384.txt \
+ | awk "(\$1==\"I\" && \$2=\"0.9075\"  && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$1}"')
+n1_err=system('cat OBC/INDEPENDENT//16x48/xi_2R_over_xi_2nR_f1_g1_n1_NBLOCKS_16384.txt \
+ | awk "(\$1==\"I\" && \$2=\"0.9075\"  && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$2}"')
+ 
+pr "L=16", n1, n1_err
+
+n1=system('cat OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n1_NBLOCKS_2048.txt \
+ | awk "(\$1==\"I\" && \$2=\"0.9075\"  && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$1}"')
+n1_err=system('cat OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n1_NBLOCKS_2048.txt \
+ | awk "(\$1==\"I\" && \$2=\"0.9075\"  && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$2}"')
+ 
+pr "L=24", n1, n1_err, 4./3
+ 
+plot \
+"< awk '($1==\"I\" && $2==\"0.9075\" && $5!=\"-nan\"){print $3,$4,$5}' PBC/16x512/xi01_2R_over_xi01_2nR_f1_g1_n1_NBLOCKS_1024.txt" u 1:2:3 w yerror t "L=16 (PBC, xi01)",\
+"< awk '($1==\"I\" && $2==\"0.9075\" && $5!=\"-nan\"){print $3,$4,$5}' PBC/16x512/xi12_2R_over_xi12_2nR_f1_g1_n1_NBLOCKS_1024.txt" u 1:2:3 w yerror t "L=16 (PBC, xi12)",\
+"< awk '($1==\"I\" && $2==\"0.9075\" && $5!=\"-nan\"){print $3,$4,$5}' OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n1_NBLOCKS_2048.txt" u 1:2:3 w yerror t "L=24 (OBC)",\
+"< awk '($1==\"I\" && $2==\"0.9075\" && $5!=\"-nan\"){print $3,$4,$5}' OBC/INDEPENDENT/16x48/xi_2R_over_xi_2nR_f1_g1_n1_NBLOCKS_16384.txt" u 1:2:3 w yerror t "L=16 (OBC)",\
+n1+n1_err,n1-n1_err, n1+0
+
+pause -1
+
+print "tau_3:"
+
+n1=system('cat OBC/INDEPENDENT//16x48/xi_2R_over_xi_2nR_f1_g1_n2_NBLOCKS_16384.txt \
+ | awk "(\$1==\"I\" && \$2=\"0.9075\"  && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$1}"')
+n1_err=system('cat OBC/INDEPENDENT//16x48/xi_2R_over_xi_2nR_f1_g1_n2_NBLOCKS_16384.txt \
+ | awk "(\$1==\"I\" && \$2=\"0.9075\"  && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$2}"')
+ 
+pr "L=16", n1, n1_err
+
+n1=system('cat OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n2_NBLOCKS_2048.txt \
+ | awk "(\$1==\"I\" && \$2=\"0.9075\"  && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$1}"')
+n1_err=system('cat OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n2_NBLOCKS_2048.txt \
+ | awk "(\$1==\"I\" && \$2=\"0.9075\"  && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$2}"')
+ 
+pr "L=24", n1, n1_err, 23./15
+ 
+plot \
+"< awk '($1==\"I\" && $2==\"0.9075\" && $5!=\"-nan\"){print $3,$4,$5}' PBC/16x512/xi01_2R_over_xi01_2nR_f1_g1_n2_NBLOCKS_1024.txt" u 1:2:3 w yerror t "L=16 (PBC, xi01)",\
+"< awk '($1==\"I\" && $2==\"0.9075\" && $5!=\"-nan\"){print $3,$4,$5}' PBC/16x512/xi12_2R_over_xi12_2nR_f1_g1_n2_NBLOCKS_1024.txt" u 1:2:3 w yerror t "L=16 (PBC, xi12)",\
+"< awk '($1==\"I\" && $2==\"0.9075\" && $5!=\"-nan\"){print $3,$4,$5}' OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n2_NBLOCKS_2048.txt" u 1:2:3 w yerror t "L=24 (OBC)",\
+"< awk '($1==\"I\" && $2==\"0.9075\" && $5!=\"-nan\"){print $3,$4,$5}' OBC/INDEPENDENT/16x48/xi_2R_over_xi_2nR_f1_g1_n2_NBLOCKS_16384.txt" u 1:2:3 w yerror t "L=16 (OBC)",\
+n1+n1_err,n1-n1_err, n1+0
+
+pause -1
+
+print "tau_4:"
+
+n1=system('cat OBC/INDEPENDENT//16x48/xi_2R_over_xi_2nR_f1_g1_n3_NBLOCKS_16384.txt \
+ | awk "(\$1==\"I\" && \$2=\"0.9075\"  && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$1}"')
+n1_err=system('cat OBC/INDEPENDENT//16x48/xi_2R_over_xi_2nR_f1_g1_n3_NBLOCKS_16384.txt \
+ | awk "(\$1==\"I\" && \$2=\"0.9075\"  && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$2}"')
+ 
+pr "L=16", n1, n1_err
+
+n1=system('cat OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n3_NBLOCKS_2048.txt \
+ | awk "(\$1==\"I\" && \$2=\"0.9075\"  && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$1}"')
+n1_err=system('cat OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n3_NBLOCKS_2048.txt \
+ | awk "(\$1==\"I\" && \$2=\"0.9075\"  && \$5!=\"-nan\"){print \$4,\$5}" | sort -k1 -g -r | tail -1 | awk "{print \$2}"')
+ 
+pr "L=24", n1, n1_err, 176/105.
+ 
+plot \
+"< awk '($1==\"I\" && $2==\"0.9075\" && $5!=\"-nan\"){print $3,$4,$5}' PBC/16x512/xi01_2R_over_xi01_2nR_f1_g1_n3_NBLOCKS_1024.txt" u 1:2:3 w yerror t "L=16 (PBC, xi01)",\
+"< awk '($1==\"I\" && $2==\"0.9075\" && $5!=\"-nan\"){print $3,$4,$5}' PBC/16x512/xi12_2R_over_xi12_2nR_f1_g1_n3_NBLOCKS_1024.txt" u 1:2:3 w yerror t "L=16 (PBC, xi12)",\
+"< awk '($1==\"I\" && $2==\"0.9075\" && $5!=\"-nan\"){print $3,$4,$5}' OBC/INDEPENDENT/24x88/xi_2R_over_xi_2nR_f1_g1_n3_NBLOCKS_2048.txt" u 1:2:3 w yerror t "L=24 (OBC)",\
+"< awk '($1==\"I\" && $2==\"0.9075\" && $5!=\"-nan\"){print $3,$4,$5}' OBC/INDEPENDENT/16x48/xi_2R_over_xi_2nR_f1_g1_n3_NBLOCKS_16384.txt" u 1:2:3 w yerror t "L=16 (OBC)",\
+n1+n1_err,n1-n1_err, n1+0

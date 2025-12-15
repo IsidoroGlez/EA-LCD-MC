@@ -1,0 +1,51 @@
+############################
+# Compilation artifacts
+############################
+*.o
+*.obj
+*.out
+*.exe
+*.so
+*.a
+*.dll
+
+**/bin/
+**/obj/
+
+############################
+# Execution and temporary files
+############################
+*.tmp
+*.swp
+*.bak
+*~
+*.log
+*.aux
+*.tex
+*.eps
+
+############################
+# Data files
+############################
+
+# Generic raw data files (not archived)
+*.dat
+
+############################
+# Figures and tables
+############################
+
+# Exclude DATA directories inside figures and tables
+FIGURES_AND_TABLES/**/DATA/
+
+############################
+# Synchronization / auxiliary scripts
+############################
+
+sync.sh
+
+############################
+# OS-specific files
+############################
+.DS_Store
+Thumbs.db

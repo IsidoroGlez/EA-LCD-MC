@@ -1,0 +1,138 @@
+reset
+set auto
+set fit noerrorscaling
+
+##############
+#COLOR PALETTE
+##############
+PALETTE=0
+load "my_color_palette.gpt"
+
+###############
+# APS TERMINAL
+###############
+C=1.  # One column
+R=0.6  # Square ratio
+load "APS_term.gpt"
+
+#############
+# OUTPUT
+############
+set output "fig3.tex"
+
+############
+# DATA
+###########
+
+data_T07="DATA/xi_ibeta0.dat"
+!awk '{if(($1==0)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/4x192/xi01_f1_g1_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 4,$2,$3}}' | head -1 > DATA/xi_ibeta0.dat
+!awk '{if(($1==0)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/6x192/xi01_f1_g1_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 6,$2,$3}}' | head -1 >> DATA/xi_ibeta0.dat
+!awk '{if(($1==0)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/8x192/xi01_f1_g1_n0_NBLOCKS_12288.txt | awk '{if($1>=$2){print 8,$2,$3}}' | head -1 >> DATA/xi_ibeta0.dat
+!awk '{if(($1==0)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/12x320/xi01_f1_g1_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 12,$2,$3}}' | head -1 >> DATA/xi_ibeta0.dat
+!awk '{if(($1==0)&&($5!="-nan")){print 16,$4,$5}}' DATA/OBC/INDEPENDENT/16x48/xi_f1_g1_n0_NBLOCKS_16384.txt | sort -k2 -g | tail -1 >> DATA/xi_ibeta0.dat
+!awk '{if(($1==0)&&($5!="-nan")){print 24,$4,$5}}' DATA/OBC/INDEPENDENT/24x88/xi_f1_g1_n0_NBLOCKS_2048.txt | sort -k2 -g | tail -1 >> DATA/xi_ibeta0.dat
+
+data_Tc="DATA/xi_ibetac.dat"
+!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/4x192/xi01_f1_g1_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 4,$2,$3}}' | head -1 > DATA/xi_ibetac.dat
+!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/6x192/xi01_f1_g1_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 6,$2,$3}}' | head -1 >> DATA/xi_ibetac.dat
+!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/8x192/xi01_f1_g1_n0_NBLOCKS_12288.txt | awk '{if($1>=$2){print 8,$2,$3}}' | head -1 >> DATA/xi_ibetac.dat
+!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/12x320/xi01_f1_g1_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 12,$2,$3}}' | head -1 >> DATA/xi_ibetac.dat
+!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print 16,$4,$5}}' DATA/OBC/INDEPENDENT/16x48/xi_f1_g1_n0_NBLOCKS_16384.txt | sort -k2 -g | tail -1 >> DATA/xi_ibetac.dat
+!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print 24,$4,$5}}' DATA/OBC/INDEPENDENT/24x88/xi_f1_g1_n0_NBLOCKS_2048.txt | sort -k2 -g | tail -1 >> DATA/xi_ibetac.dat
+
+set xlabel '\footnotesize $L$' offset 0, 1.2
+set ylabel '\footnotesize $\xi_{n=1}$' offset 4
+
+set rmargin screen 0.975
+set lmargin screen 0.13
+set tmargin screen 0.972
+set bmargin screen 0.13
+
+set format '\footnotesize $%g$'
+
+set xtics offset 0, 0.5
+set ytics offset 0.5
+
+f(x)=A*x**(r)+c
+A=2
+r=4./3
+c=1
+
+fit [6:26] f(x) data_T07 u 1:2:3 yerror via A,c
+
+g(x)=m*x
+
+fit [6:*] g(x) data_Tc u 1:2:3 yerror via m
+
+set xrange [0:30]
+set yrange [0:100]
+
+set errorbars 3
+
+set label 1 '\footnotesize $T=0.7$' center at 23, 85
+set label 2 '\footnotesize $T=1.1019$' center at 25, 31
+
+plot f(x) lw 1.5 lc rgb colorGet("c6") not, g(x) lw 1.5 lc rgb colorGet("c4") not,\
+data_T07 u 1:2:3 w yerror pt 7 ps 1 lc rgb colorGet("c2") not,\
+data_Tc u 1:2:3 w yerror pt 9 ps 1 lc rgb colorGet("c8") not
+ 
+###########
+# CLOSE
+###########
+
+set out
+
+#############
+# CREATE PDF
+#############
+!pdflatex fig3.tex
+!latex fig3.tex
+!dvisvgm --no-fonts fig3.dvi
+!rm *.aux *.tex *conver* *.log *.eps *.dvi
+
+reset
+set auto
+set fit noerrorscaling
+
+g(x)=A*x**r
+f(x)=B*x**(b*4./3)+c
+
+A=2
+r=1
+fit [*:*] f(x) "DATA/xi_ibeta0.dat" u 1:2:3 yerr via B,b,c
+
+pause -1
+
+fit [5:*] f(x) "DATA/xi_ibeta0.dat" u 1:2:3 yerr via B,b,c
+
+pause -1
+
+A=2
+r=1.33
+fit [*:*] g(x) "DATA/xi_ibeta0.dat" u 1:2:3 yerr via A,r
+
+pr "Power all"
+
+pause -1
+
+A=2
+r=1.33
+fit [5:*] g(x) "DATA/xi_ibeta0.dat" u 1:2:3 yerr via A,r
+
+pr "Power, L>4"
+
+pause -1
+
+A=2
+r=1.33
+fit [3:11] g(x) "DATA/xi_ibeta0.dat" u 1:2:3 yerr via A,r
+
+pr "Power, L=4,6,8"
+
+pause -1
+
+A=2
+r=1.33
+fit [11:26] g(x) "DATA/xi_ibeta0.dat" u 1:2:3 yerr via A,r
+
+pr "Power, L=12,16,24"

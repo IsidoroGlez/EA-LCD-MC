@@ -1,0 +1,72 @@
+reset
+set auto
+set fit noerrorscaling
+
+##############
+#COLOR PALETE
+##############
+PALETTE=0
+load "my_color_palette.gpt"
+
+###############
+# APS TERMINAL
+###############
+C=1.  # One column
+R=0.75 # 
+load "APS_term.gpt"
+
+#############
+# OUTPUT
+############
+set output "figSM2.tex"
+
+############
+# DATA
+MET="DATA/averages_b00.12x320_128_M.txt"
+HOU="DATA/averages_b00.12x320_128_C.txt"
+###########
+
+set lmargin screen 0.15
+set rmargin screen 0.995
+set tmargin screen 0.995
+set bmargin screen 0.16
+
+set xlabel '\footnotesize EMCS' offset 0,0.5
+set ylabel '\footnotesize $q^2$' offset 4.5,0
+
+nummed=1000  #measurements per file
+v=12**2*320
+
+set log x
+
+set xrange [nummed:nummed*1600]
+set yrange [0.01:0.095]
+set ytics 0.02 0.02 offset 0.8,0
+set xtics offset 0,0.2
+set format x '\footnotesize $10^{%L}$'
+set format y '\footnotesize $%g$'
+unset key
+
+set label 1 '\footnotesize PT' at 5*10**5, 0.04
+set label 2 '\footnotesize PT+HM' at 3*10**4, 0.08
+
+f(x)=-0.079901+0.00982972*log(x)
+g(x)=-0.152958+0.0238554*log(x)
+a=0.0898881
+p MET u ($1*nummed):(($15-$16)/v):(($15+$16)/v) w filledcurves lc rgb colorGet("c6") t "PT",\
+HOU u ($1*nummed):(($15-$16)/v):(($15+$16)/v) w filledcurves lc rgb colorGet("c2") t "PT+HM",\
+f(x) dt 3 lw 1 lc rgb "black" not, g(x) dt 3 lw 1 lc rgb "black" not, a dt 3 lw 1 lc rgb "black" not
+
+###########
+# CLOSE
+###########
+
+set out
+
+#############
+# CREATE PDF
+#############
+!pdflatex figSM2.tex
+!latex figSM2.tex
+!dvisvgm --no-fonts figSM2.dvi
+!rm *.aux *.tex *conver* *.log *.eps *.dvi

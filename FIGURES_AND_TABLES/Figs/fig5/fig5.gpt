@@ -1,0 +1,152 @@
+reset
+set auto
+set fit noerrorscaling
+
+##############
+#COLOR PALETE
+##############
+PALETTE=0
+load "my_color_palette.gpt"
+
+###############
+# APS TERMINAL
+###############
+C=1.  # One column
+R=1.  # Square ratio
+load "APS_term.gpt"
+
+#############
+# OUTPUT
+############
+set output "fig5.tex"
+
+############
+# DATA
+###########
+
+inv_xi_L4=system('paste DATA/PBC/4x192/xi01_f1_g1_n0_NBLOCKS_32768.txt DATA/PBC/4x192/inv_xi01_f1_g1_n0_NBLOCKS_32768.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$11; exit}"')
+inv_xi_L4_err=system('paste DATA/PBC/4x192/xi01_f1_g1_n0_NBLOCKS_32768.txt DATA/PBC/4x192/inv_xi01_f1_g1_n0_NBLOCKS_32768.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$12; exit}"')
+L4="< awk '$1==0{print $3,$6,$7}' DATA/PBC/4x192/C_f1_g1_n0_NBLOCKS_32768.txt"
+
+inv_xi_L6=system('paste DATA/PBC/6x192/xi01_f1_g1_n0_NBLOCKS_32768.txt DATA/PBC/6x192/inv_xi01_f1_g1_n0_NBLOCKS_32768.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$11; exit}"')
+inv_xi_L6_err=system('paste DATA/PBC/6x192/xi01_f1_g1_n0_NBLOCKS_32768.txt DATA/PBC/6x192/inv_xi01_f1_g1_n0_NBLOCKS_32768.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$12; exit}"')
+L6="< awk '$1==0{print $3,$6,$7}' DATA/PBC/6x192/C_f1_g1_n0_NBLOCKS_32768.txt"
+
+inv_xi_L8=system('paste DATA/PBC/8x192/xi01_f1_g1_n0_NBLOCKS_12288.txt DATA/PBC/8x192/inv_xi01_f1_g1_n0_NBLOCKS_12288.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$11; exit}"')
+inv_xi_L8_err=system('paste DATA/PBC/8x192/xi01_f1_g1_n0_NBLOCKS_12288.txt DATA/PBC/8x192/inv_xi01_f1_g1_n0_NBLOCKS_12288.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$12; exit}"')
+L8="< awk '$1==0{print $3,$6,$7}' DATA/PBC/8x192/C_f1_g1_n0_NBLOCKS_12288.txt"
+
+inv_xi_L12=system('paste DATA/PBC/12x320/xi01_f1_g1_n0_NBLOCKS_32768.txt DATA/PBC/12x320/inv_xi01_f1_g1_n0_NBLOCKS_32768.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$11; exit}"')
+inv_xi_L12_err=system('paste DATA/PBC/12x320/xi01_f1_g1_n0_NBLOCKS_32768.txt DATA/PBC/12x320/inv_xi01_f1_g1_n0_NBLOCKS_32768.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$12; exit}"')
+L12="< awk '$1==0{print $3,$6,$7}' DATA/PBC/12x320/C_f1_g1_n0_NBLOCKS_32768.txt"
+
+inv_xi_L16=system('paste DATA/OBC/INDEPENDENT/16x48/xi_f1_g1_n0_NBLOCKS_16384.txt DATA/OBC/INDEPENDENT/16x48/inv_xi_f1_g1_n0_NBLOCKS_16384.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$11}" | sort -k1 -g | tail -1 | awk "{print \$2}"')
+inv_xi_L16_err=system('paste DATA/OBC/INDEPENDENT/16x48/xi_f1_g1_n0_NBLOCKS_16384.txt DATA/OBC/INDEPENDENT/16x48/inv_xi_f1_g1_n0_NBLOCKS_16384.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$12}" | sort -k1 -g | tail -1 | awk "{print \$2}"')
+L16="< awk '$1==0{print $3,$6,$7}' DATA/OBC/INDEPENDENT/16x48/C_f1_g1_n0_NBLOCKS_16384.txt"
+
+inv_xi_L24=system('paste DATA/OBC/INDEPENDENT/24x88/xi_f1_g1_n0_NBLOCKS_2048.txt DATA/OBC/INDEPENDENT/24x88/inv_xi_f1_g1_n0_NBLOCKS_2048.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$11}" | sort -k1 -g | tail -1 | awk "{print \$2}"')
+inv_xi_L24_err=system('paste DATA/OBC/INDEPENDENT/24x88/xi_f1_g1_n0_NBLOCKS_2048.txt DATA/OBC/INDEPENDENT/24x88/inv_xi_f1_g1_n0_NBLOCKS_2048.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$12}" | sort -k1 -g | tail -1 | awk "{print \$2}"')
+L24="< awk '$1==0{print $3,$6,$7}' DATA/OBC/INDEPENDENT/24x88/C_f1_g1_n0_NBLOCKS_2048.txt"
+
+g(x)=x+d -log(1-(1-exp(d))*exp(-(M-1)*x))
+M=20
+fit [0.05:1.1] x+d L16 u ($1*inv_xi_L16):(-log($2)):($1*inv_xi_L16_err):($3/$2**2) xyerror via d
+fit [0.0001:0.2] g(x) L16 u ($1*inv_xi_L16):(-log($2)):($1*inv_xi_L16_err):($3/$2**2) xyerror via M
+
+set multiplot
+
+set tmargin screen 0.98
+set bmargin screen 0.12
+
+set lmargin screen 0.15
+set rmargin screen 0.98
+
+set xlabel '\footnotesize $r/\xi_{n=1}(L)$' offset 0, 0.75
+set ylabel '\footnotesize $K(r)$' offset 3.8
+set format '\footnotesize $%g$'
+set xtics offset 0,0.5
+set ytics offset 0.75
+
+set xrange [0:1.05]
+set yrange [-0.05:1.05]
+
+set object 1 rect from 0,-0.02 to 0.12,0.12 
+
+plot \
+L24 u ($1*inv_xi_L24):(-log($2)):($1*inv_xi_L24_err):($3/$2**2) w xyerror pt 5 lc rgb colorGet("c6") not,\
+L16 u ($1*inv_xi_L16):(-log($2)):($1*inv_xi_L16_err):($3/$2**2) w xyerror pt 7 lc rgb colorGet("c5") not,\
+L12 u ($1*inv_xi_L12):(-log($2)):($1*inv_xi_L12_err):($3/$2**2) w xyerror pt 13 lc rgb colorGet("c2") not,\
+L8 u ($1*inv_xi_L8):(-log($2)):($1*inv_xi_L8_err):($3/$2**2) w xyerror pt 9 lc rgb colorGet("c4") not,\
+L6 u ($1*inv_xi_L6):(-log($2)):($1*inv_xi_L6_err):($3/$2**2) w xyerror pt 11 lc rgb colorGet("c7") not,\
+L4 u ($1*inv_xi_L4):(-log($2)):($1*inv_xi_L4_err):($3/$2**2) w xyerror pt 1 lc rgb colorGet("c8") not,\
+x+d lt 1 lc rgb "black" not, g(x) dt 2 lc rgb "black" not
+
+unset object
+unset tics
+
+unset lmargin
+unset rmargin
+unset tmargin
+unset bmargin
+
+set origin 0.35, 0.1
+set size 0.7,0.48
+
+unset xlabel
+unset ylabel
+set format '\footnotesize $%g$'
+
+set xrange [0:0.13]
+set yrange [-0.02:0.13]
+
+set ytics 0,0.1,0.1 offset 0.6
+set x2tics 0, 0.1,0.1 offset 0, -0.6
+
+set label 4 '\scriptsize $L=4$' left at 0.06,0.11
+set arrow 4 nohead from 0.092,0.107 to 0.116, 0.108
+
+set label 6 '\scriptsize $L=6$' left at 0.025,0.08
+set arrow 6 nohead from 0.055,0.075 to 0.071, 0.065
+
+set label 8 '\scriptsize $L=8$' left at 0.005,0.05
+set arrow 8 nohead from 0.036,0.048 to 0.05, 0.042
+
+set label 12 '\scriptsize $L=12$' left at 0.09,0.04
+set arrow 12 nohead from 0.089,0.04 to 0.067,0.045
+
+set label 16 '\scriptsize $L=16$' left at 0.06,0.015
+set arrow 16 nohead from 0.059, 0.015 to 0.048,0.027
+
+set label 24 '\scriptsize $L=24$' left at 0.03,-0.01
+set arrow 24 nohead from 0.029, -0.01 to 0.0161,0.0029
+
+replot 0 lt -1 dt 3 lc rgb "grey" not
+
+unset multiplot
+
+###########
+# CLOSE
+###########
+
+set out
+
+#############
+# CREATE PDF
+#############
+!pdflatex fig5.tex
+!latex fig5.tex
+!dvisvgm --no-fonts fig5.dvi
+!rm *.aux *.tex *conver* *.log *.eps *.dvi
+

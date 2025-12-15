@@ -1,0 +1,71 @@
+reset
+set auto
+set fit noerrorscaling
+
+##############
+#COLOR PALETE
+#############
+PALETTE=0
+load "my_color_palette.gpt"
+
+###############
+# APS TERMINAL
+###############
+C=1.  # One column
+R=0.75 # 
+load "APS_term.gpt"
+
+#############
+# OUTPUT
+############
+set output "figSM3.tex"
+
+############
+# DATA
+HOU="DATA/difference_averages_b00_12x320_32768.txt"
+###########
+
+set lmargin screen 0.175
+set rmargin screen 0.995
+set tmargin screen 0.995
+set bmargin screen 0.175
+
+set xlabel '\footnotesize $10^5$ EMCS' offset 0,0.5
+set ylabel '\footnotesize standard deviations' offset 1,0
+
+nummed=0.01  #measurements per file
+v=12**2*320
+
+set xrange [0:nummed*512]
+set yrange [-15:3]
+set ytics offset 0.7,0
+set xtics offset 0,0.3
+
+#set format x '\footnotesize $%g$'
+unset key
+
+set label 1 '\footnotesize $q^2$' left at 1.2, -11
+set label 2 '\footnotesize Energy' left at 1.2, -13
+set object 1 rect from 0,-1 to 512*nummed,1 fc rgb "0xFCFAD9"
+
+set arrow 1 nohead from 1.1,-13 to 0.35, -13
+set arrow 2 nohead from 1.1,-11 to 0.7, -11
+
+p HOU u ($1*nummed):($7/$8) w l lw 2 lc rgb colorGet("c7") t "energy",\
+HOU u ($1*nummed):($9/$10) w l lw 2 lc rgb colorGet("c6") t '$q^2$',\
+-546.573*exp(-x/3900*1e5) t '$\varDelta_1{\mathrm e}^{-t/\tau_\text{TRW}}$' dt 2 lw 2 lc rgb colorGet("c1")
+
+###########
+# CLOSE
+###########
+
+set out
+
+#############
+# CREATE PDF
+#############
+!pdflatex figSM3.tex
+!latex figSM3.tex
+!dvisvgm --no-fonts figSM3.dvi
+!rm *.aux *.tex *conver* *.log *.eps *.dvi
+

@@ -1,0 +1,84 @@
+reset
+set auto
+set fit noerrorscaling
+
+##############
+#COLOR PALETE
+##############
+PALETTE=0
+load "my_color_palette.gpt"
+
+###############
+# APS TERMINAL
+###############
+C=1.  # One column
+R=.75  # Square ratio
+load "APS_term.gpt"
+
+#############
+# OUTPUT
+############
+set output "figSM4.tex"
+
+############
+# DATA
+###########
+
+PBC="DATA/PBC/16x512/C_f1_g1_n0_NBLOCKS_1024.txt"
+OBC="DATA/OBC/INDEPENDENT/16x48/Matrix_f1_g1_n0_NBLOCKS_16384.txt"
+
+CMD=sprintf("awk '{if(($1==0)&&($3==0)){print $4}}' %s", PBC)
+C0_PBC=system(CMD)
+CMD=sprintf("awk '{if(($1==0)&&($3==0)){print $5}}' %s", PBC)
+C0_PBC_err=system(CMD)
+
+set lmargin screen 0.155
+set rmargin screen 0.985
+set tmargin screen 0.975
+set bmargin screen 0.12
+
+set xlabel '\footnotesize $z$' offset 0,1.1
+set ylabel '$C^{\text{3D},(1)}(z,z)$' offset 4.6
+
+set xtics offset 0,0.25
+set ytics offset 0.75
+
+set label 1 '\footnotesize PBC, $M\!=\!512$' left at -0.5, 0.4491
+set label 2 '\footnotesize OBC, $M\!=\!48$' center at 17, 0.443
+
+set arrow 2 nohead from 9, 0.443 to 4,0.4442
+
+set format y '\footnotesize $%.2f$'
+set format x '\footnotesize $%.0f$'
+
+set xtics 0,5,45 offset 0,0.5
+
+set ytics add ("" 0.442, "" 0.444, "" 0.446, "" 0.448, "" 0.452, "" 0.454)
+
+set xrange [-1:48]
+set yrange [0.44:0.452]
+
+ymin = C0_PBC - C0_PBC_err
+ymax = C0_PBC + C0_PBC_err
+y = C0_PBC + 0. 
+
+x1=-1
+x2=48
+
+set object 1 rect from x1,ymin to x2,ymax fc rgb "#aaccee" fs solid 0.4 back
+
+plot "< awk '$1==0{i=int($3/48);j=$3-i*48;if(i==j)print i,$4,$5}' ".OBC u 1:2:3 w yerror pt 9 ps 2 lc rgb colorGet("c2") not, y w line lw 1.5 lc rgb "black" not
+
+###########
+# CLOSE
+###########
+
+set out
+
+#############
+# CREATE PDF
+#############
+!pdflatex figSM4.tex
+!latex figSM4.tex
+!dvisvgm --no-fonts figSM4.dvi
+!rm *.aux *.tex *conver* *.log *.eps *.dvi

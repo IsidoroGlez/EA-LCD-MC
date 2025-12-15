@@ -1,0 +1,190 @@
+reset
+set auto
+set fit noerrorscaling
+
+##############
+#COLOR PALETE
+##############
+PALETTE=0
+load "my_color_palette.gpt"
+
+###############
+# APS TERMINAL
+###############
+C=1.  # One column
+R=.75  # Square ratio
+load "APS_term.gpt"
+
+#############
+# OUTPUT
+############
+set output "fig2.tex"
+
+############
+# DATA
+###########
+
+PBC="DATA/PBC/16x512"
+OBC="DATA/OBC/INDEPENDENT/16x48"
+
+set multiplot
+
+set origin 0.62, 0.54
+set size 0.5,0.5
+unset logs y
+set ytics auto
+set xrange [25.05:27.95]
+set yrange [0.243:0.259]
+
+unset y2tics
+set format y "%.4f"
+
+unset border
+unset xtics
+unset ytics
+
+# Estilo de relleno sólido sin borde
+set style fill solid 1.0 border -1
+
+# Primer bloque (negro) — de abajo hacia arriba
+
+x=26.65
+dx=0.05
+y=0.246
+dy=0.001
+
+do for[i=0:9]{
+   if ( (i%2)==0 ){
+      set object (i+1) rect from x-dx,y to x,y+dy fc rgb "black"
+      set object (100*(i+1)) rect from x,y to x+dx,y+dy fc rgb "white"
+   } else {
+      set object (i+1) rect from x-dx,y to x,y+dy fc rgb "white"
+      set object (100*(i+1)) rect from x,y to x+dx,y+dy fc rgb "black"
+   }
+   y=y+dy
+}
+
+set label 100 '\scriptsize $1 \times 10^{-2}$' center at 26.47, 0.252 rotate
+
+Cx=26.5
+Cy=0.251
+Dx=2
+Dy=0.015
+
+set object 5000 ellipse center Cx,Cy size Dx,Dy angle 0 front lw 1 fc rgb "gray" fillstyle empty
+
+cx=0.3075
+cy=0.847
+dx=0.022
+dy=0.03
+
+set arrow 1000 nohead from screen cx, screen (cy-dy/2) to (Cx-0.25), (Cy-0.00727)
+set arrow 2000 nohead from screen cx, screen (cy+dy/2) to (Cx-0.1), (Cy+0.00745)
+
+plot \
+"< awk '{if($1==0) print $0}' ".PBC."/C_f1_g1_n0_NBLOCKS_1024.txt" u (($3-0.1)<27.1?($3-0.1):-1):4:5 w yerror pt 7 ps 1.5 lc rgb colorGet("c6") not,\
+"< awk '{if($1==0) print $0}' ".OBC."/C_f1_g1_n0_NBLOCKS_16384.txt" u ($3+0.1):4:5 w yerror pt 9 ps 1.5 lc rgb colorGet("c2") not
+
+set border
+set xtics
+set ytics
+
+unset arrow
+unset object
+unset label
+
+set lmargin screen 0.16
+set rmargin screen 0.995
+set tmargin screen 0.985
+set bmargin screen 0.11
+
+set origin 0,0
+set size 1,1
+
+set xlabel '\footnotesize $r$' offset 0,1.2
+set ylabel '\footnotesize $C^{\text{3D},(1)}(r)$' offset 4.5
+
+set xrange [0:150]
+set yrange [1e-3:7e-1]
+
+set format x '\footnotesize $%g$'
+set format y '\footnotesize $10^{%T}$'
+set ytics add ("\\footnotesize 1" 1)
+
+set logs y
+
+set xtics offset 0,0.5
+set ytics offset 0.75
+
+set label 1 '\footnotesize PBC, $M\!=\!512$' center at 122, 1e-2
+set label 2 '\footnotesize OBC, $M\!=\!48$' center at 24, 1.2e-1
+
+set arrow 1 nohead from 122, 1.3e-2 to 130,2.1e-2
+set arrow 2 nohead from 10, 1.5e-1 to 20,2.7e-1
+
+set object 6000 ellipse center screen cx, screen cy size screen dx, screen dy angle 0 front lw 1 fc rgb "gray" fillstyle empty
+
+plot \
+"< awk '{if($1==0) print $0}' ".PBC."/C_f1_g1_n0_NBLOCKS_1024.txt" u 3:4:5 w yerror pt 7 ps 0.7 lc rgb colorGet("c6") not,\
+"< awk '{if($1==0) print $0}' ".OBC."/C_f1_g1_n0_NBLOCKS_16384.txt" u 3:4:5 w yerror pt 9 lc rgb colorGet("c2") not
+
+# Restaurar márgenes (para evitar que afecten al siguiente)
+unset lmargin
+unset rmargin
+unset tmargin
+unset bmargin
+
+############
+# DATA
+###########
+
+PBC="DATA/PBC/16x512/xi01_f1_g1_n0_NBLOCKS_1024.txt"
+OBC="DATA/OBC/INDEPENDENT/16x48/xi_f1_g1_n0_NBLOCKS_16384.txt"
+
+set origin 0.105, 0.09
+set size 0.8,0.55
+
+set x2range [-0.5:25.5]
+set y2range [43:46]
+set xrange [-0.5:25.5]
+set yrange [43:46]
+
+unset logs
+unset xlabel
+unset ylabel
+set x2label '\footnotesize $r_{\mathrm{min}}$' offset 0,-1
+set y2label '\footnotesize $\xi_{n=1}$' offset -4.75
+set y2tics 43,1,46 offset -0.75 
+set ytics 43,1,46
+set x2tics offset 0,-0.5
+set format x2 '\scriptsize $%.0f$'
+set format y2 '\scriptsize $%.0f$'
+set xtics mirror
+set format x ''
+set format y ''
+set ytics mirror
+
+set label 1 '\scriptsize PBC, $M\!=\!512$' center at 15, 45.5
+set label 2 '\scriptsize OBC, $M\!=\!48$' center at 10, 43.5
+
+set arrow 1 nohead from 18, 45.3 to 22,44.55
+set arrow 2 nohead from 9, 43.7 to 12,44.35
+
+plot "< awk '{if($1==0) print $0}' ".PBC u 3:4:5 w yerror axis x2y2 pt 7 ps 1.5 lc rgb colorGet("c6") not,\
+"< awk '{if($1==0) print $0}' ".OBC u 3:4:5 w yerror axis x2y2 pt 9 ps 1.5 lc rgb colorGet("c2") not
+
+unset multiplot
+ 
+###########
+# CLOSE
+###########
+
+set out
+
+#############
+# CREATE PDF
+#############
+!pdflatex fig2.tex
+!latex fig2.tex
+!dvisvgm --no-fonts fig2.dvi
+!rm *.aux *.tex *conver* *.log *.eps *.dvi

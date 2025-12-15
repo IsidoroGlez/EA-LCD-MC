@@ -1,0 +1,47 @@
+cff-version: 1.2.0
+message: "If you use this code or data in your work, please cite the associated article."
+title: "Monte Carlo Simulations of the 3D Edwards–Anderson Spin Glass in Tubular Geometry"
+authors:
+  - family-names: "González-Adalid Pemartín"
+    given-names: "Isidoro"
+    email: "isiglezadalid@gmail.com"
+  - family-names: "Bernaschi"
+    given-names: "Massimo"
+  - family-names: "Fernandez"
+    given-names: "Luis Antonio"
+  - family-names: "Martín-Mayor"
+    given-names: "Víctor"
+  - family-names: "Parisi"
+    given-names: "Giorgio"
+  - family-names: "Ricci-Tersenghi"
+    given-names: "Federico"                      
+repository-code: "https://github.com/IsidoroGlez/EA-LCD"
+license: MIT
+keywords:
+  - Monte Carlo simulations
+  - Spin glasses
+  - Edwards–Anderson model
+  - Tubular geometry
+  - Parallel Tempering
+  - Houdayer clusters
+  - Statistical physics
+
+preferred-citation:
+  type: article
+  title: "TITLE OF THE ASSOCIATED ARTICLE"
+  authors:
+    - family-names: "Bernaschi"
+      given-names: "Massimo"
+    - family-names: "Fernandez"
+      given-names: "Luis Antonio"
+    - family-names: "González-Adalid Pemartín"
+      given-names: "Isidoro"      
+    - family-names: "Martín-Mayor"
+      given-names: "Víctor"
+    - family-names: "Parisi"
+      given-names: "Giorgio"
+    - family-names: "Ricci-Tersenghi"
+      given-names: "Federico"                  
+  year: 2025
+  journal: "JOURNAL NAME"
+  doi: "DOI_TO_BE_ADDED"

@@ -1,0 +1,74 @@
+reset
+set auto
+set fit noerrorscaling
+
+##############
+#COLOR PALETE
+##############
+PALETTE=0
+load "my_color_palette.gpt"
+
+###############
+# APS TERMINAL
+###############
+C=1.  # One column
+R=0.75  # Square ratio
+load "APS_term.gpt"
+
+#############
+# OUTPUT
+############
+set output "figSM5.tex"
+
+############
+# DATA
+###########
+
+PBC="DATA/PBC/16x512/C_f1_g1_n0_NBLOCKS_1024.txt"
+OBC="DATA/OBC/INDEPENDENT/16x48/Matrix_f1_g1_n0_NBLOCKS_16384.txt"
+
+set lmargin screen 0.155
+set rmargin screen 0.985
+set tmargin screen 0.975
+set bmargin screen 0.12
+
+set xlabel '\footnotesize $r$' offset 0,1.1
+set ylabel '\footnotesize $C^{\text{3D},(1)}(z,z+r)$' offset 4.6
+
+set xtics offset 0,0.5
+set ytics offset 0.75
+
+set label 1 '\footnotesize PBC' right at 49.5, 0.135
+set label 2 '\footnotesize $z=5$' right at 41.5, 0.1575
+set label 3 '\footnotesize $z=15$' right at 31.5, 0.20
+set label 4 '\footnotesize $z=25$' right at 21.5, 0.2525
+set label 5 '\footnotesize $z=35$' right at 11.5, 0.32
+
+set format y '\footnotesize $%.2f$' 
+set format x '\footnotesize $%.0f$'
+
+set xtics 0,5,45
+
+set xrange [-1:50]
+set yrange [*:*]
+
+plot \
+"< awk '$1==0{print $3,$4,$5}' ".PBC u 1:2:3 w yerror pt 7 ps 1.2 lc rgb colorGet("c6") not,\
+"< awk '$1==0{i=int($3/48);j=$3-i*48;if((i==5)&&(j>=i)){print j-i,$4,$5}}' ".OBC u 1:2:3 w yerror pt 9 ps 1.2 lc rgb colorGet("c2") not,\
+"< awk '$1==0{i=int($3/48);j=$3-i*48;if((i==15)&&(j>=i)){print j-i,$4,$5}}' ".OBC u 1:2:3 w yerror pt 11 ps 1.2 lc rgb colorGet("c4") not,\
+"< awk '$1==0{i=int($3/48);j=$3-i*48;if((i==25)&&(j>=i)){print j-i,$4,$5}}' ".OBC u 1:2:3 w yerror pt 5 ps 1 lc rgb colorGet("c5") not,\
+"< awk '$1==0{i=int($3/48);j=$3-i*48;if((i==35)&&(j>=i)){print j-i,$4,$5}}' ".OBC u 1:2:3 w yerror pt 13 ps 1.2 lc rgb colorGet("c8") not
+
+###########
+# CLOSE
+###########
+
+set out
+
+#############
+# CREATE PDF
+#############
+!pdflatex figSM5.tex
+!latex figSM5.tex
+!dvisvgm --no-fonts figSM5.dvi
+!rm *.aux *.tex *conver* *.log *.eps *.dvi
