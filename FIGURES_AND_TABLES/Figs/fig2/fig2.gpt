@@ -82,8 +82,8 @@ set arrow 1000 nohead from screen cx, screen (cy-dy/2) to (Cx-0.25), (Cy-0.00727
 set arrow 2000 nohead from screen cx, screen (cy+dy/2) to (Cx-0.1), (Cy+0.00745)
 
 plot \
-"< awk '{if($1==0) print $0}' ".PBC."/C_f1_g1_n0_NBLOCKS_1024.txt" u (($3-0.1)<27.1?($3-0.1):-1):4:5 w yerror pt 7 ps 1.5 lc rgb colorGet("c6") not,\
-"< awk '{if($1==0) print $0}' ".OBC."/C_f1_g1_n0_NBLOCKS_16384.txt" u ($3+0.1):4:5 w yerror pt 9 ps 1.5 lc rgb colorGet("c2") not
+"< awk '{if($1==0) print $0}' ".PBC."/C_Q_Q_n0_NBLOCKS_1024.txt" u (($3-0.1)<27.1?($3-0.1):-1):4:5 w yerror pt 7 ps 1.5 lc rgb colorGet("c6") not,\
+"< awk '{if($1==0) print $0}' ".OBC."/C_Q_Q_n0_NBLOCKS_16384.txt" u ($3+0.1):4:5 w yerror pt 9 ps 1.5 lc rgb colorGet("c2") not
 
 set border
 set xtics
@@ -125,8 +125,8 @@ set arrow 2 nohead from 10, 1.5e-1 to 20,2.7e-1
 set object 6000 ellipse center screen cx, screen cy size screen dx, screen dy angle 0 front lw 1 fc rgb "gray" fillstyle empty
 
 plot \
-"< awk '{if($1==0) print $0}' ".PBC."/C_f1_g1_n0_NBLOCKS_1024.txt" u 3:4:5 w yerror pt 7 ps 0.7 lc rgb colorGet("c6") not,\
-"< awk '{if($1==0) print $0}' ".OBC."/C_f1_g1_n0_NBLOCKS_16384.txt" u 3:4:5 w yerror pt 9 lc rgb colorGet("c2") not
+"< awk '{if($1==0) print $0}' ".PBC."/C_Q_Q_n0_NBLOCKS_1024.txt" u 3:4:5 w yerror pt 7 ps 0.7 lc rgb colorGet("c6") not,\
+"< awk '{if($1==0) print $0}' ".OBC."/C_Q_Q_n0_NBLOCKS_16384.txt" u 3:4:5 w yerror pt 9 lc rgb colorGet("c2") not
 
 # Restaurar márgenes (para evitar que afecten al siguiente)
 unset lmargin
@@ -138,8 +138,8 @@ unset bmargin
 # DATA
 ###########
 
-PBC="DATA/PBC/16x512/xi01_f1_g1_n0_NBLOCKS_1024.txt"
-OBC="DATA/OBC/INDEPENDENT/16x48/xi_f1_g1_n0_NBLOCKS_16384.txt"
+PBC="DATA/PBC/16x512/xi01_Q_Q_n0_NBLOCKS_1024.txt"
+OBC="DATA/OBC/INDEPENDENT/16x48/xi_Q_Q_n0_NBLOCKS_16384.txt"
 
 set origin 0.105, 0.09
 set size 0.8,0.55

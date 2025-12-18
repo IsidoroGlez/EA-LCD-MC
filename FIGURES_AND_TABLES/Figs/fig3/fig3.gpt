@@ -25,20 +25,20 @@ set output "fig3.tex"
 ###########
 
 data_T07="DATA/xi_ibeta0.dat"
-!awk '{if(($1==0)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/4x192/xi01_f1_g1_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 4,$2,$3}}' | head -1 > DATA/xi_ibeta0.dat
-!awk '{if(($1==0)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/6x192/xi01_f1_g1_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 6,$2,$3}}' | head -1 >> DATA/xi_ibeta0.dat
-!awk '{if(($1==0)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/8x192/xi01_f1_g1_n0_NBLOCKS_12288.txt | awk '{if($1>=$2){print 8,$2,$3}}' | head -1 >> DATA/xi_ibeta0.dat
-!awk '{if(($1==0)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/12x320/xi01_f1_g1_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 12,$2,$3}}' | head -1 >> DATA/xi_ibeta0.dat
-!awk '{if(($1==0)&&($5!="-nan")){print 16,$4,$5}}' DATA/OBC/INDEPENDENT/16x48/xi_f1_g1_n0_NBLOCKS_16384.txt | sort -k2 -g | tail -1 >> DATA/xi_ibeta0.dat
-!awk '{if(($1==0)&&($5!="-nan")){print 24,$4,$5}}' DATA/OBC/INDEPENDENT/24x88/xi_f1_g1_n0_NBLOCKS_2048.txt | sort -k2 -g | tail -1 >> DATA/xi_ibeta0.dat
+!awk '{if(($1==0)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/4x192/xi01_Q_Q_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 4,$2,$3}}' | head -1 > DATA/xi_ibeta0.dat
+!awk '{if(($1==0)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/6x192/xi01_Q_Q_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 6,$2,$3}}' | head -1 >> DATA/xi_ibeta0.dat
+!awk '{if(($1==0)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/8x192/xi01_Q_Q_n0_NBLOCKS_12288.txt | awk '{if($1>=$2){print 8,$2,$3}}' | head -1 >> DATA/xi_ibeta0.dat
+!awk '{if(($1==0)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/12x320/xi01_Q_Q_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 12,$2,$3}}' | head -1 >> DATA/xi_ibeta0.dat
+!awk '{if(($1==0)&&($5!="-nan")){print 16,$4,$5}}' DATA/OBC/INDEPENDENT/16x48/xi_Q_Q_n0_NBLOCKS_16384.txt | sort -k2 -g | tail -1 >> DATA/xi_ibeta0.dat
+!awk '{if(($1==0)&&($5!="-nan")){print 24,$4,$5}}' DATA/OBC/INDEPENDENT/24x88/xi_Q_Q_n0_NBLOCKS_2048.txt | sort -k2 -g | tail -1 >> DATA/xi_ibeta0.dat
 
 data_Tc="DATA/xi_ibetac.dat"
-!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/4x192/xi01_f1_g1_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 4,$2,$3}}' | head -1 > DATA/xi_ibetac.dat
-!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/6x192/xi01_f1_g1_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 6,$2,$3}}' | head -1 >> DATA/xi_ibetac.dat
-!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/8x192/xi01_f1_g1_n0_NBLOCKS_12288.txt | awk '{if($1>=$2){print 8,$2,$3}}' | head -1 >> DATA/xi_ibetac.dat
-!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/12x320/xi01_f1_g1_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 12,$2,$3}}' | head -1 >> DATA/xi_ibetac.dat
-!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print 16,$4,$5}}' DATA/OBC/INDEPENDENT/16x48/xi_f1_g1_n0_NBLOCKS_16384.txt | sort -k2 -g | tail -1 >> DATA/xi_ibetac.dat
-!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print 24,$4,$5}}' DATA/OBC/INDEPENDENT/24x88/xi_f1_g1_n0_NBLOCKS_2048.txt | sort -k2 -g | tail -1 >> DATA/xi_ibetac.dat
+!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/4x192/xi01_Q_Q_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 4,$2,$3}}' | head -1 > DATA/xi_ibetac.dat
+!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/6x192/xi01_Q_Q_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 6,$2,$3}}' | head -1 >> DATA/xi_ibetac.dat
+!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/8x192/xi01_Q_Q_n0_NBLOCKS_12288.txt | awk '{if($1>=$2){print 8,$2,$3}}' | head -1 >> DATA/xi_ibetac.dat
+!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/12x320/xi01_Q_Q_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 12,$2,$3}}' | head -1 >> DATA/xi_ibetac.dat
+!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print 16,$4,$5}}' DATA/OBC/INDEPENDENT/16x48/xi_Q_Q_n0_NBLOCKS_16384.txt | sort -k2 -g | tail -1 >> DATA/xi_ibetac.dat
+!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print 24,$4,$5}}' DATA/OBC/INDEPENDENT/24x88/xi_Q_Q_n0_NBLOCKS_2048.txt | sort -k2 -g | tail -1 >> DATA/xi_ibetac.dat
 
 set xlabel '\footnotesize $L$' offset 0, 1.2
 set ylabel '\footnotesize $\xi_{n=1}$' offset 4

@@ -24,8 +24,8 @@ set output "figSM5.tex"
 # DATA
 ###########
 
-PBC="DATA/PBC/16x512/C_f1_g1_n0_NBLOCKS_1024.txt"
-OBC="DATA/OBC/INDEPENDENT/16x48/Matrix_f1_g1_n0_NBLOCKS_16384.txt"
+PBC="DATA/PBC/16x512/C_Q_Q_n0_NBLOCKS_1024.txt"
+OBC="DATA/OBC/INDEPENDENT/16x48/Matrix_Q_Q_n0_NBLOCKS_16384.txt"
 
 set lmargin screen 0.155
 set rmargin screen 0.985

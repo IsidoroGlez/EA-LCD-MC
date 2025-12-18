@@ -1,0 +1,152 @@
+reset
+set auto
+set fit noerrorscaling
+
+##############
+#COLOR PALETE
+##############
+PALETTE=0
+load "my_color_palette.gpt"
+
+###############
+# APS TERMINAL
+###############
+C=2.  # One column
+R=.5  # Square ratio
+load "APS_term.gpt"
+
+#############
+# OUTPUT
+############
+set output "fig6.tex"
+
+############
+# DATA
+###########
+
+inv_xi_L4=system('paste DATA/PBC/4x192/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/4x192/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$11; exit}"')
+inv_xi_L4_err=system('paste DATA/PBC/4x192/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/4x192/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$12; exit}"')
+L4="< awk '$1==0{print $3,$6,$7}' DATA/PBC/4x192/C_Q3_over_C_Q_n0_NBLOCKS_32768.txt"
+
+inv_xi_L6=system('paste DATA/PBC/6x192/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/6x192/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$11; exit}"')
+inv_xi_L6_err=system('paste DATA/PBC/6x192/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/6x192/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$12; exit}"')
+L6="< awk '$1==0{print $3,$6,$7}' DATA/PBC/6x192/C_Q3_over_C_Q_n0_NBLOCKS_32768.txt"
+
+inv_xi_L8=system('paste DATA/PBC/8x192/xi01_Q_Q_n0_NBLOCKS_12288.txt DATA/PBC/8x192/inv_xi01_Q_Q_n0_NBLOCKS_12288.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$11; exit}"')
+inv_xi_L8_err=system('paste DATA/PBC/8x192/xi01_Q_Q_n0_NBLOCKS_12288.txt DATA/PBC/8x192/inv_xi01_Q_Q_n0_NBLOCKS_12288.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$12; exit}"')
+L8="< awk '$1==0{print $3,$6,$7}' DATA/PBC/8x192/C_Q3_over_C_Q_n0_NBLOCKS_12288.txt"
+
+inv_xi_L12=system('paste DATA/PBC/12x320/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/12x320/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$11; exit}"')
+inv_xi_L12_err=system('paste DATA/PBC/12x320/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/12x320/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$12; exit}"')
+L12="< awk '$1==0{print $3,$6,$7}' DATA/PBC/12x320/C_Q3_over_C_Q_n0_NBLOCKS_32768.txt"
+
+inv_xi_L16=system('paste DATA/OBC/INDEPENDENT/16x48/xi_Q_Q_n0_NBLOCKS_16384.txt DATA/OBC/INDEPENDENT/16x48/inv_xi_Q_Q_n0_NBLOCKS_16384.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$11}" | sort -k1 -g | tail -1 | awk "{print \$2}"')
+inv_xi_L16_err=system('paste DATA/OBC/INDEPENDENT/16x48/xi_Q_Q_n0_NBLOCKS_16384.txt DATA/OBC/INDEPENDENT/16x48/inv_xi_Q_Q_n0_NBLOCKS_16384.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$12}" | sort -k1 -g | tail -1 | awk "{print \$2}"')
+L16="< awk '$1==0{print $3,$6,$7}' DATA/OBC/INDEPENDENT/16x48/C_Q3_over_C_Q_n0_NBLOCKS_16384.txt"
+
+inv_xi_L24=system('paste DATA/OBC/INDEPENDENT/24x88/xi_Q_Q_n0_NBLOCKS_2048.txt DATA/OBC/INDEPENDENT/24x88/inv_xi_Q_Q_n0_NBLOCKS_2048.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$11}" | sort -k1 -g | tail -1 | awk "{print \$2}"')
+inv_xi_L24_err=system('paste DATA/OBC/INDEPENDENT/24x88/xi_Q_Q_n0_NBLOCKS_2048.txt DATA/OBC/INDEPENDENT/24x88/inv_xi_Q_Q_n0_NBLOCKS_2048.txt 2>/dev/null \
+ | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$12}" | sort -k1 -g | tail -1 | awk "{print \$2}"')
+L24="< awk '$1==0{print $3,$6,$7}' DATA/OBC/INDEPENDENT/24x88/C_Q3_over_C_Q_n0_NBLOCKS_2048.txt"
+
+set multiplot
+
+set tmargin screen 0.98
+set bmargin screen 0.12
+
+set lmargin screen 0.075
+set rmargin screen 0.99
+
+set xlabel '\footnotesize $r/\xi_{n=1}(L)$' offset 0, 0.75
+set ylabel '\footnotesize $\tilde{C}_{Q^3,Q^3}(r) / \tilde{C}_{Q,Q}(r)$' offset 3.8
+set format '\footnotesize $%g$'
+set xtics offset 0,0.5
+
+set ytics 0.86,0.02,1 offset 0.75
+set format y ''
+set ytics add ('\footnotesize $0.9$' 0.9, '\footnotesize $1$' 1)
+
+set xrange [-0.02:1]
+set yrange [0.86:1.005]
+
+
+plot \
+L24 u ($1*inv_xi_L24):2:($1*inv_xi_L24_err):3 w xyerror pt 5 lc rgb colorGet("c6") not,\
+L16 u ($1*inv_xi_L16):2:($1*inv_xi_L16_err):3 w xyerror pt 7 lc rgb colorGet("c5") not,\
+L12 u ($1*inv_xi_L12):2:($1*inv_xi_L12_err):3 w xyerror pt 13 lc rgb colorGet("c2") not,\
+L8 u ($1*inv_xi_L8):2:($1*inv_xi_L8_err):3 w xyerror pt 9 lc rgb colorGet("c4") not,\
+L6 u ($1*inv_xi_L6):2:($1*inv_xi_L6_err):3 w xyerror pt 11 lc rgb colorGet("c7") not,\
+L4 u ($1*inv_xi_L4):2:($1*inv_xi_L4_err):3 w xyerror pt 1 lc rgb colorGet("c8") not
+
+set tmargin screen 0.95
+set bmargin screen 0.45
+set lmargin screen 0.27
+set rmargin screen 0.57
+
+set xrange [-0.01:0.22]
+unset xlabel
+unset ylabel
+unset ytics 
+set ytics offset 0.75
+set xtics offset 0,0.65
+set format '\scriptsize $%g$'
+
+set label 4 '\scriptsize $L=4$' left at 0.17,0.92
+set arrow 4 nohead from 0.124,0.912 to 0.168, 0.918
+
+set label 6 '\scriptsize $L=6$' left at 0.025,0.88
+set arrow 6 nohead from 0.073,0.916 to 0.05,0.885
+
+set label 8 '\scriptsize $L=8$' left at 0.001,0.9
+set arrow 8 nohead from 0.049,0.93 to 0.035,0.905
+
+set label 12 '\scriptsize $L=12$' left at 0.08,0.95
+set arrow 12 nohead from 0.037,0.952 to 0.075,0.95
+
+set label 16 '\scriptsize $L=16$' left at 0.065,0.97
+set arrow 16 nohead from 0.0261,0.966 to 0.06,0.968
+
+set label 24 '\scriptsize $L=24$' left at 0.05,0.99
+set arrow 24 nohead from 0.017, 0.98 to 0.045,0.988
+
+replot
+
+unset label
+unset arrow
+
+set lmargin screen 0.65
+set rmargin screen 0.95
+
+set xrange [0.22:0.95]
+set yrange [0.86:0.92]
+
+replot
+
+
+unset multiplot
+
+###########
+# CLOSE
+###########
+
+set out
+
+#############
+# CREATE PDF
+#############
+!pdflatex fig6.tex
+!latex fig6.tex
+!dvisvgm --no-fonts fig6.dvi
+!rm *.aux *.tex *conver* *.log *.eps *.dvi
+

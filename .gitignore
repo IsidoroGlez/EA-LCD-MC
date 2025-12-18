@@ -43,6 +43,7 @@ FIGURES_AND_TABLES/**/DATA/
 ############################
 
 sync.sh
+update_data_and_figures.sh
 
 ############################
 # OS-specific files

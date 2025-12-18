@@ -43,10 +43,13 @@ The filename encodes the following information:
 - The **measured observable**.
 - The **basis functions** used to construct the associated correlation function:
   - \(f(x), g(x) \in \{x, x^3, \mathrm{sign}(x)\}\),
-    represented in filenames by `1`, `3`, and `-1`, respectively.
+    represented in filenames by `Q`, `Q3`, and `signQ`, respectively.
 - The **number of replicas** used to compute the observable:
   - `n = 0, 1, 2, 3`, corresponding to `r = 2, 4, 6, 8` replicas.
 - The **total number of disorder samples** used in the measurement.
+
+- Notice that, given the 3 possible observables, it is possible to construct a correlation matrix. Each element of this matrix corresponds to the correlation using the functions f(x) and g(x). We can also calculate the determinant of this matrix for each distance (and the corresponding observables from it), which is denoted by `DET`. In the same way, we can compute the determinant of a 2 by 2 matrix, getting only two of the possible f(x). We identify these observables with `MIN` and the functions under consideration.
+
 
 ---
 
