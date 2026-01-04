@@ -1,0 +1,70 @@
+reset
+set auto
+set fit noerrorscaling
+
+##############
+#COLOR PALETE
+##############
+PALETTE=0
+load "my_color_palette.gpt"
+
+###############
+# APS TERMINAL
+###############
+C=1.  # One column
+R=1  # Square ratio
+load "APS_term.gpt"
+
+#############
+# OUTPUT
+############
+set output "fig9.tex"
+
+############
+# DATA
+###########
+
+L24="DATA/L24_shortM.tot"
+
+set lmargin screen 0.16
+set rmargin screen 0.995
+set tmargin screen 0.98
+set bmargin screen 0.11
+
+set xlabel '\footnotesize $M$' offset 0,1.2
+set ylabel '\footnotesize $R(M)$' offset 4.5
+
+set format '\footnotesize $%g$'
+
+set xtics offset 0,0.5
+set ytics offset 0.75
+
+set xrange [1:11]
+set yrange [*:1.0]
+f(x)=a*exp(-x/xi)+b*exp(-x/xi2)
+g(x)=a*exp(-x/xi)
+xi=44
+xi2=2.5
+a=1
+b=-0.05
+
+fit [2.5:*] f(x) L24 u 2:5:6 yerr via a,b,xi,xi2
+
+plot L24 u 2:5:6 w yerr pt 9 ps 2 lc rgb colorGet("c2") not,\
+f(x) dt 2 lc "black" not,\
+g(x) lc "black" not
+
+
+###########
+# CLOSE
+###########
+
+set out
+
+#############
+# CREATE PDF
+#############
+!pdflatex fig9.tex
+!latex fig9.tex
+!dvisvgm --no-fonts fig9.dvi
+!rm *.aux *.tex *conver* *.log *.eps *.dvi

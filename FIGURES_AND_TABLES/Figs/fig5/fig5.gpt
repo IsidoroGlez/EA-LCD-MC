@@ -60,10 +60,13 @@ inv_xi_L24_err=system('paste DATA/OBC/INDEPENDENT/24x88/xi_Q_Q_n0_NBLOCKS_2048.t
  | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$12}" | sort -k1 -g | tail -1 | awk "{print \$2}"')
 L24="< awk '$1==0{print $3,$6,$7}' DATA/OBC/INDEPENDENT/24x88/logC_Q_Q_n0_NBLOCKS_2048.txt"
 
-g(x)=x+d -log(1-(1-exp(d))*exp(-(M-1)*x))
-M=20
+
 fit [0.05:1.1] x+d L16 u ($1*inv_xi_L16):(-$2):($1*inv_xi_L16_err):3 xyerror via d
-fit [0.0001:0.2] g(x) L16 u ($1*inv_xi_L16):(-$2):($1*inv_xi_L16_err):3 xyerror via M
+
+g(x)=A*x**U
+A=1
+U=1.2
+fit [0.0001:0.14] g(x) L16 u ($1*inv_xi_L16):(-$2):($1*inv_xi_L16_err):3 xyerror via A,U
 
 set multiplot
 
@@ -91,7 +94,7 @@ L12 u ($1*inv_xi_L12):(-$2):($1*inv_xi_L12_err):3 w xyerror pt 13 lc rgb colorGe
 L8 u ($1*inv_xi_L8):(-$2):($1*inv_xi_L8_err):3 w xyerror pt 9 lc rgb colorGet("c4") not,\
 L6 u ($1*inv_xi_L6):(-$2):($1*inv_xi_L6_err):3 w xyerror pt 11 lc rgb colorGet("c7") not,\
 L4 u ($1*inv_xi_L4):(-$2):($1*inv_xi_L4_err):3 w xyerror pt 1 lc rgb colorGet("c8") not,\
-x+d lt 1 lc rgb "black" not, g(x) dt 2 lc rgb "black" not
+x+d lt 1 lc rgb "black" not, [0:0.15] g(x) dt 2 lc rgb "black" not
 
 unset object
 unset tics

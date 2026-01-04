@@ -69,7 +69,7 @@ set lmargin screen 0.075
 set rmargin screen 0.99
 
 set xlabel '\footnotesize $r/\xi_{n=1}(L)$' offset 0, 0.75
-set ylabel '\footnotesize $\tilde{C}_{Q^3,Q^3}(r) / \tilde{C}_{Q,Q}(r)$' offset 3.8
+set ylabel '\footnotesize $E(r)$' offset 3.8
 set format '\footnotesize $%g$'
 set xtics offset 0,0.5
 
@@ -77,9 +77,15 @@ set ytics 0.86,0.02,1 offset 0.75
 set format y ''
 set ytics add ('\footnotesize $0.9$' 0.9, '\footnotesize $1$' 1)
 
+f(x)= (A + (1-A) * exp(-x*(U-2))) / (B+(1-B)*exp(-x*(U-2)))
+
+A=1
+U=16
+B=1
+fit [0.02:*] f(x) L24 u ($1*inv_xi_L24):2:($1*inv_xi_L24_err):3 xyerror via A,U,B
+
 set xrange [-0.02:1]
 set yrange [0.86:1.005]
-
 
 plot \
 L24 u ($1*inv_xi_L24):2:($1*inv_xi_L24_err):3 w xyerror pt 5 lc rgb colorGet("c6") not,\
@@ -87,7 +93,8 @@ L16 u ($1*inv_xi_L16):2:($1*inv_xi_L16_err):3 w xyerror pt 7 lc rgb colorGet("c5
 L12 u ($1*inv_xi_L12):2:($1*inv_xi_L12_err):3 w xyerror pt 13 lc rgb colorGet("c2") not,\
 L8 u ($1*inv_xi_L8):2:($1*inv_xi_L8_err):3 w xyerror pt 9 lc rgb colorGet("c4") not,\
 L6 u ($1*inv_xi_L6):2:($1*inv_xi_L6_err):3 w xyerror pt 11 lc rgb colorGet("c7") not,\
-L4 u ($1*inv_xi_L4):2:($1*inv_xi_L4_err):3 w xyerror pt 1 lc rgb colorGet("c8") not
+L4 u ($1*inv_xi_L4):2:($1*inv_xi_L4_err):3 w xyerror pt 1 lc rgb colorGet("c8") not,\
+f(x) lt -1 dt 2 lc rgb "black" not
 
 set tmargin screen 0.95
 set bmargin screen 0.45

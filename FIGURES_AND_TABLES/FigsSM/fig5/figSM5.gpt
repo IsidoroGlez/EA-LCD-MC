@@ -33,7 +33,7 @@ set tmargin screen 0.975
 set bmargin screen 0.12
 
 set xlabel '\footnotesize $r$' offset 0,1.1
-set ylabel '\footnotesize $C^{\text{3D},(1)}(z,z+r)$' offset 4.6
+set ylabel '\footnotesize $C^{(1)}(z,z+r)$' offset 4.6
 
 set xtics offset 0,0.5
 set ytics offset 0.75

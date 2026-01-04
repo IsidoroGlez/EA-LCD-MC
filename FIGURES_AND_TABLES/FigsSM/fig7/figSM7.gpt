@@ -24,13 +24,12 @@ set output "figSM7.tex"
 # DATA
 ###########
 
-L24_MIN_0="< awk '($1==0) && $($4==\"nan\"){print $3,$4,$5}' DATA/OBC/INDEPENDENT/24x88/xi_2R_over_xi_MIN_Q3signQ_n0_NBLOCKS_2048.txt"
-L24_MIN_1="< awk '($1==0) && $($4==\"nan\"){print $3,$4,$5}' DATA/OBC/INDEPENDENT/24x88/xi_2R_over_xi_MIN_signQQ_n0_NBLOCKS_2048.txt"
-L24_MIN_2="< awk '($1==0) && $($4==\"nan\"){print $3,$4,$5}' DATA/OBC/INDEPENDENT/24x88/xi_2R_over_xi_MIN_QQ3_n0_NBLOCKS_2048.txt"
-
-L16_MIN_0="< awk '($1==0) && $($4==\"nan\"){print $3,$4,$5}' DATA/OBC/INDEPENDENT/16x48/xi_2R_over_xi_MIN_Q3signQ_n0_NBLOCKS_16384.txt"
-L16_MIN_1="< awk '($1==0) && $($4==\"nan\"){print $3,$4,$5}' DATA/OBC/INDEPENDENT/16x48/xi_2R_over_xi_MIN_signQQ_n0_NBLOCKS_16384.txt"
-L16_MIN_2="< awk '($1==0) && $($4==\"nan\"){print $3,$4,$5}' DATA/OBC/INDEPENDENT/16x48/xi_2R_over_xi_MIN_QQ3_n0_NBLOCKS_16384.txt"
+Lz32="./DATA/Lz32_xi01-xi12.txt"
+Lz48="./DATA/Lz48_xi01-xi12.txt"
+Lz64="./DATA/Lz64_xi01-xi12.txt"
+Lz96="./DATA/Lz96_xi01-xi12.txt"
+Lz128="./DATA/Lz128_xi01-xi12.txt"
+Lz192="./DATA/Lz192_xi01-xi12.txt"
 
 set lmargin screen 0.11
 set rmargin screen 0.985
@@ -38,49 +37,35 @@ set tmargin screen 0.975
 set bmargin screen 0.12
 
 set xlabel '\footnotesize $r_{\mathrm{min}}$' offset 0,1.2
-set ylabel '\footnotesize $U$' offset 3.8
+set ylabel '\footnotesize $\xi_{n=1}$' offset 3.8
 
-set format '\footnotesize $%g$'
+set format x '\footnotesize $%g$'
 
 set xtics offset 0,0.5
-set ytics offset 0.75
-set xrange [-0.15:*]
+unset ytics
+set ytics 17.8,0.2 format "" offset 0.75
+set ytics add ('\footnotesize $18$' 18, '\footnotesize $19$' 19)
 
-U=18.333
+set label 1 '\footnotesize $M\!=\!96$' left at 30, 17.8
+set arrow 1 nohead from 29, 17.8 to 25,17.8
 
-set arrow 1 nohead from 0,16.8 to 0.3,15
-set arrow 2 nohead from 0.45,17.3 to 0.3,15
-set label 1 '\scriptsize $\lbrace Q^3, \text{sign}(Q)\rbrace$' left at 0,14.5
+set label 2 '\footnotesize $M\!=\!128$' left at 36, 18.4
+set arrow 2 nohead from 35.5, 18.4 to 33,18.52
 
-set arrow 3 nohead from 0.15,20.4 to 0.45,26.3
-set arrow 4 nohead from 0.60,19.2 to 0.45,26.3
-set label 2 '\scriptsize $\lbrace Q, \text{sign}(Q)\rbrace$' left at 0.15,27
+set label 3 '\footnotesize $M\!=\!192$' center at 43, 19.1
+set arrow 3 nohead from 35, 18.93 to 38,19.05
 
-set arrow 5 nohead from 1.30,22.1 to 1.75,23.6
-set arrow 6 nohead from 1.75,18.8 to 1.75,23.6
-set label 3 '\scriptsize $\lbrace Q, Q^3\rbrace$' left at 1.6,24.6
 
-set arrow 10 nohead from 2.9,14 to 3.4,14
-set arrow 11 nohead from 2.9,14 to 2.9,14.5
-set arrow 12 nohead from 3.15,14 to 3.15,13.5
-set arrow 13 nohead from 3.4,14 to 3.4,14.5
-set label 4 '\scriptsize $L=24$' center at 3.20,13.2
-
-set arrow 20 nohead from 5.35,20.5 to 5.85,20.5
-set arrow 21 nohead from 5.35,20.5 to 5.35,20
-set arrow 22 nohead from 5.60,20.5 to 5.60,21
-set arrow 23 nohead from 5.85,20.5 to 5.85,20
-set label 5 '\scriptsize $L=16$' center at 5.65,21.4
+set xrange [-0.5:49]
+set yrange [17.7:19.3]
 
 plot \
-L24_MIN_0 u 1:2:3 w yerror pt 7 lc rgb colorGet("c2") not,\
-L24_MIN_1 u ($1+0.15):2:3 w yerror pt 5 lc rgb colorGet("c7") not,\
-L24_MIN_2 u ($1+0.30):2:3 w yerror pt 9 lc rgb colorGet("c5") not,\
-L16_MIN_0 u ($1+0.45):2:3 w yerror pt 6 lc rgb colorGet("c3") not,\
-L16_MIN_1 u ($1+0.60):2:3 w yerror pt 4 lc rgb colorGet("c6") not,\
-L16_MIN_2 u ($1+0.75):2:3 w yerror pt 8 lc rgb colorGet("c4") not,\
-U lt -1 not
-
+Lz96 u 1:2:3 every 2 w yerror pt 6 ps 1.5 lw 2 lc rgb colorGet("c8") not "96",\
+Lz96 u 1:4:5 every 2 w yerror pt 7 ps 1.5 lc rgb colorGet("c8") not "96",\
+Lz128 u 1:2:3 every 2 w yerror pt 8 ps 1.5 lw 2 lc rgb colorGet("c6") not "128",\
+Lz128 u 1:4:5 every 2 w yerror pt 9 ps 1.5 lc rgb colorGet("c6") not "128",\
+Lz192 u 1:2:3 every 4 w yerror pt 10 ps 1.5 lw 2 lc rgb colorGet("c7") not "192",\
+Lz192 u 1:4:5 every 4::2 w yerror pt 11 ps 1.5 lc rgb colorGet("c7") not "192"
 
 ###########
 # CLOSE

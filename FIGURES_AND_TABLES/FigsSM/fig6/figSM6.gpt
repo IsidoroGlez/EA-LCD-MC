@@ -24,12 +24,13 @@ set output "figSM6.tex"
 # DATA
 ###########
 
-Lz32="./DATA/Lz32_xi01-xi12.txt"
-Lz48="./DATA/Lz48_xi01-xi12.txt"
-Lz64="./DATA/Lz64_xi01-xi12.txt"
-Lz96="./DATA/Lz96_xi01-xi12.txt"
-Lz128="./DATA/Lz128_xi01-xi12.txt"
-Lz192="./DATA/Lz192_xi01-xi12.txt"
+L24_MIN_0="< awk '($1==0) && $($4==\"nan\"){print $3,$4,$5}' DATA/OBC/INDEPENDENT/24x88/xi_2R_over_xi_MIN_Q3signQ_n0_NBLOCKS_2048.txt"
+L24_MIN_1="< awk '($1==0) && $($4==\"nan\"){print $3,$4,$5}' DATA/OBC/INDEPENDENT/24x88/xi_2R_over_xi_MIN_signQQ_n0_NBLOCKS_2048.txt"
+L24_MIN_2="< awk '($1==0) && $($4==\"nan\"){print $3,$4,$5}' DATA/OBC/INDEPENDENT/24x88/xi_2R_over_xi_MIN_QQ3_n0_NBLOCKS_2048.txt"
+
+L16_MIN_0="< awk '($1==0) && $($4==\"nan\"){print $3,$4,$5}' DATA/OBC/INDEPENDENT/16x48/xi_2R_over_xi_MIN_Q3signQ_n0_NBLOCKS_16384.txt"
+L16_MIN_1="< awk '($1==0) && $($4==\"nan\"){print $3,$4,$5}' DATA/OBC/INDEPENDENT/16x48/xi_2R_over_xi_MIN_signQQ_n0_NBLOCKS_16384.txt"
+L16_MIN_2="< awk '($1==0) && $($4==\"nan\"){print $3,$4,$5}' DATA/OBC/INDEPENDENT/16x48/xi_2R_over_xi_MIN_QQ3_n0_NBLOCKS_16384.txt"
 
 set lmargin screen 0.11
 set rmargin screen 0.985
@@ -37,35 +38,41 @@ set tmargin screen 0.975
 set bmargin screen 0.12
 
 set xlabel '\footnotesize $r_{\mathrm{min}}$' offset 0,1.2
-set ylabel '\footnotesize $\xi_{n=1}$' offset 3.8
+set ylabel '\footnotesize $U$' offset 3.8
 
-set format x '\footnotesize $%g$'
+set format '\footnotesize $%g$'
 
 set xtics offset 0,0.5
-unset ytics
-set ytics 17.8,0.2 format "" offset 0.75
-set ytics add ('\footnotesize $18$' 18, '\footnotesize $19$' 19)
+set ytics offset 0.75
+set xrange [-0.15:7]
+set yrange [8:29]
 
-set label 1 '\footnotesize $M\!=\!96$' left at 30, 17.8
-set arrow 1 nohead from 29, 17.8 to 25,17.8
+U=22.2
+U_err=0.7
 
-set label 2 '\footnotesize $M\!=\!128$' left at 36, 18.4
-set arrow 2 nohead from 35.5, 18.4 to 33,18.52
+set object 1 rect from -0.15,U-U_err to 7,U+U_err fc rgb "#aaccee" fs sol back 
+set arrow 100 nohead from -0.15, U to 7,U lc rgb "black"
 
-set label 3 '\footnotesize $M\!=\!192$' center at 43, 19.1
-set arrow 3 nohead from 35, 18.93 to 38,19.05
-
-
-set xrange [-0.5:49]
-set yrange [17.7:19.3]
+set label 1 '\scriptsize $\lbrace Q^3, \text{sign}(Q)\rbrace$' left at 0,13.2
+set label 2 '\scriptsize $\lbrace Q, \text{sign}(Q)\rbrace$' left at 0,11.7
+set label 3 '\scriptsize $\lbrace Q, Q^3\rbrace$' left at 0,10.2
+set label 4 '\scriptsize $L\!=\!24$' center at 2.3,14.5
+set label 5 '\scriptsize $L\!=\!16$' center at 3.3,14.5
 
 plot \
-Lz96 u 1:2:3 every 2 w yerror pt 6 ps 1.5 lw 2 lc rgb colorGet("c8") not "96",\
-Lz96 u 1:4:5 every 2 w yerror pt 7 ps 1.5 lc rgb colorGet("c8") not "96",\
-Lz128 u 1:2:3 every 2 w yerror pt 8 ps 1.5 lw 2 lc rgb colorGet("c6") not "128",\
-Lz128 u 1:4:5 every 2 w yerror pt 9 ps 1.5 lc rgb colorGet("c6") not "128",\
-Lz192 u 1:2:3 every 4 w yerror pt 10 ps 1.5 lw 2 lc rgb colorGet("c7") not "192",\
-Lz192 u 1:4:5 every 4::2 w yerror pt 11 ps 1.5 lc rgb colorGet("c7") not "192"
+L24_MIN_0 u 1:(1+$2):3 w yerror pt 7 lc rgb colorGet("c2") not,\
+"< echo '2.3 12.06 0.3'" u 1:(1+$2):3 w xerror pt 7 ps 1.5 lw 2 lc rgb colorGet("c2") not,\
+L24_MIN_1 u ($1+0.15):(1+$2):3 w yerror pt 5 lc rgb colorGet("c7") not,\
+"< echo '2.3 10.56 0.3'" u 1:(1+$2):3 w xerror pt 5 ps 1.5 lw 2 lc rgb colorGet("c7") not,\
+L24_MIN_2 u ($1+0.30):(1+$2):3 w yerror pt 13 lc rgb colorGet("c5") not,\
+"< echo '2.3 9.06 0.3'" u 1:(1+$2):3 w xerror pt 13 ps 2 lw 2 lc rgb colorGet("c5") not,\
+L16_MIN_0 u ($1+0.45):(1+$2):3 w yerror pt 6 lc rgb colorGet("c3") not,\
+"< echo '3.3 12.06 0.3'" u 1:(1+$2):3 w xerror pt 6 ps 1.5 lw 2 lc rgb colorGet("c3") not,\
+L16_MIN_1 u ($1+0.60):(1+$2):3 w yerror pt 4 lc rgb colorGet("c6") not,\
+"< echo '3.3 10.56 0.3'" u 1:(1+$2):3 w xerror pt 4 ps 1.5 lw 2 lc rgb colorGet("c6") not,\
+L16_MIN_2 u ($1+0.75):(1+$2):3 w yerror pt 12 lc rgb colorGet("c4") not,\
+"< echo '3.3 9.06 0.3'" u 1:(1+$2):3 w xerror pt 12 ps 2 lw 2 lc rgb colorGet("c4") not
+
 
 ###########
 # CLOSE

@@ -40,8 +40,8 @@ OBC_4R_Tc="< paste DATA/OBC/INDEPENDENT/16x48/C_2nR_over_C_2R_Q_Q_n0_NBLOCKS_163
 OBC_6R_Tc="< paste DATA/OBC/INDEPENDENT/16x48/C_2nR_over_C_2R_Q_Q_n0_NBLOCKS_16384.txt DATA/OBC/INDEPENDENT/16x48/C_2nR_over_C_2R_Q_Q_n2_NBLOCKS_16384.txt | awk '(($1==\"I\")&&($2==0.9075)){print $4,$5,$11,$12}'"
 OBC_8R_Tc="< paste DATA/OBC/INDEPENDENT/16x48/C_2nR_over_C_2R_Q_Q_n0_NBLOCKS_16384.txt DATA/OBC/INDEPENDENT/16x48/C_2nR_over_C_2R_Q_Q_n3_NBLOCKS_16384.txt | awk '(($1==\"I\")&&($2==0.9075)){print $4,$5,$11,$12}'"
 
-set xlabel '\footnotesize $C^{\text{3D},(1)}(r)$' offset 0,0.9
-set ylabel '\footnotesize $C^{\text{3D},(n)}(r)/[C^{\text{3D},(1)}(r)]^n$' offset 3.7
+set xlabel '\footnotesize $C^{(1)}(r)$' offset 0,0.9
+set ylabel '\footnotesize $C^{(n)}(r)/[C^{(1)}(r)]^n$' offset 3.7
 
 set yrange [1:200]
 set xrange [0.02:0.5]
