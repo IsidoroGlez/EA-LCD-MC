@@ -18,7 +18,7 @@ load "APS_term.gpt"
 #############
 # OUTPUT
 ############
-set output "fig8.tex"
+set output "figSM8.tex"
 
 ############
 # DATA
@@ -62,7 +62,7 @@ set out
 #############
 # CREATE PDF
 #############
-!pdflatex fig8.tex
-!latex fig8.tex
-!dvisvgm --no-fonts fig8.dvi
+!pdflatex figSM8.tex
+!latex figSM8.tex
+!dvisvgm --no-fonts figSM8.dvi
 !rm *.aux *.tex *conver* *.log *.eps *.dvi
