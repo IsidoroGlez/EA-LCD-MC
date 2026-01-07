@@ -39,7 +39,7 @@ v=12**2*320
 
 set log x
 
-set xrange [nummed:nummed*1600]
+set xrange [nummed:3e6]
 set yrange [0.01:0.095]
 set ytics 0.02 0.02 offset 0.8,0
 set xtics offset 0,0.2

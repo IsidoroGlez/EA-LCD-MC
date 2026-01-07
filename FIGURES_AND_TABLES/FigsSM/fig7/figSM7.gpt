@@ -46,26 +46,30 @@ unset ytics
 set ytics 17.8,0.2 format "" offset 0.75
 set ytics add ('\footnotesize $18$' 18, '\footnotesize $19$' 19)
 
-set label 1 '\footnotesize $M\!=\!96$' left at 30, 17.8
-set arrow 1 nohead from 29, 17.8 to 25,17.8
+set label 1 '\scriptsize $M\!=\!96$' left at 25,18.3
+set label 2 '\scriptsize $M\!=\!128$' left at 25,18.15
+set label 3 '\scriptsize $M\!=\!192$' left at 25,18.
 
-set label 2 '\footnotesize $M\!=\!128$' left at 36, 18.4
-set arrow 2 nohead from 35.5, 18.4 to 33,18.52
-
-set label 3 '\footnotesize $M\!=\!192$' center at 43, 19.1
-set arrow 3 nohead from 35, 18.93 to 38,19.05
-
+set label 4 '\scriptsize $\xi_{01}$' center at 37,18.45
+set label 5 '\scriptsize $\xi_{12}$' center at 44,18.45
 
 set xrange [-0.5:49]
 set yrange [17.7:19.3]
 
 plot \
 Lz96 u 1:2:3 every 2 w yerror pt 6 ps 1.5 lw 2 lc rgb colorGet("c8") not "96",\
-Lz96 u 1:4:5 every 2 w yerror pt 7 ps 1.5 lc rgb colorGet("c8") not "96",\
+"< echo '37 18.3 2.5'" u 1:2:3 w xerror pt 6 ps 1.5 lw 2 lc rgb colorGet("c8") not,\
+Lz96 u 1:4:5 every 2 w yerror pt 7 ps 1.5 lw 2 lc rgb colorGet("c8") not "96",\
+"< echo '44 18.3 2.5'" u 1:2:3 w xerror pt 7 ps 1.5 lw 2 lc rgb colorGet("c8") not,\
 Lz128 u 1:2:3 every 2 w yerror pt 8 ps 1.5 lw 2 lc rgb colorGet("c6") not "128",\
-Lz128 u 1:4:5 every 2 w yerror pt 9 ps 1.5 lc rgb colorGet("c6") not "128",\
+"< echo '37 18.15 2.5'" u 1:2:3 w xerror pt 8 ps 2 lw 2 lc rgb colorGet("c6") not,\
+Lz128 u 1:4:5 every 2 w yerror pt 9 ps 1.5 lw 2 lc rgb colorGet("c6") not "128",\
+"< echo '44 18.15 2.5'" u 1:2:3 w xerror pt 9 ps 2.5 lw 2 lc rgb colorGet("c6") not,\
 Lz192 u 1:2:3 every 4 w yerror pt 10 ps 1.5 lw 2 lc rgb colorGet("c7") not "192",\
-Lz192 u 1:4:5 every 4::2 w yerror pt 11 ps 1.5 lc rgb colorGet("c7") not "192"
+"< echo '37 18.0 2.5'" u 1:2:3 w xerror pt 10 ps 2 lw 2 lc rgb colorGet("c7") not,\
+Lz192 u 1:4:5 every 4::2 w yerror pt 11 ps 1.5 lw 2 lc rgb colorGet("c7") not "192",\
+"< echo '44 18.0 2.5'" u 1:2:3 w xerror pt 11 ps 2.5 lw 2 lc rgb colorGet("c7") not
+
 
 ###########
 # CLOSE

@@ -47,12 +47,6 @@ set ytics offset 0.75
 set xrange [-0.15:7]
 set yrange [8:29]
 
-U=22.2
-U_err=0.7
-
-set object 1 rect from -0.15,U-U_err to 7,U+U_err fc rgb "#aaccee" fs sol back 
-set arrow 100 nohead from -0.15, U to 7,U lc rgb "black"
-
 set label 1 '\scriptsize $\lbrace Q^3, \text{sign}(Q)\rbrace$' left at 0,13.2
 set label 2 '\scriptsize $\lbrace Q, \text{sign}(Q)\rbrace$' left at 0,11.7
 set label 3 '\scriptsize $\lbrace Q, Q^3\rbrace$' left at 0,10.2

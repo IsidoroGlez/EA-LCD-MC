@@ -12,7 +12,7 @@ load "my_color_palette.gpt"
 # APS TERMINAL
 ###############
 C=1.  # One column
-R=1  # Square ratio
+R=0.75  # Square ratio
 load "APS_term.gpt"
 
 #############
@@ -28,7 +28,7 @@ L16="DATA/L16_shortM.tot"
 
 set lmargin screen 0.16
 set rmargin screen 0.995
-set tmargin screen 0.98
+set tmargin screen 0.978
 set bmargin screen 0.11
 
 set xlabel '\footnotesize $M$' offset 0,1.2

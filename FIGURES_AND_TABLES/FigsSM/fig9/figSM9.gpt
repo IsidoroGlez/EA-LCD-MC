@@ -12,7 +12,7 @@ load "my_color_palette.gpt"
 # APS TERMINAL
 ###############
 C=1.  # One column
-R=1  # Square ratio
+R=0.75  # Square ratio
 load "APS_term.gpt"
 
 #############
@@ -28,7 +28,7 @@ L24="DATA/L24_shortM.tot"
 
 set lmargin screen 0.16
 set rmargin screen 0.995
-set tmargin screen 0.98
+set tmargin screen 0.978
 set bmargin screen 0.11
 
 set xlabel '\footnotesize $M$' offset 0,1.2
@@ -37,10 +37,10 @@ set ylabel '\footnotesize $R(M)$' offset 4.5
 set format '\footnotesize $%g$'
 
 set xtics offset 0,0.5
-set ytics offset 0.75
+set ytics 0.88,0.02,1 offset 0.75
 
 set xrange [1:11]
-set yrange [*:1.0]
+set yrange [0.9:1.0]
 f(x)=a*exp(-x/xi)+b*exp(-x/xi2)
 g(x)=a*exp(-x/xi)
 xi=44
