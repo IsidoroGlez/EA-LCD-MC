@@ -1,4 +1,4 @@
-#include "../include/header.h"
+#include "header.h"
 
 void measure_time(int nbits)
 {

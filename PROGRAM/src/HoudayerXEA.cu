@@ -23,13 +23,12 @@
 //    Y. Komura,             
 //      Comput. Phys. Commun. 194, 54-58 (2015).
 //
-#include <string.h>
-#include <curand.h>
+#include "HoudayerXEA.h"
+
 __global__ void device_function_analysis_YK(unsigned long, unsigned int**[]);
 __global__ void device_ReduceLabels        (unsigned long, unsigned int**[], int**[]);
 __device__ unsigned int root_find          (unsigned int*, unsigned long int);
 __global__ void device_function_spin_select(unsigned long, unsigned long, char**[], double *);
-#define DEVICONST __device__ __constant__
 static unsigned long int h_nx, h_nz;  // linear system size
 DEVICONST unsigned long int nx, nz;
 
@@ -50,23 +49,6 @@ static unsigned long Samplegrid;
 static unsigned long long int gridSW, gridUpdate;
 static unsigned int threadsSW;
 static unsigned int tnclone, clonetbm;
-
-#define MY_CUDA_CHECK( call) {                                    \
-    cudaError err = call;                                                    \
-    if( cudaSuccess != err) {                                                \
-        fprintf(stderr, "Cuda error in file '%s' in line %i : %s.\n",        \
-                __FILE__, __LINE__, cudaGetErrorString( err) );              \
-        exit(EXIT_FAILURE);                                                  \
-    } }
-
-#define MY_CHECK_ERROR(errorMessage) {                                    \
-    cudaError_t err = cudaGetLastError();                                    \
-    if( cudaSuccess != err) {                                                \
-        fprintf(stderr, "Cuda error: %s in file '%s' in line %i : %s.\n",    \
-                errorMessage, __FILE__, __LINE__, cudaGetErrorString( err) );\
-        exit(EXIT_FAILURE);                                                  \
-    }                                                                        \
-    }
 
 __global__ void spin_flip_YK_custom(const long n, const long clonethreshold, char **ds_uu[],
                                     char **d_overlap_newAll[], unsigned int** d_labelAll[]) {

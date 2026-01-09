@@ -1,4 +1,4 @@
-#include "../include/random_generator.h"
+#include "random_generator.h"
 #include <stdio.h>
 
 //Las variables que definen a un generador de Luescher de 24 bits

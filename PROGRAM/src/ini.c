@@ -1,4 +1,4 @@
-#include "../include/header.h"
+#include "header.h"
 #include <cassert>
 
 char test_uu[NR][NBETAS][V];

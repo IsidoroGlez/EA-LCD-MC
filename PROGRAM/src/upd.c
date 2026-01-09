@@ -1,4 +1,4 @@
-#include "../include/header.h"
+#include "header.h"
 
 void Parallel_Tempering(s_aleatorio_HQ_64bits * p, uint8_t * which_clon_this_beta,uint8_t * which_beta_this_clon,
 			int *energy_PT, double *aceptancePT, double *attemptsPT, double *aceptancePTraw)

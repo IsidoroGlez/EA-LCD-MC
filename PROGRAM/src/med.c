@@ -1,4 +1,4 @@
-#include "../include/header.h"
+#include "header.h"
 
 int calculate_scalar_energy(int ibit, int irep,int iclon)
 {

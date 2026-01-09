@@ -1,4 +1,4 @@
-#include "../include/header.h"
+#include "header.h"
 #include <signal.h>
 #include <sys/stat.h>
 #include <unistd.h>
