@@ -74,7 +74,7 @@ enum{MAX=65536};
 typedef unsigned long long int MYWORD;
 #define BITSINMYWORD 64
 
-#ifdef MAIN
+#ifdef __CUDACC__
 typedef struct{uint4 vec[NR];} s_time;
 typedef struct{uint32_t my_key[NR];} s_keys;
 #else
@@ -138,9 +138,10 @@ s_lut_heat_bath h_LUT[NBETAS];
 s_keys seed_keys;
 s_time s_time_and_entropy;
 randint seeds_J[MAXNSAMPLES], seeds_u[MAXNSAMPLES], seeds_MC[NR];
-s_aleatorio_HQ_64bits random_u, random_J;
+s_aleatorio_HQ_64bits random_u, random_J, random_c;
 s_aleatorio_HQ_64bits random_PRC[NR], random_PT[MAXNSAMPLES][NR];
 s_xoshiro256pp random_xoshiro256pp[NR];
+uint64_t cuda_rng_offset;
 
 char ***uu[MAXNSAMPLES], *Jx[MAXNSAMPLES], *Jy[MAXNSAMPLES], *Jz[MAXNSAMPLES];
 char  *Jmx[MAXNSAMPLES], *Jmy[MAXNSAMPLES], *Jmz[MAXNSAMPLES];
@@ -205,9 +206,10 @@ extern s_lut_heat_bath h_LUT[];
 
 extern s_keys seed_keys;
 extern randint seeds_J[], seeds_u[], seeds_MC[];
-extern s_aleatorio_HQ_64bits random_u, random_J;
+extern s_aleatorio_HQ_64bits random_u, random_J, random_c;
 extern s_aleatorio_HQ_64bits random_PRC[], random_PT[][NR];
 extern s_xoshiro256pp random_xoshiro256pp[NR];
+extern uint64_t cuda_rng_offset;
 
 extern char ***uu[MAXNSAMPLES], *Jx[MAXNSAMPLES], *Jy[MAXNSAMPLES], *Jz[MAXNSAMPLES];
 extern char *Jmx[MAXNSAMPLES], *Jmy[MAXNSAMPLES], *Jmz[MAXNSAMPLES];

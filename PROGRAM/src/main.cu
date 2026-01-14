@@ -411,10 +411,11 @@ void Houdayer(int nbits){
      int index[NR];
      for (int k = 0; k < NR/2; k++) { index[k]=k+(g*(NR/2)); }
      for (int k = 0; k < NR/2-1; k++) {
-       ind1 = (k)+(random() % (NR/2-k));
+       _actualiza_aleatorio_HQ_escalar(random_c);
+       ind1 = (k)+(((uint32_t) (random_c.final>>32)) % (NR/2-k));
        tmp=index[k];
-        index[k]=index[ind1];
-        index[ind1]=tmp;
+       index[k]=index[ind1];
+       index[ind1]=tmp;
      }
      r1=index[0]; /* pick 2 replicas in each group and computer the overlap */
      r2=index[1];

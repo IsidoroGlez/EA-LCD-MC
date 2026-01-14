@@ -1,8 +1,8 @@
 # Global defines
 SHELL=bash
-L := 8
-Lz := 32
-NBETAS := 14
+L := 16
+Lz := 48
+NBETAS := 40
 NBITSPREBUSQUEDAS := 12
 GLOBAL_DEFINES := -DL=$(L) -DLz=$(Lz) -DNBETAS=$(NBETAS) -DNUMBITSPREBUSQUEDAS=$(NBITSPREBUSQUEDAS)
 
@@ -10,29 +10,29 @@ OBC := 1
 WEAK := 0
 STRONG := 0
 
-NO_CLUSTER :=0
+NO_CLUSTER := 0
 
 ifeq ($(OBC), 0)
-	GLOBAL_DEFINES += -DPBC
-	BC_SUFFIX := _PBC
+    GLOBAL_DEFINES += -DPBC
+    BC_SUFFIX := _PBC
 else
-	GLOBAL_DEFINES += -DOBC
+    GLOBAL_DEFINES += -DOBC
 ifeq ($(WEAK), 1)
-	GLOBAL_DEFINES += -DWEAK
-	BC_SUFFIX := _OBC_WEAK
+    GLOBAL_DEFINES += -DWEAK
+    BC_SUFFIX := _OBC_WEAK
 else ifeq ($(STRONG),1)
-	GLOBAL_DEFINES += -DSTRONG
-	BC_SUFFIX := _OBC_STRONG
+    GLOBAL_DEFINES += -DSTRONG
+    BC_SUFFIX := _OBC_STRONG
 else
-	BC_SUFFIX := _OBC
+    BC_SUFFIX := _OBC
 endif
 endif
 
 ifeq ($(NO_CLUSTER),1)
-	GLOBAL_DEFINES += -DNO_CLUSTER
-	NO_CLUSTER_SUFFIX := _NO_CLUSTER
+    GLOBAL_DEFINES += -DNO_CLUSTER
+    NO_CLUSTER_SUFFIX := _NO_CLUSTER
 else
-	NO_CLUSTER_SUFFIX :=
+    NO_CLUSTER_SUFFIX :=
 endif
 
 # Directory paths
@@ -45,28 +45,28 @@ BIN_DIR := bin
 BUILD ?= release
 # Build configuration
 ifeq ($(BUILD),release)
-	BUILD_DEFINES :=
-	C_OPT_FLAGS := -O3
-	CUDA_OPT_FLAGS := -O3
-	CUDA_DEBUG_FLAGS :=
-	PTXAS_FLAGS := --ptxas-options=-v
+    BUILD_DEFINES :=
+    C_OPT_FLAGS := -O3
+    CUDA_OPT_FLAGS := -O3
+    CUDA_DEBUG_FLAGS :=
+    PTXAS_FLAGS := --ptxas-options=-v
 
 else ifeq ($(BUILD),debug)
-	BUILD_DEFINES := -DDEBUG
-	C_OPT_FLAGS := -O0 -g
-	CUDA_OPT_FLAGS := -O0
-	CUDA_DEBUG_FLAGS := -G -g -lineinfo
-	PTXAS_FLAGS :=
+    BUILD_DEFINES := -DDEBUG
+    C_OPT_FLAGS := -O0 -g
+    CUDA_OPT_FLAGS := -O0
+    CUDA_DEBUG_FLAGS := -G -g -lineinfo
+    PTXAS_FLAGS :=
 
 else ifeq ($(BUILD),gdb)
-	BUILD_DEFINES := -DGDB
-	C_OPT_FLAGS := -O0 -g
-	CUDA_OPT_FLAGS := -O0
-	CUDA_DEBUG_FLAGS := -G -g -lineinfo
-	PTXAS_FLAGS :=
+    BUILD_DEFINES := -DGDB
+    C_OPT_FLAGS := -O0 -g
+    CUDA_OPT_FLAGS := -O0
+    CUDA_DEBUG_FLAGS := -G -g -lineinfo
+    PTXAS_FLAGS :=
 
 else
-	$(error BUILD invalid: $(BUILD))
+    $(error BUILD invalid: $(BUILD))
 endif
 
 
@@ -77,58 +77,58 @@ CUDA_NATIVE    := $(findstring native,$(CUDA_MODE))
 CUDA_PORTABLE  := $(findstring portable,$(CUDA_MODE))
 
 ifeq ($(CUDA_NATIVE),native)
-	HOST_NATIVE_FLAGS := -march=native -mtune=native
+    HOST_NATIVE_FLAGS := -march=native -mtune=native
 else
-	HOST_NATIVE_FLAGS :=
+    HOST_NATIVE_FLAGS :=
 endif
 
 # Compiler flags
 DEPFLAGS := -MMD -MP
 
 C_FLAGS := -c $(C_OPT_FLAGS) $(HOST_NATIVE_FLAGS) \
-           $(GLOBAL_DEFINES) $(BUILD_DEFINES) \
-           $(DEPFLAGS) \
-           -m64 -I$(INCLUDE_DIR)
+    $(GLOBAL_DEFINES) $(BUILD_DEFINES) \
+    $(DEPFLAGS) \
+    -m64 -I$(INCLUDE_DIR)
 
 CUDADIR := /usr/local/cuda
 CUDAINCLUDEDIR := $(CUDADIR)/include
 
 # Portable CUDA architectures (fat binary)
 CUDA_ARCHS_PORTABLE := \
-	-gencode arch=compute_70,code=sm_70 \
-	-gencode arch=compute_75,code=sm_75 \
-	-gencode arch=compute_80,code=sm_80 \
-	-gencode arch=compute_86,code=sm_86 \
-	-gencode arch=compute_80,code=compute_80
+    -gencode arch=compute_70,code=sm_70 \
+    -gencode arch=compute_75,code=sm_75 \
+    -gencode arch=compute_80,code=sm_80 \
+    -gencode arch=compute_86,code=sm_86 \
+    -gencode arch=compute_80,code=compute_80
 
 ifeq ($(CUDA_NATIVE),native)
-	CUDA_ARCHS += -arch=native
+    CUDA_ARCHS += -arch=native
 ifeq ($(shell nvidia-smi >/dev/null 2>&1 && echo yes),)
-	$(error CUDA_MODE=native pero no hay GPU visible)
+    $(error CUDA_MODE=native without visible device)
 endif
 endif
 
 ifeq ($(CUDA_PORTABLE),portable)
-	CUDA_ARCHS += $(CUDA_ARCHS_PORTABLE)
+    CUDA_ARCHS += $(CUDA_ARCHS_PORTABLE)
 endif
 
 ifeq ($(strip $(CUDA_ARCHS)),)
-	$(error CUDA_MODE inválido: $(CUDA_MODE))
+    $(error CUDA_MODE invalid: $(CUDA_MODE))
 endif
 
 ifneq ($(strip $(HOST_NATIVE_FLAGS)),)
-	NVCC_HOST_FLAGS := -Xcompiler="$(HOST_NATIVE_FLAGS)"
+    NVCC_HOST_FLAGS := -Xcompiler="$(HOST_NATIVE_FLAGS)"
 else
-	NVCC_HOST_FLAGS :=
+    NVCC_HOST_FLAGS :=
 endif
 
 NVCC_FLAGS := -c $(CUDA_OPT_FLAGS) $(CUDA_DEBUG_FLAGS) \
-	      $(DEPFLAGS) \
-              $(PTXAS_FLAGS) \
-              $(CUDA_ARCHS) \
-              $(NVCC_HOST_FLAGS) \
-              $(GLOBAL_DEFINES) $(BUILD_DEFINES) \
-              -I$(INCLUDE_DIR) -I$(CUDAINCLUDEDIR)
+    $(DEPFLAGS) \
+    $(PTXAS_FLAGS) \
+    $(CUDA_ARCHS) \
+    $(NVCC_HOST_FLAGS) \
+    $(GLOBAL_DEFINES) $(BUILD_DEFINES) \
+    -I$(INCLUDE_DIR) -I$(CUDAINCLUDEDIR)
 
 LDFLAGS := -lm -lcurand
 
@@ -137,7 +137,7 @@ CC := /usr/bin/g++
 NVCC := nvcc
 
 # Target executable name
-TARGET := $(BIN_DIR)/EA_CUBE_L${L}_Lz${Lz}_NB${NBETAS}_NBPRE${NBITSPREBUSQUEDAS}$(BC_SUFFIX)$(NO_CLUSTER_SUFFIX)	
+TARGET := $(BIN_DIR)/EA_CUBE_L${L}_Lz${Lz}_NB${NBETAS}_NBPRE${NBITSPREBUSQUEDAS}$(BC_SUFFIX)$(NO_CLUSTER_SUFFIX)
 
 # Source files
 C_SOURCES := $(wildcard $(SRC_DIR)/*.c)

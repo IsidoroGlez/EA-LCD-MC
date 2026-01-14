@@ -21,7 +21,7 @@ void write_conf(int ib, int nbits){
   s_data data_c;
   struct stat statbuf;
   size_t predicted_size = sizeof(data) + sizeof(double)*NBETAS
-    +2*sizeof(s_aleatorio_HQ_64bits)+sizeof(s_xoshiro256pp)
+    +3*sizeof(s_aleatorio_HQ_64bits)+sizeof(s_xoshiro256pp)+sizeof(uint64_t)
     +sizeof(uint8_t)*NBETAS + sizeof(char)*NBETAS*V8
     +sizeof(int)*NBETAS;
 
@@ -51,8 +51,10 @@ void write_conf(int ib, int nbits){
 
       fwrite(&random_PT[ibit][ir], sizeof(s_aleatorio_HQ_64bits), 1L, Fconfig);
       fwrite(&random_PRC[ir], sizeof(s_aleatorio_HQ_64bits), 1L, Fconfig);
+      fwrite(&random_c, sizeof(s_aleatorio_HQ_64bits), 1L, Fconfig);
       fwrite(&random_xoshiro256pp[ir], sizeof(s_xoshiro256pp), 1L, Fconfig);
-
+      fwrite(&cuda_rng_offset,sizeof(uint64_t), 1L, Fconfig);
+      
       fwrite(which_clon_this_beta[ibit][ir], sizeof(uint8_t), NBETAS, Fconfig);
 
       if( fwrite(janus_uu,sizeof(char), (size_t) NBETAS*V8, Fconfig) != (NBETAS*V8) ){
@@ -111,7 +113,7 @@ void read_conf(int nbits)
   
   struct stat statbuf;
   size_t predicted_size = sizeof(data) + sizeof(double)*NBETAS
-    +2*sizeof(s_aleatorio_HQ_64bits)+sizeof(s_xoshiro256pp)
+    +3*sizeof(s_aleatorio_HQ_64bits)+sizeof(s_xoshiro256pp)+sizeof(uint64_t)
     +sizeof(uint8_t)*NBETAS + sizeof(char)*NBETAS*V8
     +sizeof(int)*NBETAS;
 
@@ -184,7 +186,9 @@ void read_conf(int nbits)
 
       fread(&random_PT[ibit][ir], sizeof(s_aleatorio_HQ_64bits), 1L, Fconfig);
       fread(&random_PRC[ir], sizeof(s_aleatorio_HQ_64bits), 1L, Fconfig);
+      fread(&random_c, sizeof(s_aleatorio_HQ_64bits), 1L, Fconfig);
       fread(&random_xoshiro256pp[ir], sizeof(s_xoshiro256pp), 1L, Fconfig);
+      fread(&cuda_rng_offset,sizeof(uint64_t), 1L, Fconfig);
       
       fread(which_clon_this_beta[ibit][ir], sizeof(uint8_t), NBETAS, Fconfig);
 

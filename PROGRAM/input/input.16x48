@@ -1,0 +1,14 @@
+./output/16x48/			output dir
+8				nbin
+0				itcut
+128				itmax
+1				houfr
+16				mesfr
+16				ptfr
+40				nbetas
+2				flag
+3145744		        	Lz<<16+L
+0				master seed_J
+0			       	master seed_u
+0				master seed_MC
+0				master seed_Clusters

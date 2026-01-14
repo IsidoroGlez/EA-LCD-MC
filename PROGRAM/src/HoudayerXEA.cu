@@ -23,6 +23,7 @@
 //    Y. Komura,             
 //      Comput. Phys. Commun. 194, 54-58 (2015).
 //
+#include "header.h"
 #include "HoudayerXEA.h"
 
 __global__ void device_function_analysis_YK(unsigned long, unsigned int**[]);
@@ -173,6 +174,8 @@ void ClusterInit(int nclone, double betathreshold, int nsample, unsigned int thr
     curandCreateGenerator(&gen, CURAND_RNG_PSEUDO_DEFAULT);
     cudaDeviceSynchronize();
     curandSetPseudoRandomGeneratorSeed(gen, (unsigned long long)seed);
+    if (cuda_rng_offset > 0)
+      curandSetGeneratorOffset(gen, cuda_rng_offset);
     cudaDeviceSynchronize();
     printf("###ClusterInit done: h_nla=%u, gridSW=%u\n",h_nla,gridSW);    
 }    
@@ -189,6 +192,7 @@ void ClusterStep(char **d_overlapAll[]) {
      cnt++;
 #endif
       MY_CUDA_CHECK(cudaDeviceSynchronize());
+      cuda_rng_offset += totrandom;
       dim3 ClusterGrid(gridSW,Samplegrid,1);
       dim3 UpdateGrid(gridUpdate,Samplegrid,1);      
 

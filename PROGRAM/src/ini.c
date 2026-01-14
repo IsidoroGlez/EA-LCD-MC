@@ -74,7 +74,8 @@ void Init_Random(int nbits)
   }
 
   data.seed_Cluster = comprueba_semilla(data.seed_Cluster);
-
+  Init_Rand_HQ_64bits(&random_c, data.seed_Cluster);
+  
   // Init random generators for Metropolos and PT
   for(ir=0;ir<NR;ir++)
     Inicia_generadores_CPU(&random_PRC[ir],&random_xoshiro256pp[ir],
@@ -93,7 +94,10 @@ void Init_Random(int nbits)
     }
     if(i!=nbits)
       print_and_exit("Problems inizializating PT random generators\n");
-  }  
+  }
+
+  cuda_rng_offset=0;
+  
 }
 
 void Init_neighbours(void)
@@ -463,9 +467,11 @@ void Init_J(int nbits)
   int site, ibit;
   int countJ;
   int x,y,z;
+
+  int neigh_mx,neigh_my,neigh_mz;
+  
 #ifdef OBC
   char J_falso_z0[V];
-  int neigh_mx,neigh_my,neigh_mz;
 #endif
   
 #ifdef MATTIS
