@@ -2,7 +2,7 @@
 
 This repository contains the code, processed data, and analysis tools used to perform **Monte Carlo simulations of the three-dimensional Edwards–Anderson spin glass model** in a tubular geometry with both **periodic and open boundary conditions** along the longitudinal \(Z\) direction, using CUDA-C.
 
-The simulations and the resulting data, figures, and tables correspond to the study presented in [article](https://doi.org)
+The simulations and the resulting data, figures, and tables correspond to the study presented in [article](https://arxiv.org/abs/2601.07926)
 
 ---
 
