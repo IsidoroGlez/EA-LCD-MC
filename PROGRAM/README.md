@@ -1,6 +1,6 @@
 # Monte Carlo Simulations of the 3D Edwards–Anderson Spin Glass in Tubular Geometry
 
-Check the values of following macro(s) in the Makefile:
+Check the values of the following macro(s) in the Makefile:
 L: size of the lattice along the X and Y directions. Default value 16
 LZ: size of the lattice along the Z direction. Default value 48
 NBETAS: number of betas for the Parallel Tempering. Default value 40
@@ -25,3 +25,4 @@ Citation metadata is provided in the `CITATION.cff` file.
 Developed by M. Bernaschi, L.A. Fernandez, I. González-Adalid Pemartín, V. Martín-Mayor, G. Parisi, and F. Ricci-Tersenghi.
 
 For questions, reach out at [isiglezadalid@gmail.com](mailto:isiglezadalid@gmail.com) or via GitHub issues.
+
