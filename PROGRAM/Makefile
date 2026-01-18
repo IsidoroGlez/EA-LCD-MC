@@ -154,6 +154,7 @@ OBJECTS := $(C_OBJECTS) $(CU_OBJECTS)
 # Default target
 all: $(TARGET)
 	@echo "Build complete: $(TARGET)"
+	@echo "Did you check the L, LZ, NBETAS, OBC, WEAK, STRONG, NO_CLUSTER macro(s)?"
 
 # Link the final executable
 $(TARGET): $(OBJECTS)
