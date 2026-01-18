@@ -28,7 +28,7 @@ keywords:
 
 preferred-citation:
   type: article
-  title: "TITLE OF THE ASSOCIATED ARTICLE"
+  title: "Low energy excitations in a long prism geometry: computing the lower critical dimension of the Ising spin glass"
   authors:
     - family-names: "Bernaschi"
       given-names: "Massimo"
@@ -43,5 +43,5 @@ preferred-citation:
     - family-names: "Ricci-Tersenghi"
       given-names: "Federico"                  
   year: 2025
-  journal: "JOURNAL NAME"
-  doi: "DOI_TO_BE_ADDED"
+  journal: "Pre-print"
+  doi: "10.48550/arXiv.2601.07926"
