@@ -1,0 +1,117 @@
+reset
+set auto
+set fit noerrorscaling
+
+##############
+#COLOR PALETTE
+##############
+PALETTE=0
+load "my_color_palette.gpt"
+
+###############
+# APS TERMINAL
+###############
+C=2.  # One column
+R=0.3  # Square ratio
+load "APS_term.gpt"
+
+#############
+# OUTPUT
+############
+set output "fig7.tex"
+
+############
+# DATA
+###########
+
+d4=5
+d6=6
+d8=8
+d12=12
+d16=8
+d24=8
+
+cmd4=sprintf("< grep -v '^I' DATA/PBC/4x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt | awk '$3==%d{print $0}'", d4)
+cmd6=sprintf("< grep -v '^I' DATA/PBC/6x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt | awk '$3==%d{print $0}'", d6)
+cmd8=sprintf("< grep -v '^I' DATA/PBC/8x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt | awk '$3==%d{print $0}'", d8)
+cmd12=sprintf("< grep -v '^I' DATA/PBC/12x320/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt | awk '$3==%d{print $0}'", d12)
+cmd16=sprintf("< grep -v '^I' DATA/OBC/INDEPENDENT/16x48/delta_xi_Q_Q_n0_NBLOCKS_16384.txt | awk '$3==%d{print $0}'", d16)
+cmd24=sprintf("< grep -v '^I' DATA/OBC/INDEPENDENT/24x88/delta_xi_Q_Q_n0_NBLOCKS_2048.txt | awk '$3==%d{print $0}'", d24)
+
+set xlabel '\footnotesize $T$' offset 0, 1.2
+set ylabel '\footnotesize $\Delta\xi(T,L)/L^{4/3}$' offset 4
+
+set rmargin screen 0.48
+set lmargin screen 0.07
+set tmargin screen 0.972
+set bmargin screen 0.14
+
+set format '\footnotesize $%g$'
+
+set xtics offset 0, 0.5
+set ytics offset 0.75
+
+set xrange [0.68:1.102]
+set yrange [0:*]
+
+set errorbars 1.5
+
+set multiplot
+
+set key at 1.22,0.75 reverse sample 0.75 keywidth 0.25 Left
+
+plot \
+cmd24 u (1/$2):($4/24**(4./3)):($5/24**(4./3)) w yerror pt 5 ps 1 lc rgb colorGet("c6") t '\scriptsize $L=24$',\
+cmd16 u (1/$2):($4/16**(4./3)):($5/16**(4./3)) w yerror pt 7 ps 1 lc rgb colorGet("c5") t '\scriptsize $L=16$',\
+cmd12 u (1/$2):($4/12**(4./3)):($5/12**(4./3)) w yerror pt 13 ps 1 lc rgb colorGet("c2") t '\scriptsize $L=12$',\
+cmd8 u (1/$2):($4/8**(4./3)):($5/8**(4./3)) w yerror pt 9 ps 1 lc rgb colorGet("c4") t '\scriptsize $L=8$',\
+cmd6 u (1/$2):($4/6**(4./3)):($5/6**(4./3)) w yerror pt 11 ps 1 lc rgb colorGet("c7") t '\scriptsize $L=6$',\
+cmd4 u (1/$2):($4/4**(4./3)):($5/4**(4./3)) w yerror pt 1 ps 1 lc rgb colorGet("c8") t '\scriptsize $L=4$'
+
+set lmargin screen 0.52
+set rmargin screen 0.93
+
+Tc=1.1019
+nu=2.562
+expo=1/nu
+
+unset ylabel
+set y2tics mirror
+set format y ""
+set format y2 '\footnotesize $%g$'
+
+set xlabel '\footnotesize $(T-T_{\text{c}})L^{1/\nu}$' offset 0, 1.2
+set y2label '\footnotesize $\Delta\xi(T,L)/L$' offset -4
+
+set xrange [*:0]
+set yrange [0:2.2]
+set y2range [0:2.2]
+
+unset key
+
+plot \
+cmd24 u ((1/$2-Tc)*24**expo):($4/24):($5/24) w yerrorlines lw 0.75 pt 5 ps 1 lc rgb colorGet("c6") not,\
+cmd16 u ((1/$2-Tc)*16**expo):($4/16):($5/16) w yerrorlines lw 0.75 pt 7 ps 1 lc rgb colorGet("c5") not,\
+cmd12 u ((1/$2-Tc)*12**expo):($4/12):($5/12) w yerrorlines lw 0.75 pt 13 ps 1 lc rgb colorGet("c2") not,\
+cmd8 u ((1/$2-Tc)*8**expo):($4/8):($5/8) w yerrorlines lw 0.75 pt 9 ps 1 lc rgb colorGet("c4") not,\
+cmd6 u ((1/$2-Tc)*6**expo):($4/6):($5/6) w yerrorlines lw 0.75 pt 11 ps 1 lc rgb colorGet("c7") not,\
+cmd4 u ((1/$2-Tc)*4**expo):($4/4):($5/4) w yerrorlines lw 0.75 pt 1 ps 1 lc rgb colorGet("c8") not
+
+
+
+
+unset multiplot
+
+###########
+# CLOSE
+###########
+
+set out
+
+#############
+# CREATE PDF
+#############
+!pdflatex fig7.tex
+!latex fig7.tex
+!dvisvgm --no-fonts fig7.dvi
+!rm *.aux *.tex *conver* *.log *.eps *.dvi

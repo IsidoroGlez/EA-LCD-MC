@@ -24,58 +24,175 @@ set output "fig3.tex"
 # DATA
 ###########
 
-data_T07="DATA/xi_ibeta0.dat"
-!awk '{if(($1==0)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/4x192/xi01_Q_Q_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 4,$2,$3}}' | head -1 > DATA/xi_ibeta0.dat
-!awk '{if(($1==0)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/6x192/xi01_Q_Q_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 6,$2,$3}}' | head -1 >> DATA/xi_ibeta0.dat
-!awk '{if(($1==0)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/8x192/xi01_Q_Q_n0_NBLOCKS_12288.txt | awk '{if($1>=$2){print 8,$2,$3}}' | head -1 >> DATA/xi_ibeta0.dat
-!awk '{if(($1==0)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/12x320/xi01_Q_Q_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 12,$2,$3}}' | head -1 >> DATA/xi_ibeta0.dat
-!awk '{if(($1==0)&&($5!="-nan")){print 16,$4,$5}}' DATA/OBC/INDEPENDENT/16x48/xi_Q_Q_n0_NBLOCKS_16384.txt | sort -k2 -g | tail -1 >> DATA/xi_ibeta0.dat
-!awk '{if(($1==0)&&($5!="-nan")){print 24,$4,$5}}' DATA/OBC/INDEPENDENT/24x88/xi_Q_Q_n0_NBLOCKS_2048.txt | sort -k2 -g | tail -1 >> DATA/xi_ibeta0.dat
+d4=5
+d6=6
+d8=8
+d12=12
+d16=8
+d24=8
 
-data_Tc="DATA/xi_ibetac.dat"
-!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/4x192/xi01_Q_Q_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 4,$2,$3}}' | head -1 > DATA/xi_ibetac.dat
-!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/6x192/xi01_Q_Q_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 6,$2,$3}}' | head -1 >> DATA/xi_ibetac.dat
-!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/8x192/xi01_Q_Q_n0_NBLOCKS_12288.txt | awk '{if($1>=$2){print 8,$2,$3}}' | head -1 >> DATA/xi_ibetac.dat
-!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print $3,$4,$5}}' DATA/PBC/12x320/xi01_Q_Q_n0_NBLOCKS_32768.txt | awk '{if($1>=$2){print 12,$2,$3}}' | head -1 >> DATA/xi_ibetac.dat
-!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print 16,$4,$5}}' DATA/OBC/INDEPENDENT/16x48/xi_Q_Q_n0_NBLOCKS_16384.txt | sort -k2 -g | tail -1 >> DATA/xi_ibetac.dat
-!awk '{if(($1=="I")&&($2==0.9075)&&($5!="-nan")){print 24,$4,$5}}' DATA/OBC/INDEPENDENT/24x88/xi_Q_Q_n0_NBLOCKS_2048.txt | sort -k2 -g | tail -1 >> DATA/xi_ibetac.dat
+data_Tc="DATA/xi_betac.dat"
+cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 4,$4,$5,$3}' DATA/PBC/4x192/xi12_Q_Q_n0_NBLOCKS_32768.txt > DATA/xi_betac.dat" , d4)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 6,$4,$5,$3}' DATA/PBC/6x192/xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/xi_betac.dat" , d6)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 8,$4,$5,$3}' DATA/PBC/8x192/xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/xi_betac.dat" , d8)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 12,$4,$5,$3}' DATA/PBC/12x320/xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/xi_betac.dat" , d12)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 16,$4,$5,$3}' DATA/OBC/INDEPENDENT/16x48/xi_Q_Q_n0_NBLOCKS_16384.txt >> DATA/xi_betac.dat" , d16)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 24,$4,$5,$3}' DATA/OBC/INDEPENDENT/24x88/xi_Q_Q_n0_NBLOCKS_2048.txt >> DATA/xi_betac.dat" , d24)
+system cmd
+
+data_T07="DATA/delta_xi_ibeta0.dat"
+cmd=sprintf("awk '($3==%d)&&($1==0){print 4,$4,$5,$3}' DATA/PBC/4x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt > DATA/delta_xi_ibeta0.dat" , d4)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($1==0){print 6,$4,$5,$3}' DATA/PBC/6x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_ibeta0.dat" , d6)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($1==0){print 8,$4,$5,$3}' DATA/PBC/8x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_ibeta0.dat" , d8)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($1==0){print 12,$4,$5,$3}' DATA/PBC/12x320/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_ibeta0.dat" , d12)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($1==0){print 16,$4,$5,$3}' DATA/OBC/INDEPENDENT/16x48/delta_xi_Q_Q_n0_NBLOCKS_16384.txt >> DATA/delta_xi_ibeta0.dat" , d16)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($1==0){print 24,$4,$5,$3}' DATA/OBC/INDEPENDENT/24x88/delta_xi_Q_Q_n0_NBLOCKS_2048.txt >> DATA/delta_xi_ibeta0.dat" , d24)
+system cmd
+
+data_T08="DATA/delta_xi_beta08.dat"
+cmd=sprintf("awk '($3==%d)&&($2==1.25){print 4,$4,$5,$3}' DATA/PBC/4x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt > DATA/delta_xi_beta08.dat" , d4)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==1.25){print 6,$4,$5,$3}' DATA/PBC/6x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta08.dat" , d6)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==1.25){print 8,$4,$5,$3}' DATA/PBC/8x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta08.dat" , d8)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==1.25){print 12,$4,$5,$3}' DATA/PBC/12x320/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta08.dat" , d12)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==1.25){print 16,$4,$5,$3}' DATA/OBC/INDEPENDENT/16x48/delta_xi_Q_Q_n0_NBLOCKS_16384.txt >> DATA/delta_xi_beta08.dat" , d16)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==1.25){print 24,$4,$5,$3}' DATA/OBC/INDEPENDENT/24x88/delta_xi_Q_Q_n0_NBLOCKS_2048.txt >> DATA/delta_xi_beta08.dat" , d24)
+system cmd
+
+data_T09="DATA/delta_xi_beta09.dat"
+cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 4,$4,$5,$3}' DATA/PBC/4x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt > DATA/delta_xi_beta09.dat" , d4)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 6,$4,$5,$3}' DATA/PBC/6x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta09.dat" , d6)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 8,$4,$5,$3}' DATA/PBC/8x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta09.dat" , d8)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 12,$4,$5,$3}' DATA/PBC/12x320/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta09.dat" , d12)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 16,$4,$5,$3}' DATA/OBC/INDEPENDENT/16x48/delta_xi_Q_Q_n0_NBLOCKS_16384.txt >> DATA/delta_xi_beta09.dat" , d16)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 24,$4,$5,$3}' DATA/OBC/INDEPENDENT/24x88/delta_xi_Q_Q_n0_NBLOCKS_2048.txt >> DATA/delta_xi_beta09.dat" , d24)
+system cmd
+
+data_T1="DATA/delta_xi_beta1.dat"
+cmd=sprintf("awk '($3==%d)&&($2==1){print 4,$4,$5,$3}' DATA/PBC/4x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt > DATA/delta_xi_beta1.dat" , d4)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==1){print 6,$4,$5,$3}' DATA/PBC/6x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta1.dat" , d6)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==1){print 8,$4,$5,$3}' DATA/PBC/8x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta1.dat" , d8)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==1){print 12,$4,$5,$3}' DATA/PBC/12x320/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta1.dat" , d12)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==1){print 16,$4,$5,$3}' DATA/OBC/INDEPENDENT/16x48/delta_xi_Q_Q_n0_NBLOCKS_16384.txt >> DATA/delta_xi_beta1.dat" , d16)
+system cmd
+cmd=sprintf("awk '($3==%d)&&($2==1){print 24,$4,$5,$3}' DATA/OBC/INDEPENDENT/24x88/delta_xi_Q_Q_n0_NBLOCKS_2048.txt >> DATA/delta_xi_beta1.dat" , d24)
+system cmd
 
 set xlabel '\footnotesize $L$' offset 0, 1.2
-set ylabel '\footnotesize $\xi_{n=1}$' offset 4
+unset ylabel
 
-set rmargin screen 0.975
-set lmargin screen 0.13
+set rmargin screen 0.98
+set lmargin screen 0.05
 set tmargin screen 0.972
 set bmargin screen 0.13
 
 set format '\footnotesize $%g$'
 
+set xtics add (4,6,8,20)
+set ytics add (4,6,8)
+
 set xtics offset 0, 0.5
-set ytics offset 0.5
+set ytics offset 0.75
 
-f(x)=A*x**(r)+c
-A=2
-r=4./3
-c=1
+set xrange [3:30]
+set yrange [3:60]
 
-fit [6:26] f(x) data_T07 u 1:2:3 yerror via A,c
-
-g(x)=m*x
-
-fit [6:*] g(x) data_Tc u 1:2:3 yerror via m
-
-set xrange [0:30]
-set yrange [0:100]
+set logs
 
 set errorbars 3
 
-set label 1 '\footnotesize $T=0.7$' center at 23, 85
-set label 2 '\footnotesize $T=1.1019$' center at 25, 31
+set label 1 '\footnotesize $\Delta\xi(T=0.7,L)$' center at 15,32.5 rotate by 30
+set label 2 '\footnotesize $\xi(T=1.1019\sim T_{\text{c}})$' center at 17,13 rotate by 22
 
-plot f(x) lw 1.5 lc rgb colorGet("c6") not, g(x) lw 1.5 lc rgb colorGet("c4") not,\
+r=4./3
+
+f07(x)=A07*x**r
+A07=0.7
+fit [9:*] f07(x) data_T07 u 1:2:3 yerror via A07
+
+f08(x)=A08*x**r
+A08=0.6
+fit [9:*] f08(x) data_T08 u 1:2:3 yerror via A08
+
+f09(x)=A09*x**r
+A09=0.5
+fit [9:*] f09(x) data_T09 u 1:2:3 yerror via A09
+
+f1(x)=A1*x**r
+A1=0.5
+fit [9:*] f1(x) data_T1 u 1:2:3 yerror via A1
+
+rc=1.
+fc(x)=Ac*x**rc
+Ac=1.
+fit [5:*] fc(x) data_Tc u 1:2:3 yerror via Ac
+
+set multiplot
+
+set object rect from screen 0.05, screen 0.55 to screen 0.45, screen 0.972 fc rgb "white"
+
+plot \
+f07(x) w lines lw 1.5 lc rgb colorGet("c2") not,\
+fc(x) w lines lw 1.5 lc rgb colorGet("c6") not,\
 data_T07 u 1:2:3 w yerror pt 7 ps 1 lc rgb colorGet("c2") not,\
-data_Tc u 1:2:3 w yerror pt 9 ps 1 lc rgb colorGet("c8") not
- 
+data_Tc u 1:2:3 w yerror pt 9 ps 1 lc rgb colorGet("c6") not 
+
+set rmargin screen 0.45
+set bmargin screen 0.55
+
+unset label
+unset object
+
+unset xlabel
+unset ylabel
+set yrange [0.5:60]
+set y2range [0.5:60]
+set log y2
+
+set format y ''
+set format x '\scriptsize $%g$'
+set format y2 ''
+
+set xtics offset 0, 0.75
+set y2tics ('\scriptsize $1$' 1, '\scriptsize $10$' 10) offset -0.85
+
+set y2label '\scriptsize $\Delta\xi(T,L)$' offset -5
+
+plot for [i=-20:10:4]  x**(4./3)*10**(i/10.) w l dt 2 lw 0.75 lc rgb "grey" not,\
+data_T07 u 1:2:3 w yerror pt 7 ps 1 lc rgb colorGet("c2") not,\
+f07(x) w lines lw 1 lc rgb colorGet("c2") not,\
+data_T08 u 1:2:3 w yerror pt 11 ps 1 lc rgb colorGet("c4") not,\
+f08(x) w lines lw 1 lc rgb colorGet("c4") not,\
+data_T09 u 1:2:3 w yerror pt 13 ps 1 lc rgb colorGet("c7") not,\
+f09(x) w lines lw 1 lc rgb colorGet("c7") not,\
+data_T1 u 1:2:3 w yerror pt 5 ps 1 lc rgb colorGet("c3") not,\
+f1(x) w lines lw 1 lc rgb colorGet("c3") not
+
+unset multiplot
+
 ###########
 # CLOSE
 ###########
@@ -89,50 +206,3 @@ set out
 !latex fig3.tex
 !dvisvgm --no-fonts fig3.dvi
 !rm *.aux *.tex *conver* *.log *.eps *.dvi
-
-reset
-set auto
-set fit noerrorscaling
-
-g(x)=A*x**r
-f(x)=B*x**(b*4./3)+c
-
-A=2
-r=1
-fit [*:*] f(x) "DATA/xi_ibeta0.dat" u 1:2:3 yerr via B,b,c
-
-pause -1
-
-fit [5:*] f(x) "DATA/xi_ibeta0.dat" u 1:2:3 yerr via B,b,c
-
-pause -1
-
-A=2
-r=1.33
-fit [*:*] g(x) "DATA/xi_ibeta0.dat" u 1:2:3 yerr via A,r
-
-pr "Power all"
-
-pause -1
-
-A=2
-r=1.33
-fit [5:*] g(x) "DATA/xi_ibeta0.dat" u 1:2:3 yerr via A,r
-
-pr "Power, L>4"
-
-pause -1
-
-A=2
-r=1.33
-fit [3:11] g(x) "DATA/xi_ibeta0.dat" u 1:2:3 yerr via A,r
-
-pr "Power, L=4,6,8"
-
-pause -1
-
-A=2
-r=1.33
-fit [11:26] g(x) "DATA/xi_ibeta0.dat" u 1:2:3 yerr via A,r
-
-pr "Power, L=12,16,24"
