@@ -12,7 +12,7 @@ load "my_color_palette.gpt"
 # APS TERMINAL
 ###############
 C=1.  # One column
-R=1.  # Square ratio
+R=.75  # Square ratio
 load "APS_term.gpt"
 
 #############
@@ -24,121 +24,157 @@ set output "fig5.tex"
 # DATA
 ###########
 
-inv_xi_L4=system('paste DATA/PBC/4x192/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/4x192/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
- | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$11; exit}"')
-inv_xi_L4_err=system('paste DATA/PBC/4x192/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/4x192/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
- | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$12; exit}"')
-L4="< awk '$1==0{print $3,$6,$7}' DATA/PBC/4x192/logC_Q_Q_n0_NBLOCKS_32768.txt"
-
-inv_xi_L6=system('paste DATA/PBC/6x192/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/6x192/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
- | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$11; exit}"')
-inv_xi_L6_err=system('paste DATA/PBC/6x192/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/6x192/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
- | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$12; exit}"')
-L6="< awk '$1==0{print $3,$6,$7}' DATA/PBC/6x192/logC_Q_Q_n0_NBLOCKS_32768.txt"
-
-inv_xi_L8=system('paste DATA/PBC/8x192/xi01_Q_Q_n0_NBLOCKS_12288.txt DATA/PBC/8x192/inv_xi01_Q_Q_n0_NBLOCKS_12288.txt 2>/dev/null \
- | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$11; exit}"')
-inv_xi_L8_err=system('paste DATA/PBC/8x192/xi01_Q_Q_n0_NBLOCKS_12288.txt DATA/PBC/8x192/inv_xi01_Q_Q_n0_NBLOCKS_12288.txt 2>/dev/null \
- | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$12; exit}"')
-L8="< awk '$1==0{print $3,$6,$7}' DATA/PBC/8x192/logC_Q_Q_n0_NBLOCKS_12288.txt"
-
-inv_xi_L12=system('paste DATA/PBC/12x320/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/12x320/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
- | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$11; exit}"')
-inv_xi_L12_err=system('paste DATA/PBC/12x320/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/12x320/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
- | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$12; exit}"')
-L12="< awk '$1==0{print $3,$6,$7}' DATA/PBC/12x320/logC_Q_Q_n0_NBLOCKS_32768.txt"
-
-inv_xi_L16=system('paste DATA/OBC/INDEPENDENT/16x48/xi_Q_Q_n0_NBLOCKS_16384.txt DATA/OBC/INDEPENDENT/16x48/inv_xi_Q_Q_n0_NBLOCKS_16384.txt 2>/dev/null \
- | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$11}" | sort -k1 -g | tail -1 | awk "{print \$2}"')
-inv_xi_L16_err=system('paste DATA/OBC/INDEPENDENT/16x48/xi_Q_Q_n0_NBLOCKS_16384.txt DATA/OBC/INDEPENDENT/16x48/inv_xi_Q_Q_n0_NBLOCKS_16384.txt 2>/dev/null \
- | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$12}" | sort -k1 -g | tail -1 | awk "{print \$2}"')
-L16="< awk '$1==0{print $3,$6,$7}' DATA/OBC/INDEPENDENT/16x48/logC_Q_Q_n0_NBLOCKS_16384.txt"
-
-inv_xi_L24=system('paste DATA/OBC/INDEPENDENT/24x88/xi_Q_Q_n0_NBLOCKS_2048.txt DATA/OBC/INDEPENDENT/24x88/inv_xi_Q_Q_n0_NBLOCKS_2048.txt 2>/dev/null \
- | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$11}" | sort -k1 -g | tail -1 | awk "{print \$2}"')
-inv_xi_L24_err=system('paste DATA/OBC/INDEPENDENT/24x88/xi_Q_Q_n0_NBLOCKS_2048.txt DATA/OBC/INDEPENDENT/24x88/inv_xi_Q_Q_n0_NBLOCKS_2048.txt 2>/dev/null \
- | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$12}" | sort -k1 -g | tail -1 | awk "{print \$2}"')
-L24="< awk '$1==0{print $3,$6,$7}' DATA/OBC/INDEPENDENT/24x88/logC_Q_Q_n0_NBLOCKS_2048.txt"
-
-
-fit [0.05:1.1] x+d L16 u ($1*inv_xi_L16):(-$2):($1*inv_xi_L16_err):3 xyerror via d
-
-g(x)=A*x**U
-A=1
-U=1.2
-fit [0.0001:0.14] g(x) L16 u ($1*inv_xi_L16):(-$2):($1*inv_xi_L16_err):3 xyerror via A,U
+PBC="DATA/PBC/16x512"
+OBC="DATA/OBC/INDEPENDENT/16x48"
 
 set multiplot
 
-set tmargin screen 0.98
-set bmargin screen 0.12
+set origin 0.62, 0.54
+set size 0.5,0.5
+unset logs y
+set ytics auto
+set xrange [25.05:27.95]
+set yrange [0.243:0.259]
 
-set lmargin screen 0.15
-set rmargin screen 0.98
+unset y2tics
+set format y "%.4f"
 
-set xlabel '\footnotesize $r/\xi_{n=1}(L)$' offset 0, 0.75
-set ylabel '\footnotesize $K(r)$' offset 3.8
-set format '\footnotesize $%g$'
+unset border
+unset xtics
+unset ytics
+
+# Estilo de relleno sólido sin borde
+set style fill solid 1.0 border -1
+
+# Primer bloque (negro) — de abajo hacia arriba
+
+x=26.65
+dx=0.05
+y=0.246
+dy=0.001
+
+do for[i=0:9]{
+   if ( (i%2)==0 ){
+      set object (i+1) rect from x-dx,y to x,y+dy fc rgb "black"
+      set object (100*(i+1)) rect from x,y to x+dx,y+dy fc rgb "white"
+   } else {
+      set object (i+1) rect from x-dx,y to x,y+dy fc rgb "white"
+      set object (100*(i+1)) rect from x,y to x+dx,y+dy fc rgb "black"
+   }
+   y=y+dy
+}
+
+set label 100 '\scriptsize $1 \times 10^{-2}$' center at 26.47, 0.252 rotate
+
+Cx=26.5
+Cy=0.251
+Dx=2
+Dy=0.015
+
+set object 5000 ellipse center Cx,Cy size Dx,Dy angle 0 front lw 1 fc rgb "gray" fillstyle empty
+
+cx=0.3075
+cy=0.847
+dx=0.022
+dy=0.03
+
+set arrow 1000 nohead from screen cx, screen (cy-dy/2) to (Cx-0.25), (Cy-0.00727)
+set arrow 2000 nohead from screen cx, screen (cy+dy/2) to (Cx-0.1), (Cy+0.00745)
+
+plot \
+"< awk '{if($1==0) print $0}' ".PBC."/C_Q_Q_n0_NBLOCKS_1024.txt" u (($3-0.1)<27.1?($3-0.1):-1):4:5 w yerror pt 7 ps 1.5 lc rgb colorGet("c6") not,\
+"< awk '{if($1==0) print $0}' ".OBC."/C_Q_Q_n0_NBLOCKS_16384.txt" u ($3+0.1):4:5 w yerror pt 9 ps 1.5 lc rgb colorGet("c2") not
+
+set border
+set xtics
+set ytics
+
+unset arrow
+unset object
+unset label
+
+set lmargin screen 0.16
+set rmargin screen 0.995
+set tmargin screen 0.985
+set bmargin screen 0.11
+
+set origin 0,0
+set size 1,1
+
+set xlabel '\footnotesize $r$' offset 0,1.2
+set ylabel '\footnotesize $C^{(1)}(r)$' offset 4.5
+
+set xrange [0:150]
+set yrange [1e-3:7e-1]
+
+set format x '\footnotesize $%g$'
+set format y '\footnotesize $10^{%T}$'
+set ytics add ("\\footnotesize 1" 1)
+
+set logs y
+
 set xtics offset 0,0.5
 set ytics offset 0.75
 
-set xrange [0:1.05]
-set yrange [-0.05:1.05]
+set label 1 '\footnotesize PBC, $M\!=\!512$' center at 122, 1e-2
+set label 2 '\footnotesize OBC, $M\!=\!48$' center at 24, 1.2e-1
 
-set object 1 rect from 0,-0.02 to 0.12,0.12 
+set arrow 1 nohead from 122, 1.3e-2 to 130,2.1e-2
+set arrow 2 nohead from 10, 1.5e-1 to 20,2.7e-1
+
+set object 6000 ellipse center screen cx, screen cy size screen dx, screen dy angle 0 front lw 1 fc rgb "gray" fillstyle empty
 
 plot \
-L24 u ($1*inv_xi_L24):(-$2):($1*inv_xi_L24_err):3 w xyerror pt 5 lc rgb colorGet("c6") not,\
-L16 u ($1*inv_xi_L16):(-$2):($1*inv_xi_L16_err):3 w xyerror pt 7 lc rgb colorGet("c5") not,\
-L12 u ($1*inv_xi_L12):(-$2):($1*inv_xi_L12_err):3 w xyerror pt 13 lc rgb colorGet("c2") not,\
-L8 u ($1*inv_xi_L8):(-$2):($1*inv_xi_L8_err):3 w xyerror pt 9 lc rgb colorGet("c4") not,\
-L6 u ($1*inv_xi_L6):(-$2):($1*inv_xi_L6_err):3 w xyerror pt 11 lc rgb colorGet("c7") not,\
-L4 u ($1*inv_xi_L4):(-$2):($1*inv_xi_L4_err):3 w xyerror pt 1 lc rgb colorGet("c8") not,\
-x+d lt 1 lc rgb "black" not, [0:0.15] g(x) dt 2 lc rgb "black" not
+"< awk '{if($1==0) print $0}' ".PBC."/C_Q_Q_n0_NBLOCKS_1024.txt" u 3:4:5 w yerror pt 7 ps 0.7 lc rgb colorGet("c6") not,\
+"< awk '{if($1==0) print $0}' ".OBC."/C_Q_Q_n0_NBLOCKS_16384.txt" u 3:4:5 w yerror pt 9 lc rgb colorGet("c2") not
 
-unset object
-unset tics
-
+# Restaurar márgenes (para evitar que afecten al siguiente)
 unset lmargin
 unset rmargin
 unset tmargin
 unset bmargin
 
-set origin 0.35, 0.1
-set size 0.7,0.48
+############
+# DATA
+###########
 
+PBC="DATA/PBC/16x512/xi01_Q_Q_n0_NBLOCKS_1024.txt"
+OBC="DATA/OBC/INDEPENDENT/16x48/xi_Q_Q_n0_NBLOCKS_16384.txt"
+
+set origin 0.105, 0.09
+set size 0.8,0.55
+
+set x2range [-0.5:25.5]
+set y2range [43:46]
+set xrange [-0.5:25.5]
+set yrange [43:46]
+
+unset logs
 unset xlabel
 unset ylabel
-set format '\footnotesize $%g$'
+set x2label '\footnotesize $r_{\mathrm{min}}$' offset 0,-1
+set y2label '\footnotesize $\xi_{n=1}$' offset -4.75
+set y2tics 43,1,46 offset -0.75 
+set ytics 43,1,46
+set x2tics offset 0,-0.5
+set format x2 '\scriptsize $%.0f$'
+set format y2 '\scriptsize $%.0f$'
+set xtics mirror
+set format x ''
+set format y ''
+set ytics mirror
 
-set xrange [0:0.13]
-set yrange [-0.02:0.13]
+set label 1 '\scriptsize PBC, $M\!=\!512$' center at 15, 45.5
+set label 2 '\scriptsize OBC, $M\!=\!48$' center at 10, 43.5
 
-set ytics 0,0.1,0.1 offset 0.6
-set x2tics 0, 0.1,0.1 offset 0, -0.6
+set arrow 1 nohead from 18, 45.3 to 22,44.55
+set arrow 2 nohead from 9, 43.7 to 12,44.35
 
-set label 4 '\scriptsize $L=4$' left at 0.06,0.11
-set arrow 4 nohead from 0.092,0.107 to 0.116, 0.108
-
-set label 6 '\scriptsize $L=6$' left at 0.025,0.08
-set arrow 6 nohead from 0.055,0.075 to 0.071, 0.065
-
-set label 8 '\scriptsize $L=8$' left at 0.005,0.05
-set arrow 8 nohead from 0.036,0.048 to 0.05, 0.042
-
-set label 12 '\scriptsize $L=12$' left at 0.09,0.04
-set arrow 12 nohead from 0.089,0.04 to 0.067,0.045
-
-set label 16 '\scriptsize $L=16$' left at 0.06,0.015
-set arrow 16 nohead from 0.059, 0.015 to 0.048,0.027
-
-set label 24 '\scriptsize $L=24$' left at 0.03,-0.01
-set arrow 24 nohead from 0.029, -0.01 to 0.0161,0.0029
-
-replot 0 lt -1 dt 3 lc rgb "grey" not
+plot "< awk '{if($1==0) print $0}' ".PBC u 3:4:5 w yerror axis x2y2 pt 7 ps 1.5 lc rgb colorGet("c6") not,\
+"< awk '{if($1==0) print $0}' ".OBC u 3:4:5 w yerror axis x2y2 pt 9 ps 1.5 lc rgb colorGet("c2") not
 
 unset multiplot
-
+ 
 ###########
 # CLOSE
 ###########
@@ -152,4 +188,3 @@ set out
 !latex fig5.tex
 !dvisvgm --no-fonts fig5.dvi
 !rm *.aux *.tex *conver* *.log *.eps *.dvi
-

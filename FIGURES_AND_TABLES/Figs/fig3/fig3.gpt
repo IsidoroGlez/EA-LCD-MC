@@ -11,8 +11,8 @@ load "my_color_palette.gpt"
 ###############
 # APS TERMINAL
 ###############
-C=1.  # One column
-R=0.6  # Square ratio
+C=2.  # One column
+R=0.3  # Square ratio
 load "APS_term.gpt"
 
 #############
@@ -31,165 +31,74 @@ d12=12
 d16=8
 d24=8
 
-data_Tc="DATA/xi_betac.dat"
-cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 4,$4,$5,$3}' DATA/PBC/4x192/xi12_Q_Q_n0_NBLOCKS_32768.txt > DATA/xi_betac.dat" , d4)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 6,$4,$5,$3}' DATA/PBC/6x192/xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/xi_betac.dat" , d6)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 8,$4,$5,$3}' DATA/PBC/8x192/xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/xi_betac.dat" , d8)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 12,$4,$5,$3}' DATA/PBC/12x320/xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/xi_betac.dat" , d12)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 16,$4,$5,$3}' DATA/OBC/INDEPENDENT/16x48/xi_Q_Q_n0_NBLOCKS_16384.txt >> DATA/xi_betac.dat" , d16)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 24,$4,$5,$3}' DATA/OBC/INDEPENDENT/24x88/xi_Q_Q_n0_NBLOCKS_2048.txt >> DATA/xi_betac.dat" , d24)
-system cmd
+cmd4=sprintf("< grep -v '^I' DATA/PBC/4x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt | awk '$3==%d{print $0}'", d4)
+cmd6=sprintf("< grep -v '^I' DATA/PBC/6x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt | awk '$3==%d{print $0}'", d6)
+cmd8=sprintf("< grep -v '^I' DATA/PBC/8x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt | awk '$3==%d{print $0}'", d8)
+cmd12=sprintf("< grep -v '^I' DATA/PBC/12x320/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt | awk '$3==%d{print $0}'", d12)
+cmd16=sprintf("< grep -v '^I' DATA/OBC/INDEPENDENT/16x48/delta_xi_Q_Q_n0_NBLOCKS_16384.txt | awk '$3==%d{print $0}'", d16)
+cmd24=sprintf("< grep -v '^I' DATA/OBC/INDEPENDENT/24x88/delta_xi_Q_Q_n0_NBLOCKS_2048.txt | awk '$3==%d{print $0}'", d24)
 
-data_T07="DATA/delta_xi_ibeta0.dat"
-cmd=sprintf("awk '($3==%d)&&($1==0){print 4,$4,$5,$3}' DATA/PBC/4x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt > DATA/delta_xi_ibeta0.dat" , d4)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($1==0){print 6,$4,$5,$3}' DATA/PBC/6x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_ibeta0.dat" , d6)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($1==0){print 8,$4,$5,$3}' DATA/PBC/8x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_ibeta0.dat" , d8)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($1==0){print 12,$4,$5,$3}' DATA/PBC/12x320/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_ibeta0.dat" , d12)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($1==0){print 16,$4,$5,$3}' DATA/OBC/INDEPENDENT/16x48/delta_xi_Q_Q_n0_NBLOCKS_16384.txt >> DATA/delta_xi_ibeta0.dat" , d16)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($1==0){print 24,$4,$5,$3}' DATA/OBC/INDEPENDENT/24x88/delta_xi_Q_Q_n0_NBLOCKS_2048.txt >> DATA/delta_xi_ibeta0.dat" , d24)
-system cmd
+set xlabel '\footnotesize $T$' offset 0, 1.2
+set ylabel '\footnotesize $\Delta\xi(T,L)/L^{4/3}$' offset 4
 
-data_T08="DATA/delta_xi_beta08.dat"
-cmd=sprintf("awk '($3==%d)&&($2==1.25){print 4,$4,$5,$3}' DATA/PBC/4x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt > DATA/delta_xi_beta08.dat" , d4)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==1.25){print 6,$4,$5,$3}' DATA/PBC/6x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta08.dat" , d6)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==1.25){print 8,$4,$5,$3}' DATA/PBC/8x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta08.dat" , d8)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==1.25){print 12,$4,$5,$3}' DATA/PBC/12x320/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta08.dat" , d12)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==1.25){print 16,$4,$5,$3}' DATA/OBC/INDEPENDENT/16x48/delta_xi_Q_Q_n0_NBLOCKS_16384.txt >> DATA/delta_xi_beta08.dat" , d16)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==1.25){print 24,$4,$5,$3}' DATA/OBC/INDEPENDENT/24x88/delta_xi_Q_Q_n0_NBLOCKS_2048.txt >> DATA/delta_xi_beta08.dat" , d24)
-system cmd
-
-data_T09="DATA/delta_xi_beta09.dat"
-cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 4,$4,$5,$3}' DATA/PBC/4x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt > DATA/delta_xi_beta09.dat" , d4)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 6,$4,$5,$3}' DATA/PBC/6x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta09.dat" , d6)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 8,$4,$5,$3}' DATA/PBC/8x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta09.dat" , d8)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 12,$4,$5,$3}' DATA/PBC/12x320/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta09.dat" , d12)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 16,$4,$5,$3}' DATA/OBC/INDEPENDENT/16x48/delta_xi_Q_Q_n0_NBLOCKS_16384.txt >> DATA/delta_xi_beta09.dat" , d16)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 24,$4,$5,$3}' DATA/OBC/INDEPENDENT/24x88/delta_xi_Q_Q_n0_NBLOCKS_2048.txt >> DATA/delta_xi_beta09.dat" , d24)
-system cmd
-
-data_T1="DATA/delta_xi_beta1.dat"
-cmd=sprintf("awk '($3==%d)&&($2==1){print 4,$4,$5,$3}' DATA/PBC/4x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt > DATA/delta_xi_beta1.dat" , d4)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==1){print 6,$4,$5,$3}' DATA/PBC/6x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta1.dat" , d6)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==1){print 8,$4,$5,$3}' DATA/PBC/8x192/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta1.dat" , d8)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==1){print 12,$4,$5,$3}' DATA/PBC/12x320/delta_xi12_Q_Q_n0_NBLOCKS_32768.txt >> DATA/delta_xi_beta1.dat" , d12)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==1){print 16,$4,$5,$3}' DATA/OBC/INDEPENDENT/16x48/delta_xi_Q_Q_n0_NBLOCKS_16384.txt >> DATA/delta_xi_beta1.dat" , d16)
-system cmd
-cmd=sprintf("awk '($3==%d)&&($2==1){print 24,$4,$5,$3}' DATA/OBC/INDEPENDENT/24x88/delta_xi_Q_Q_n0_NBLOCKS_2048.txt >> DATA/delta_xi_beta1.dat" , d24)
-system cmd
-
-set xlabel '\footnotesize $L$' offset 0, 1.2
-unset ylabel
-
-set rmargin screen 0.98
-set lmargin screen 0.05
+set rmargin screen 0.48
+set lmargin screen 0.07
 set tmargin screen 0.972
-set bmargin screen 0.13
+set bmargin screen 0.14
 
 set format '\footnotesize $%g$'
-
-set xtics add (4,6,8,20)
-set ytics add (4,6,8)
 
 set xtics offset 0, 0.5
 set ytics offset 0.75
 
-set xrange [3:30]
-set yrange [3:60]
+set xrange [0.68:1.102]
+set yrange [0:*]
 
-set logs
-
-set errorbars 3
-
-set label 1 '\footnotesize $\Delta\xi(T=0.7,L)$' center at 15,32.5 rotate by 30
-set label 2 '\footnotesize $\xi(T=1.1019\sim T_{\text{c}})$' center at 17,13 rotate by 22
-
-r=4./3
-
-f07(x)=A07*x**r
-A07=0.7
-fit [9:*] f07(x) data_T07 u 1:2:3 yerror via A07
-
-f08(x)=A08*x**r
-A08=0.6
-fit [9:*] f08(x) data_T08 u 1:2:3 yerror via A08
-
-f09(x)=A09*x**r
-A09=0.5
-fit [9:*] f09(x) data_T09 u 1:2:3 yerror via A09
-
-f1(x)=A1*x**r
-A1=0.5
-fit [9:*] f1(x) data_T1 u 1:2:3 yerror via A1
-
-rc=1.
-fc(x)=Ac*x**rc
-Ac=1.
-fit [5:*] fc(x) data_Tc u 1:2:3 yerror via Ac
+set errorbars 1.5
 
 set multiplot
 
-set object rect from screen 0.05, screen 0.55 to screen 0.45, screen 0.972 fc rgb "white"
+set key at 1.22,0.75 reverse sample 0.75 keywidth 0.25 Left
 
 plot \
-f07(x) w lines lw 1.5 lc rgb colorGet("c2") not,\
-fc(x) w lines lw 1.5 lc rgb colorGet("c6") not,\
-data_T07 u 1:2:3 w yerror pt 7 ps 1 lc rgb colorGet("c2") not,\
-data_Tc u 1:2:3 w yerror pt 9 ps 1 lc rgb colorGet("c6") not 
+cmd24 u (1/$2):($4/24**(4./3)):($5/24**(4./3)) w yerror pt 5 ps 1 lc rgb colorGet("c6") t '\scriptsize $L=24$',\
+cmd16 u (1/$2):($4/16**(4./3)):($5/16**(4./3)) w yerror pt 7 ps 1 lc rgb colorGet("c5") t '\scriptsize $L=16$',\
+cmd12 u (1/$2):($4/12**(4./3)):($5/12**(4./3)) w yerror pt 13 ps 1 lc rgb colorGet("c2") t '\scriptsize $L=12$',\
+cmd8 u (1/$2):($4/8**(4./3)):($5/8**(4./3)) w yerror pt 9 ps 1 lc rgb colorGet("c4") t '\scriptsize $L=8$',\
+cmd6 u (1/$2):($4/6**(4./3)):($5/6**(4./3)) w yerror pt 11 ps 1 lc rgb colorGet("c7") t '\scriptsize $L=6$',\
+cmd4 u (1/$2):($4/4**(4./3)):($5/4**(4./3)) w yerror pt 1 ps 1 lc rgb colorGet("c8") t '\scriptsize $L=4$'
 
-set rmargin screen 0.45
-set bmargin screen 0.55
+set lmargin screen 0.52
+set rmargin screen 0.93
 
-unset label
-unset object
+Tc=1.1019
+nu=2.562
+expo=1/nu
 
-unset xlabel
 unset ylabel
-set yrange [0.5:60]
-set y2range [0.5:60]
-set log y2
+set y2tics mirror
+set format y ""
+set format y2 '\footnotesize $%g$'
 
-set format y ''
-set format x '\scriptsize $%g$'
-set format y2 ''
+set xlabel '\footnotesize $(T-T_{\text{c}})L^{1/\nu}$' offset 0, 1.2
+set y2label '\footnotesize $\Delta\xi(T,L)/L$' offset -4
 
-set xtics offset 0, 0.75
-set y2tics ('\scriptsize $1$' 1, '\scriptsize $10$' 10) offset -0.85
+set xrange [*:0]
+set yrange [0:2.2]
+set y2range [0:2.2]
 
-set y2label '\scriptsize $\Delta\xi(T,L)$' offset -5
+unset key
 
-plot for [i=-20:10:4]  x**(4./3)*10**(i/10.) w l dt 2 lw 0.75 lc rgb "grey" not,\
-data_T07 u 1:2:3 w yerror pt 7 ps 1 lc rgb colorGet("c2") not,\
-f07(x) w lines lw 1 lc rgb colorGet("c2") not,\
-data_T08 u 1:2:3 w yerror pt 11 ps 1 lc rgb colorGet("c4") not,\
-f08(x) w lines lw 1 lc rgb colorGet("c4") not,\
-data_T09 u 1:2:3 w yerror pt 13 ps 1 lc rgb colorGet("c7") not,\
-f09(x) w lines lw 1 lc rgb colorGet("c7") not,\
-data_T1 u 1:2:3 w yerror pt 5 ps 1 lc rgb colorGet("c3") not,\
-f1(x) w lines lw 1 lc rgb colorGet("c3") not
+plot \
+cmd24 u ((1/$2-Tc)*24**expo):($4/24):($5/24) w yerrorlines lw 0.75 pt 5 ps 1 lc rgb colorGet("c6") not,\
+cmd16 u ((1/$2-Tc)*16**expo):($4/16):($5/16) w yerrorlines lw 0.75 pt 7 ps 1 lc rgb colorGet("c5") not,\
+cmd12 u ((1/$2-Tc)*12**expo):($4/12):($5/12) w yerrorlines lw 0.75 pt 13 ps 1 lc rgb colorGet("c2") not,\
+cmd8 u ((1/$2-Tc)*8**expo):($4/8):($5/8) w yerrorlines lw 0.75 pt 9 ps 1 lc rgb colorGet("c4") not,\
+cmd6 u ((1/$2-Tc)*6**expo):($4/6):($5/6) w yerrorlines lw 0.75 pt 11 ps 1 lc rgb colorGet("c7") not,\
+cmd4 u ((1/$2-Tc)*4**expo):($4/4):($5/4) w yerrorlines lw 0.75 pt 1 ps 1 lc rgb colorGet("c8") not
+
+
+
 
 unset multiplot
 
