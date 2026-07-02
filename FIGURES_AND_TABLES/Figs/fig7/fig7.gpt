@@ -24,27 +24,27 @@ set output "fig7.tex"
 # DATA
 ###########
 
-inv_xi_L4=system('paste DATA/PBC/4x192/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/4x192/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
+inv_xi_L4=system('paste DATA/PBC/4x192/xi12_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/4x192/inv_xi12_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
  | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$11; exit}"')
-inv_xi_L4_err=system('paste DATA/PBC/4x192/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/4x192/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
+inv_xi_L4_err=system('paste DATA/PBC/4x192/xi12_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/4x192/inv_xi12_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
  | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$12; exit}"')
 L4="< awk '$1==0{print $3,$6,$7}' DATA/PBC/4x192/C_Q3_over_C_Q_n0_NBLOCKS_32768.txt"
 
-inv_xi_L6=system('paste DATA/PBC/6x192/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/6x192/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
+inv_xi_L6=system('paste DATA/PBC/6x192/xi12_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/6x192/inv_xi12_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
  | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$11; exit}"')
-inv_xi_L6_err=system('paste DATA/PBC/6x192/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/6x192/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
+inv_xi_L6_err=system('paste DATA/PBC/6x192/xi12_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/6x192/inv_xi12_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
  | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$12; exit}"')
 L6="< awk '$1==0{print $3,$6,$7}' DATA/PBC/6x192/C_Q3_over_C_Q_n0_NBLOCKS_32768.txt"
 
-inv_xi_L8=system('paste DATA/PBC/8x192/xi01_Q_Q_n0_NBLOCKS_12288.txt DATA/PBC/8x192/inv_xi01_Q_Q_n0_NBLOCKS_12288.txt 2>/dev/null \
+inv_xi_L8=system('paste DATA/PBC/8x192/xi12_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/8x192/inv_xi12_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
  | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$11; exit}"')
-inv_xi_L8_err=system('paste DATA/PBC/8x192/xi01_Q_Q_n0_NBLOCKS_12288.txt DATA/PBC/8x192/inv_xi01_Q_Q_n0_NBLOCKS_12288.txt 2>/dev/null \
+inv_xi_L8_err=system('paste DATA/PBC/8x192/xi12_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/8x192/inv_xi12_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
  | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$12; exit}"')
-L8="< awk '$1==0{print $3,$6,$7}' DATA/PBC/8x192/C_Q3_over_C_Q_n0_NBLOCKS_12288.txt"
+L8="< awk '$1==0{print $3,$6,$7}' DATA/PBC/8x192/C_Q3_over_C_Q_n0_NBLOCKS_32768.txt"
 
-inv_xi_L12=system('paste DATA/PBC/12x320/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/12x320/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
+inv_xi_L12=system('paste DATA/PBC/12x320/xi12_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/12x320/inv_xi12_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
  | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$11; exit}"')
-inv_xi_L12_err=system('paste DATA/PBC/12x320/xi01_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/12x320/inv_xi01_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
+inv_xi_L12_err=system('paste DATA/PBC/12x320/xi12_Q_Q_n0_NBLOCKS_32768.txt DATA/PBC/12x320/inv_xi12_Q_Q_n0_NBLOCKS_32768.txt 2>/dev/null \
  | awk "(\$1==0 && \$5!=\"-nan\" && \$3>=\$4){print \$12; exit}"')
 L12="< awk '$1==0{print $3,$6,$7}' DATA/PBC/12x320/C_Q3_over_C_Q_n0_NBLOCKS_32768.txt"
 

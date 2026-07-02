@@ -1,0 +1,295 @@
+reset
+set fit noerrorscaling
+set auto
+set fit quiet
+set fit logfile "fit_xmin_scan.log"
+
+#####################################################################
+# Self-contained xmin-scan / fit-selection study, run directly on the
+# compressed raw data:
+#   1) extract only the few raw .txt files it needs from the
+#      results_NBLOCKS*.tar.gz archives under DATA/{PBC,OBC} (skipped
+#      if already extracted -- same idea as ensure_extracted() in
+#      FIGURES_AND_TABLES/Tables/table1/update_table.py);
+#   2) run the scan twice, once for the "xi12" correlation length
+#      (used by fig2.gpt) and once for "xi01", so both can be compared
+#      side by side in the same output tables;
+#   3) remove everything it extracted/generated, leaving DATA/ exactly
+#      as found -- only fit_xmin_scan_results.txt,
+#      critical_extrap_results.txt and this fit log survive.
+#####################################################################
+
+#####################################################################
+# Step 1: selective extraction of the raw data needed below.
+#####################################################################
+
+array EXDIR[6]     = ["PBC/4x192","PBC/6x192","PBC/8x192","PBC/12x320","OBC/INDEPENDENT/16x48","OBC/INDEPENDENT/24x88"]
+array EXNBLOCKS[6] = [32768,32768,32768,32768,16384,2048]
+array EXISPBC[6]   = [1,1,1,1,0,0]
+array EXMEMBERS[6] = ["","","","","",""]
+
+do for [k=1:6] {
+  nb = EXNBLOCKS[k]
+  if (EXISPBC[k]==1) {
+    EXMEMBERS[k] = sprintf("xi12_Q_Q_n0_NBLOCKS_%d.txt delta_xi12_Q_Q_n0_NBLOCKS_%d.txt xi01_Q_Q_n0_NBLOCKS_%d.txt delta_xi01_Q_Q_n0_NBLOCKS_%d.txt", nb, nb, nb, nb)
+  } else {
+    EXMEMBERS[k] = sprintf("xi_Q_Q_n0_NBLOCKS_%d.txt delta_xi_Q_Q_n0_NBLOCKS_%d.txt", nb, nb)
+  }
+}
+
+do for [k=1:6] {
+  destdir = "DATA/" . EXDIR[k]
+  tarname = sprintf("results_NBLOCKS%d.tar.gz", EXNBLOCKS[k])
+  cmd = sprintf("cd %s && for f in %s; do [ -f \"$f\" ] || tar -xzf %s \"$f\"; done", destdir, EXMEMBERS[k], tarname)
+  system cmd
+}
+
+#####################################################################
+# Dataset registry: T=0.7,0.8,0.9,1.0 use the fixed exponent r=4/3
+# (same as fig2.gpt); Tc uses r=1. Datasets 1..4 feed the u(T)
+# critical extrapolation below; dataset 5 (Tc) does not.
+# DNAME/DR/AMPSEED are the same for both xi flavors being compared
+# (they are just labels and fit starting points, not a physics claim
+# that xi01 and xi12 behave identically -- whether they do is exactly
+# what the resulting table lets you check).
+#####################################################################
+
+array DNAME[5]  = ["T=0.7","T=0.8","T=0.9","T=1.0","Tc"]
+array DR[5]     = [4./3, 4./3, 4./3, 4./3, 1.]
+array AMPSEED[5]= [0.7, 0.6, 0.5, 0.5, 1.0]
+array DFILE[5]  = ["","","","",""]
+
+# Models:
+#  1) direct power law, fixed exponent r, 1 free parameter A
+#  2) direct power law, free exponent, 2 free parameters (A2,B2)
+#  3) same as (1) but fit as a constant on data/x**r (checks*.gpt style);
+#     mathematically identical chi^2 to model 1 -> cross-check.
+f(x)=A1*x**r
+g(x)=A2*x**B2
+
+Tc=1.1019
+NU=2.562
+expo=NU/3.
+
+resultsfile = "fit_xmin_scan_results.txt"
+critfile    = "critical_extrap_results.txt"
+
+set print resultsfile
+print sprintf("%-6s  %-6s  %-6s  %4s  %4s  %3s  %-46s  %9s  %-12s  %9s  %-4s  %s","Variant","Dataset","Model","xmin","Npts","Ndf","Params","Chi2/Ndf","Chi2/DoF","p-value","Verd","Note")
+print sprintf("%-6s  %-6s  %-6s  %4s  %4s  %3s  %-46s  %9s  %-12s  %9s  %-4s  %s","------","------","-----","----","----","---","----------------------------------------------","---------","------------","---------","----","----")
+set print
+
+set print critfile
+print sprintf("%-6s  %4s  %4s  %3s  %-34s  %9s  %-12s  %9s  %-4s","Variant","xmin","Npts","Ndf","h1, h2 (critical extrapolation)","Chi2/Ndf","Chi2/DoF","p-value","Verd")
+print sprintf("%-6s  %4s  %4s  %3s  %-34s  %9s  %-12s  %9s  %-4s","------","----","----","---","----------------------------------","---------","------------","---------","----")
+set print
+
+#####################################################################
+# Main loop over the two xi flavors being compared. For the PBC sizes
+# (4,6,8,12) the "xi12"/"xi01" variant selects xi12_*/delta_xi12_* vs
+# xi01_*/delta_xi01_* as the source files. The OBC sizes (16,24) have
+# no 01/12 split (only "xi_*"/"delta_xi_*" exist there) and are reused
+# unchanged in both variants, exactly like fig2.gpt already does for
+# the single xi12 case.
+#####################################################################
+
+do for [variant in "xi12 xi01"] {
+
+  pbc_xi  = variant
+  pbc_dxi = "delta_" . variant
+
+  d4=5
+  d6=6
+  d8=8
+  d12=12
+  d16=8
+  d24=8
+
+  data_Tc = sprintf("DATA/xi_betac_%s.dat", variant)
+  cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 4,$4,$5,$3}' DATA/PBC/4x192/%s_Q_Q_n0_NBLOCKS_32768.txt > %s", d4, pbc_xi, data_Tc)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 6,$4,$5,$3}' DATA/PBC/6x192/%s_Q_Q_n0_NBLOCKS_32768.txt >> %s", d6, pbc_xi, data_Tc)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 8,$4,$5,$3}' DATA/PBC/8x192/%s_Q_Q_n0_NBLOCKS_32768.txt >> %s", d8, pbc_xi, data_Tc)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 12,$4,$5,$3}' DATA/PBC/12x320/%s_Q_Q_n0_NBLOCKS_32768.txt >> %s", d12, pbc_xi, data_Tc)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 16,$4,$5,$3}' DATA/OBC/INDEPENDENT/16x48/xi_Q_Q_n0_NBLOCKS_16384.txt >> %s", d16, data_Tc)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==0.9075){print 24,$4,$5,$3}' DATA/OBC/INDEPENDENT/24x88/xi_Q_Q_n0_NBLOCKS_2048.txt >> %s", d24, data_Tc)
+  system cmd
+
+  data_T07 = sprintf("DATA/delta_xi_ibeta0_%s.dat", variant)
+  cmd=sprintf("awk '($3==%d)&&($1==0){print 4,$4,$5,$3}' DATA/PBC/4x192/%s_Q_Q_n0_NBLOCKS_32768.txt > %s", d4, pbc_dxi, data_T07)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($1==0){print 6,$4,$5,$3}' DATA/PBC/6x192/%s_Q_Q_n0_NBLOCKS_32768.txt >> %s", d6, pbc_dxi, data_T07)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($1==0){print 8,$4,$5,$3}' DATA/PBC/8x192/%s_Q_Q_n0_NBLOCKS_32768.txt >> %s", d8, pbc_dxi, data_T07)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($1==0){print 12,$4,$5,$3}' DATA/PBC/12x320/%s_Q_Q_n0_NBLOCKS_32768.txt >> %s", d12, pbc_dxi, data_T07)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($1==0){print 16,$4,$5,$3}' DATA/OBC/INDEPENDENT/16x48/delta_xi_Q_Q_n0_NBLOCKS_16384.txt >> %s", d16, data_T07)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($1==0){print 24,$4,$5,$3}' DATA/OBC/INDEPENDENT/24x88/delta_xi_Q_Q_n0_NBLOCKS_2048.txt >> %s", d24, data_T07)
+  system cmd
+
+  data_T08 = sprintf("DATA/delta_xi_beta08_%s.dat", variant)
+  cmd=sprintf("awk '($3==%d)&&($2==1.25){print 4,$4,$5,$3}' DATA/PBC/4x192/%s_Q_Q_n0_NBLOCKS_32768.txt > %s", d4, pbc_dxi, data_T08)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==1.25){print 6,$4,$5,$3}' DATA/PBC/6x192/%s_Q_Q_n0_NBLOCKS_32768.txt >> %s", d6, pbc_dxi, data_T08)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==1.25){print 8,$4,$5,$3}' DATA/PBC/8x192/%s_Q_Q_n0_NBLOCKS_32768.txt >> %s", d8, pbc_dxi, data_T08)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==1.25){print 12,$4,$5,$3}' DATA/PBC/12x320/%s_Q_Q_n0_NBLOCKS_32768.txt >> %s", d12, pbc_dxi, data_T08)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==1.25){print 16,$4,$5,$3}' DATA/OBC/INDEPENDENT/16x48/delta_xi_Q_Q_n0_NBLOCKS_16384.txt >> %s", d16, data_T08)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==1.25){print 24,$4,$5,$3}' DATA/OBC/INDEPENDENT/24x88/delta_xi_Q_Q_n0_NBLOCKS_2048.txt >> %s", d24, data_T08)
+  system cmd
+
+  data_T09 = sprintf("DATA/delta_xi_beta09_%s.dat", variant)
+  cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 4,$4,$5,$3}' DATA/PBC/4x192/%s_Q_Q_n0_NBLOCKS_32768.txt > %s", d4, pbc_dxi, data_T09)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 6,$4,$5,$3}' DATA/PBC/6x192/%s_Q_Q_n0_NBLOCKS_32768.txt >> %s", d6, pbc_dxi, data_T09)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 8,$4,$5,$3}' DATA/PBC/8x192/%s_Q_Q_n0_NBLOCKS_32768.txt >> %s", d8, pbc_dxi, data_T09)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 12,$4,$5,$3}' DATA/PBC/12x320/%s_Q_Q_n0_NBLOCKS_32768.txt >> %s", d12, pbc_dxi, data_T09)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 16,$4,$5,$3}' DATA/OBC/INDEPENDENT/16x48/delta_xi_Q_Q_n0_NBLOCKS_16384.txt >> %s", d16, data_T09)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==1.1111111111111){print 24,$4,$5,$3}' DATA/OBC/INDEPENDENT/24x88/delta_xi_Q_Q_n0_NBLOCKS_2048.txt >> %s", d24, data_T09)
+  system cmd
+
+  data_T1 = sprintf("DATA/delta_xi_beta1_%s.dat", variant)
+  cmd=sprintf("awk '($3==%d)&&($2==1){print 4,$4,$5,$3}' DATA/PBC/4x192/%s_Q_Q_n0_NBLOCKS_32768.txt > %s", d4, pbc_dxi, data_T1)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==1){print 6,$4,$5,$3}' DATA/PBC/6x192/%s_Q_Q_n0_NBLOCKS_32768.txt >> %s", d6, pbc_dxi, data_T1)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==1){print 8,$4,$5,$3}' DATA/PBC/8x192/%s_Q_Q_n0_NBLOCKS_32768.txt >> %s", d8, pbc_dxi, data_T1)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==1){print 12,$4,$5,$3}' DATA/PBC/12x320/%s_Q_Q_n0_NBLOCKS_32768.txt >> %s", d12, pbc_dxi, data_T1)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==1){print 16,$4,$5,$3}' DATA/OBC/INDEPENDENT/16x48/delta_xi_Q_Q_n0_NBLOCKS_16384.txt >> %s", d16, data_T1)
+  system cmd
+  cmd=sprintf("awk '($3==%d)&&($2==1){print 24,$4,$5,$3}' DATA/OBC/INDEPENDENT/24x88/delta_xi_Q_Q_n0_NBLOCKS_2048.txt >> %s", d24, data_T1)
+  system cmd
+
+  DFILE[1] = data_T07
+  DFILE[2] = data_T08
+  DFILE[3] = data_T09
+  DFILE[4] = data_T1
+  DFILE[5] = data_Tc
+
+  do for [xm in "4 6 8 12 16"] {
+
+    xmn = xm+0
+
+    do for [i=1:5] {
+
+      dname = DNAME[i]
+      dfile = DFILE[i]
+      r     = DR[i]
+
+      # --- Model 1: direct power law, fixed exponent ---
+      A1 = AMPSEED[i]
+      fit [xmn:*] f(x) dfile u 1:2:3 yerror via A1
+      chi2ndf1 = FIT_STDFIT**2
+      chi2dof1 = sprintf("%.2f/%d", FIT_WSSR, FIT_NDF)
+      verd1 = (FIT_P > 0.1) ? "OK" : "  "
+      set print resultsfile append
+      print sprintf("%-6s  %-6s  %-6s  %4d  %4d  %3d  %-46s  %9.4f  %-12s  %9.4f  %-4s  %s", \
+        variant, dname, "M1", xmn, FIT_NDF+1, FIT_NDF, sprintf("A=%9.5f +/- %8.5f",A1,A1_err), chi2ndf1, chi2dof1, FIT_P, verd1, "-")
+      set print
+
+      # --- Model 3: same fit, done as a constant on data/x**r ---
+      A3 = AMPSEED[i]
+      fit [xmn:*] A3 dfile u 1:($2/$1**r):($3/$1**r) yerror via A3
+      chi2ndf3 = FIT_STDFIT**2
+      chi2dof3 = sprintf("%.2f/%d", FIT_WSSR, FIT_NDF)
+      verd3 = (FIT_P > 0.1) ? "OK" : "  "
+      matchnote = (abs(A3-A1) < 1e-6*abs(A1)) ? "matches M1" : "MISMATCH vs M1"
+      set print resultsfile append
+      print sprintf("%-6s  %-6s  %-6s  %4d  %4d  %3d  %-46s  %9.4f  %-12s  %9.4f  %-4s  %s", \
+        variant, dname, "M3", xmn, FIT_NDF+1, FIT_NDF, sprintf("A=%9.5f +/- %8.5f",A3,A3_err), chi2ndf3, chi2dof3, FIT_P, verd3, matchnote)
+      set print
+
+      # amplitude used below for the critical extrapolation (datasets 1..4 only)
+      if (i==1) { u07 = A3; u07_err = A3_err }
+      if (i==2) { u08 = A3; u08_err = A3_err }
+      if (i==3) { u09 = A3; u09_err = A3_err }
+      if (i==4) { u1  = A3; u1_err  = A3_err }
+
+      # --- Model 2: direct power law, free exponent (skip once <3 points remain) ---
+      if (xmn <= 12) {
+        A2 = AMPSEED[i]
+        B2 = r
+        fit [xmn:*] g(x) dfile u 1:2:3 yerror via A2,B2
+        chi2ndf2 = FIT_STDFIT**2
+        chi2dof2 = sprintf("%.2f/%d", FIT_WSSR, FIT_NDF)
+        verd2 = (FIT_P > 0.1) ? "OK" : "  "
+        expnote = sprintf("nominal r=%.4g", r)
+        set print resultsfile append
+        print sprintf("%-6s  %-6s  %-6s  %4d  %4d  %3d  %-46s  %9.4f  %-12s  %9.4f  %-4s  %s", \
+          variant, dname, "M2", xmn, FIT_NDF+2, FIT_NDF, sprintf("A=%8.5f+/-%7.5f b=%8.5f+/-%7.5f",A2,A2_err,B2,B2_err), chi2ndf2, chi2dof2, FIT_P, verd2, expnote)
+        set print
+      }
+
+    }
+
+    # --- checks(1).gpt-style critical extrapolation, at this same xmin ---
+    ufile = sprintf("DATA/u_di_T_xmin%d_%s.dat", xmn, variant)
+    set print ufile
+    print sprintf("%.10g %.10g %.10g", 0.7, u07, u07_err)
+    print sprintf("%.10g %.10g %.10g", 0.8, u08, u08_err)
+    print sprintf("%.10g %.10g %.10g", 0.9, u09, u09_err)
+    print sprintf("%.10g %.10g %.10g", 1.0, u1,  u1_err)
+    set print
+
+    h(x)=x*(h1+h2*x**(1./expo))
+    h1 = 0.5
+    h2 = 0.1
+    # fit [:0.4] mirrors checks(1).gpt; with Tc=1.1019 this excludes the
+    # T=0.7 point ((Tc-0.7)**expo ~ 0.46 > 0.4), same as the source script.
+    fit [:0.4] h(x) ufile u ((Tc-$1)**expo):2:3 yerror via h1,h2
+    chi2ndfh = FIT_STDFIT**2
+    chi2dofh = sprintf("%.2f/%d", FIT_WSSR, FIT_NDF)
+    verdh = (FIT_P > 0.1) ? "OK" : "  "
+    set print critfile append
+    print sprintf("%-6s  %4d  %4d  %3d  %-34s  %9.4f  %-12s  %9.4f  %-4s", \
+      variant, xmn, FIT_NDF+2, FIT_NDF, sprintf("h1=%7.5f+/-%7.5f h2=%7.5f+/-%7.5f",h1,h1_err,h2,h2_err), chi2ndfh, chi2dofh, FIT_P, verdh)
+    set print
+  }
+
+}
+
+#####################################################################
+# Step 7: cleanup -- restore DATA/ to its original state. Only the two
+# result tables and this fit log are meant to survive; everything
+# extracted from tarballs or generated as an intermediate .dat file
+# gets removed.
+#####################################################################
+
+do for [k=1:6] {
+  destdir = "DATA/" . EXDIR[k]
+  cmd = sprintf("cd %s && rm -f %s", destdir, EXMEMBERS[k])
+  system cmd
+}
+
+system "rm -f DATA/xi_betac_xi12.dat DATA/xi_betac_xi01.dat"
+system "rm -f DATA/delta_xi_ibeta0_xi12.dat DATA/delta_xi_ibeta0_xi01.dat"
+system "rm -f DATA/delta_xi_beta08_xi12.dat DATA/delta_xi_beta08_xi01.dat"
+system "rm -f DATA/delta_xi_beta09_xi12.dat DATA/delta_xi_beta09_xi01.dat"
+system "rm -f DATA/delta_xi_beta1_xi12.dat DATA/delta_xi_beta1_xi01.dat"
+system "rm -f DATA/u_di_T_xmin4_xi12.dat DATA/u_di_T_xmin6_xi12.dat DATA/u_di_T_xmin8_xi12.dat DATA/u_di_T_xmin12_xi12.dat DATA/u_di_T_xmin16_xi12.dat"
+system "rm -f DATA/u_di_T_xmin4_xi01.dat DATA/u_di_T_xmin6_xi01.dat DATA/u_di_T_xmin8_xi01.dat DATA/u_di_T_xmin12_xi01.dat DATA/u_di_T_xmin16_xi01.dat"
+
+print ""
+print sprintf("Wrote %s and %s (covering both the xi12 and xi01 variants).", resultsfile, critfile)
+print "Verd=OK means p-value>0.1 (conventionally acceptable fit)."
+print "Model 2 (free exponent) only scanned for xmin in {4,6,8,12}: at xmin=16 only"
+print "2 points remain, which would leave 0 degrees of freedom for a 2-parameter fit."
+print "Critical extrapolation always drops T=0.7 because of the fit [:0.4] cut (see comment above),"
+print "reproducing the restriction checks(1).gpt introduced over checks.gpt."
+print "Raw .txt extracted from the tarballs and intermediate .dat files have been removed;"
+print "DATA/ is left as found -- only the two tables above and fit_xmin_scan.log remain."

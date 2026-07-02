@@ -138,7 +138,7 @@ unset bmargin
 # DATA
 ###########
 
-PBC="DATA/PBC/16x512/xi01_Q_Q_n0_NBLOCKS_1024.txt"
+PBC="DATA/PBC/16x512/xi12_Q_Q_n0_NBLOCKS_1024.txt"
 OBC="DATA/OBC/INDEPENDENT/16x48/xi_Q_Q_n0_NBLOCKS_16384.txt"
 
 set origin 0.105, 0.09

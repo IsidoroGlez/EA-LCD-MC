@@ -74,6 +74,25 @@ All other columns retain the same meaning as described above.
 
 ---
 
+## `fit_xmin_scan.gpt`: fitting-range selection and \(\xi_{01}\) vs \(\xi_{12}\) comparison
+
+`fit_xmin_scan.gpt` determines, for each temperature series entering `../FIGURES_AND_TABLES/Figs/fig2/fig2.gpt`, the smallest fitting range \(L_{\min}\) over which the finite-size power law \(\xi(L)=A\,L^{r}\) (\(r=4/3\) for \(T=0.7,0.8,0.9,1.0\); \(r=1\) at \(T_c\)) is statistically acceptable. It is self-contained: it extracts on demand only the raw `.txt` members it needs from `results_NBLOCKS*.tar.gz`, and removes them again on exit, leaving this directory unchanged.
+
+For each dataset and \(L_{\min}\in\{4,6,8,12,16\}\) it fits three models — M1 (fixed exponent), M2 (free exponent), M3 (fixed exponent, refit as a constant on \(\xi/L^{r}\), a cross-check mathematically identical to M1) — and reports \(\chi^2/\mathrm{dof}\) and the fit p-value in `fit_xmin_scan_results.txt`. The M1/M3 amplitudes \(u(T)\) are then propagated into a critical extrapolation \(u(T)=(T_c-T)\big[h_1+h_2(T_c-T)^{1/\exp o}\big]\) (\(T_c=1.1019\), \(\nu=2.562\) fixed), reported in `critical_extrap_results.txt`.
+
+The whole scan is run twice, for the two second-moment correlation-length estimators present in the PBC archives, \(\xi_{01}\) and \(\xi_{12}\) (built respectively from the \(k_0,k_1\) and \(k_1,k_2\) smallest-momenta pairs; OBC sizes provide only one estimator and are reused unchanged in both variants). Both tables carry a `Variant` column so the two can be compared row by row.
+
+**Summary of findings:**
+
+1. **Precision.** At matched \(L_{\min}\), the fitted amplitude's statistical error is systematically 1.4–2.2\(\times\) larger for \(\xi_{01}\) than for \(\xi_{12}\) — consistent with \(\xi_{01}\) involving the \(k=0\) mode (dominated by sample-to-sample fluctuations of the total susceptibility), which \(\xi_{12}\) avoids.
+2. **Corrections to scaling.** The free-exponent fit (M2) shows the same qualitative drift of the effective exponent away from the nominal \(4/3\) as \(L_{\min}\) decreases in both variants, a consistency check between two independent estimators of the same underlying physics.
+3. **Fixed-exponent acceptance window.** \(\xi_{12}\) is already acceptable (\(p>0.1\)) at \(L_{\min}=8\) for \(T=0.7\), and at \(L_{\min}=12\) for \(T=0.7,0.8,1.0\); \(T=0.9\) remains marginally rejected at \(L_{\min}=12\) (\(p=0.048\)), corroborated by a free exponent displaced \(\sim2.5\sigma\) from \(4/3\) — a genuine residual correction, not noise. \(\xi_{01}\) only becomes acceptable for all four temperatures at \(L_{\min}=12\), but its larger errors mean the same \(T=0.9\) bias is simply below its statistical resolution there; this is not evidence of smaller finite-size corrections in \(\xi_{01}\).
+4. **Critical extrapolation.** The \(u(T)\) extrapolation is acceptable for \(\xi_{01}\) from \(L_{\min}=4\), but only from \(L_{\min}\approx8\) for \(\xi_{12}\) — the one place \(\xi_{01}\) shows a clear advantage, again partly attributable to its larger error bars.
+
+**Recommendation.** \(\xi_{12}\) is the more precise estimator and, for 3 of the 4 temperatures, the less biased one, consistent with its use as the primary observable throughout the main-text figures and tables (`fig2`, `fig3`, `fig5`, `fig6`, `table1`). A safe joint fitting window is \(L_{\min}\simeq8\text{–}12\), with \(T\approx0.9\) flagged for a possible residual correction to scaling. \(\xi_{01}\) is best used as an independent cross-check (as in `../FIGURES_AND_TABLES/FigsSM/fig7/figSM7.gpt`), not as a replacement.
+
+---
+
 ## Notes
 
 - The data provided here are **processed data**, not raw spin configurations.

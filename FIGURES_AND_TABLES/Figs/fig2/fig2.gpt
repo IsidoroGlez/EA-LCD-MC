@@ -129,6 +129,15 @@ set label 2 '\footnotesize $\xi(T=1.1019\sim T_{\text{c}})$' center at 17,13 rot
 
 r=4./3
 
+# The four T=0.7..1.0 series are all fit with the same window fit[9:*]
+# (L>=12) on purpose, for a uniform L_min across temperatures. Per the
+# systematic xmin scan in DATA/fit_xmin_scan.gpt, this window is a good
+# fit (p>0.1) for T=0.7,0.8,1.0 but only marginally rejected for T=0.9
+# (p=0.048, with the free-exponent cross-check showing the effective
+# exponent ~2.5 sigma away from the nominal r=4/3) -- a residual
+# correction-to-scaling in that one series, not fixed here so as to
+# keep L_min consistent across the whole panel.
+
 f07(x)=A07*x**r
 A07=0.7
 fit [9:*] f07(x) data_T07 u 1:2:3 yerror via A07
@@ -148,7 +157,7 @@ fit [9:*] f1(x) data_T1 u 1:2:3 yerror via A1
 rc=1.
 fc(x)=Ac*x**rc
 Ac=1.
-fit [5:*] fc(x) data_Tc u 1:2:3 yerror via Ac
+fit [3:*] fc(x) data_Tc u 1:2:3 yerror via Ac
 
 set multiplot
 
