@@ -99,8 +99,10 @@ The LUT must be generated **before running the simulation**.
 
 ### Lookup Table (LUT)
 
-The LUT is created separately using:
+The LUT is created separately using the script in `input/` (it compiles and
+runs `create_LUT.c`, which it expects to find in the same directory):
 
+cd input/
 ./compile_and_generate_LUT.sh nbits num_k beta.dat
 
 Important:
@@ -124,9 +126,10 @@ make
 
 2. Generate temperature list beta.dat
 
-3. Build LUT:
+3. Build LUT (from `input/`):
 
 ```bash
+cd input/
 ./compile_and_generate_LUT.sh 10 40 beta.dat
 ```
 

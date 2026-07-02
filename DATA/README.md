@@ -21,7 +21,7 @@ The data are organized according to:
    - `STRONG/`
    - `WEAK/`
 
-See [article](https.doi.org/) for more information on the exact definition of the boundary conditions.
+See [article](https://arxiv.org/abs/2601.07926) for more information on the exact definition of the boundary conditions.
 
 3. **System size**, specified as transverse size \(\times\) longitudinal size (e.g., `16x48/`).
 
@@ -50,6 +50,11 @@ The filename encodes the following information:
 
 - Notice that, given the 3 possible observables, it is possible to construct a correlation matrix. Each element of this matrix corresponds to the correlation using the functions f(x) and g(x). We can also calculate the determinant of this matrix for each distance (and the corresponding observables from it), which is denoted by `DET`. In the same way, we can compute the determinant of a 2 by 2 matrix, getting only two of the possible f(x). We identify these observables with `MIN` and the functions under consideration.
 
+- **Second-moment correlation length.** PBC archives provide two second-moment correlation-length estimators, distinguished by filename prefix:
+  - `xi01_*` — built from the smallest-momenta pair \(k_0,k_1\).
+  - `xi12_*` — built from the pair \(k_1,k_2\), which avoids the \(k=0\) mode and is therefore less sensitive to sample-to-sample fluctuations.
+
+  OBC archives provide only one estimator, filed under the plain `xi_*` prefix. \(\xi_{12}\) is used as the primary estimator throughout the main-text figures and tables; see `fit_xmin_scan.gpt` below for the comparison that justifies this choice.
 
 ---
 
@@ -89,7 +94,7 @@ The whole scan is run twice, for the two second-moment correlation-length estima
 3. **Fixed-exponent acceptance window.** \(\xi_{12}\) is already acceptable (\(p>0.1\)) at \(L_{\min}=8\) for \(T=0.7\), and at \(L_{\min}=12\) for \(T=0.7,0.8,1.0\); \(T=0.9\) remains marginally rejected at \(L_{\min}=12\) (\(p=0.048\)), corroborated by a free exponent displaced \(\sim2.5\sigma\) from \(4/3\) — a genuine residual correction, not noise. \(\xi_{01}\) only becomes acceptable for all four temperatures at \(L_{\min}=12\), but its larger errors mean the same \(T=0.9\) bias is simply below its statistical resolution there; this is not evidence of smaller finite-size corrections in \(\xi_{01}\).
 4. **Critical extrapolation.** The \(u(T)\) extrapolation is acceptable for \(\xi_{01}\) from \(L_{\min}=4\), but only from \(L_{\min}\approx8\) for \(\xi_{12}\) — the one place \(\xi_{01}\) shows a clear advantage, again partly attributable to its larger error bars.
 
-**Recommendation.** \(\xi_{12}\) is the more precise estimator and, for 3 of the 4 temperatures, the less biased one, consistent with its use as the primary observable throughout the main-text figures and tables (`fig2`, `fig3`, `fig5`, `fig6`, `table1`). A safe joint fitting window is \(L_{\min}\simeq8\text{–}12\), with \(T\approx0.9\) flagged for a possible residual correction to scaling. \(\xi_{01}\) is best used as an independent cross-check (as in `../FIGURES_AND_TABLES/FigsSM/fig7/figSM7.gpt`), not as a replacement.
+**Recommendation.** \(\xi_{12}\) is the more precise estimator and, for 3 of the 4 temperatures, the less biased one, consistent with its use as the primary observable throughout the main-text figures and tables (`fig2`, `fig3`, `fig5`, `fig6`, `fig7`, `table1`). A safe joint fitting window is \(L_{\min}\simeq8\text{–}12\), with \(T\approx0.9\) flagged for a possible residual correction to scaling. \(\xi_{01}\) is best used as an independent cross-check (as in `../FIGURES_AND_TABLES/FigsSM/fig7/figSM7.gpt`), not as a replacement.
 
 ---
 

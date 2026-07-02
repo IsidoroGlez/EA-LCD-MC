@@ -43,10 +43,10 @@ unset border
 unset xtics
 unset ytics
 
-# Estilo de relleno sólido sin borde
+# Solid fill style, no border
 set style fill solid 1.0 border -1
 
-# Primer bloque (negro) — de abajo hacia arriba
+# First block (black), bottom to top
 
 x=26.65
 dx=0.05
@@ -128,7 +128,7 @@ plot \
 "< awk '{if($1==0) print $0}' ".PBC."/C_Q_Q_n0_NBLOCKS_1024.txt" u 3:4:5 w yerror pt 7 ps 0.7 lc rgb colorGet("c6") not,\
 "< awk '{if($1==0) print $0}' ".OBC."/C_Q_Q_n0_NBLOCKS_16384.txt" u 3:4:5 w yerror pt 9 lc rgb colorGet("c2") not
 
-# Restaurar márgenes (para evitar que afecten al siguiente)
+# Restore margins (so they don't affect the next plot)
 unset lmargin
 unset rmargin
 unset tmargin

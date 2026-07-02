@@ -14,22 +14,29 @@ Each figure or table is stored in its own subdirectory.
 
 ## Directory structure
 
-Each figure or table directory follows the same general layout:
+Most figure or table directories follow the same general layout:
 
 ```bash
 figX/ or tableX/
 ├── figX.gpt / tableX.gpt # Gnuplot script
 ├── figX.pdf / tableX.pdf # Final generated figure or table
 ├── APS_term.gpt # Gnuplot formatting helpers
-├── my_color_palete.gpt # Color palette definitions
+├── my_color_palette.gpt # Color palette definitions
 └── DATA/ # Input data used for plotting
 ```
+
+A few directories are exceptions to this layout:
+
+- `Figs/fig1/` is generated from `fig1-preview.gpt` (producing `fig1-preview.pdf`/`.svg`) rather than `fig1.gpt`/`fig1.pdf`.
+- `FigsSM/fig1/` is a static image (`figSM1.pdf`) with no generation script.
+- `Tables/table1/` is regenerated with the Python script `update_table.py` rather than a Gnuplot script; it writes `table.tex` directly from the raw data in `../../../DATA` (extracting the files it needs on demand, like `fig2.gpt` does).
+- `Tables/table2/` contains `get_singularity_spectrum.gpt`, a standalone analysis script that prints the singularity-spectrum values to the terminal rather than producing a `.pdf`/`.tex` table.
 
 ---
 
 ## How to generate figures and tables
 
-To regenerate a figure or table:
+To regenerate a Gnuplot-based figure or table:
 
 1. **Enter the corresponding directory**, for example:
    
@@ -43,6 +50,15 @@ To regenerate a figure or table:
    ```
    
    This generates intermediate LaTeX/EPS files and compiles them with `pdflatex` to produce the final PDF.
+
+To regenerate `Tables/table1` (Python-based):
+
+```bash
+cd Tables/table1
+python3 update_table.py
+```
+
+This pulls the required raw data out of `../../../DATA` and rewrites `table.tex`.
 
 ---
 

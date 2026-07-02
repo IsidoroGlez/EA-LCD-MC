@@ -101,7 +101,7 @@ unset logs
 set xrange [0.055:0.059]
 set yrange [17:20]
 
-# # Primer bloque (negro) — de abajo hacia arriba
+# # First block (black), bottom to top
 
 x=0.0564
 dx=0.0001
