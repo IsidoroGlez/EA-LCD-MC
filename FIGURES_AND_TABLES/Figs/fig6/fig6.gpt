@@ -70,13 +70,15 @@ fit [0.0001:0.14] g(x) L16 u ($1*inv_xi_L16):(-$2):($1*inv_xi_L16_err):3 xyerror
 
 set multiplot
 
+set key at 0.4,0.95 reverse sample 0.75 keywidth 0.25 Left
+
 set tmargin screen 0.98
 set bmargin screen 0.12
 
 set lmargin screen 0.15
 set rmargin screen 0.98
 
-set xlabel '\footnotesize $r/\xi_{n=1}(L)$' offset 0, 0.75
+set xlabel '\footnotesize $r/\xi(L)$' offset 0, 0.75
 set ylabel '\footnotesize $K(r)$' offset 3.8
 set format '\footnotesize $%g$'
 set xtics offset 0,0.5
@@ -85,15 +87,15 @@ set ytics offset 0.75
 set xrange [0:1.05]
 set yrange [-0.05:1.05]
 
-set object 1 rect from 0,-0.02 to 0.12,0.12 
+set object 1 rect from 0,-0.02 to 0.12,0.12
 
 plot \
-L24 u ($1*inv_xi_L24):(-$2):($1*inv_xi_L24_err):3 w xyerror pt 5 lc rgb colorGet("c6") not,\
-L16 u ($1*inv_xi_L16):(-$2):($1*inv_xi_L16_err):3 w xyerror pt 7 lc rgb colorGet("c5") not,\
-L12 u ($1*inv_xi_L12):(-$2):($1*inv_xi_L12_err):3 w xyerror pt 13 lc rgb colorGet("c2") not,\
-L8 u ($1*inv_xi_L8):(-$2):($1*inv_xi_L8_err):3 w xyerror pt 9 lc rgb colorGet("c4") not,\
-L6 u ($1*inv_xi_L6):(-$2):($1*inv_xi_L6_err):3 w xyerror pt 11 lc rgb colorGet("c7") not,\
-L4 u ($1*inv_xi_L4):(-$2):($1*inv_xi_L4_err):3 w xyerror pt 1 lc rgb colorGet("c8") not,\
+L24 u ($1*inv_xi_L24):(-$2):($1*inv_xi_L24_err):3 w xyerror pt 5 lc rgb colorGet("c6") t '\scriptsize $L=24$',\
+L16 u ($1*inv_xi_L16):(-$2):($1*inv_xi_L16_err):3 w xyerror pt 7 lc rgb colorGet("c5") t '\scriptsize $L=16$',\
+L12 u ($1*inv_xi_L12):(-$2):($1*inv_xi_L12_err):3 w xyerror pt 13 lc rgb colorGet("c2") t '\scriptsize $L=12$',\
+L8 u ($1*inv_xi_L8):(-$2):($1*inv_xi_L8_err):3 w xyerror pt 9 lc rgb colorGet("c4") t '\scriptsize $L=8$',\
+L6 u ($1*inv_xi_L6):(-$2):($1*inv_xi_L6_err):3 w xyerror pt 11 lc rgb colorGet("c7") t '\scriptsize $L=6$',\
+L4 u ($1*inv_xi_L4):(-$2):($1*inv_xi_L4_err):3 w xyerror pt 1 lc rgb colorGet("c8") t '\scriptsize $L=4$',\
 x+d lt 1 lc rgb "black" not, [0:0.15] g(x) dt 2 lc rgb "black" not
 
 unset object
@@ -116,24 +118,6 @@ set yrange [-0.02:0.13]
 
 set ytics 0,0.1,0.1 offset 0.6
 set x2tics 0, 0.1,0.1 offset 0, -0.6
-
-set label 4 '\scriptsize $L=4$' left at 0.06,0.11
-set arrow 4 nohead from 0.092,0.107 to 0.116, 0.108
-
-set label 6 '\scriptsize $L=6$' left at 0.025,0.08
-set arrow 6 nohead from 0.055,0.075 to 0.071, 0.065
-
-set label 8 '\scriptsize $L=8$' left at 0.005,0.05
-set arrow 8 nohead from 0.036,0.048 to 0.05, 0.042
-
-set label 12 '\scriptsize $L=12$' left at 0.09,0.04
-set arrow 12 nohead from 0.089,0.04 to 0.067,0.045
-
-set label 16 '\scriptsize $L=16$' left at 0.06,0.015
-set arrow 16 nohead from 0.059, 0.015 to 0.048,0.027
-
-set label 24 '\scriptsize $L=24$' left at 0.03,-0.01
-set arrow 24 nohead from 0.029, -0.01 to 0.0161,0.0029
 
 replot 0 lt -1 dt 3 lc rgb "grey" not
 

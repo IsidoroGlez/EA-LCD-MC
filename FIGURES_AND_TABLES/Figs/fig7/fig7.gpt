@@ -66,7 +66,7 @@ set bmargin screen 0.14
 set lmargin screen 0.115
 set rmargin screen 0.985
 
-set xlabel '\footnotesize $r/\xi_{n=1}(L)$' offset 0, 1
+set xlabel '\footnotesize $r/\xi(L)$' offset 0, 1
 set ylabel '\footnotesize $E(r)$' offset 4.5
 set format '\footnotesize $%g$'
 set xtics offset 0,0.5

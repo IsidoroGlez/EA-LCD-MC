@@ -37,7 +37,7 @@ set tmargin screen 0.975
 set bmargin screen 0.12
 
 set xlabel '\footnotesize $r_{\mathrm{min}}$' offset 0,1.2
-set ylabel '\footnotesize $\xi_{n=1}$' offset 3.8
+set ylabel '\footnotesize $\xi$' offset 3.8
 
 set format x '\footnotesize $%g$'
 
