@@ -56,18 +56,28 @@ set label 5 '\scriptsize $\xi_{12}$' center at 44,18.45
 set xrange [-0.5:49]
 set yrange [17.7:19.3]
 
+# White-disc-free (see PARI Figs/fig3): the data series (Lz*) are split into
+# (1) yerror with pt 0 -> error bars, no disc, and (2) "points" -> the markers.
+# The hand-drawn xerror legend swatches KEEP their disc on purpose: it isolates
+# each key marker from the data curves that pass behind it (they are not data).
 plot \
-Lz96 u 1:2:3 every 2 w yerror pt 6 ps 1.5 lw 2 lc rgb colorGet("c8") not "96",\
+Lz96 u 1:2:3 every 2 w yerror pt 0 lw 2 lc rgb colorGet("c8") not "96",\
+Lz96 u 1:2 every 2 w points pt 6 ps 1.5 lw 2 lc rgb colorGet("c8") not,\
 "< echo '37 18.3 2.5'" u 1:2:3 w xerror pt 6 ps 1.5 lw 2 lc rgb colorGet("c8") not,\
-Lz96 u 1:4:5 every 2 w yerror pt 7 ps 1.5 lw 2 lc rgb colorGet("c8") not "96",\
+Lz96 u 1:4:5 every 2 w yerror pt 0 lw 2 lc rgb colorGet("c8") not "96",\
+Lz96 u 1:4 every 2 w points pt 7 ps 1.5 lw 2 lc rgb colorGet("c8") not,\
 "< echo '44 18.3 2.5'" u 1:2:3 w xerror pt 7 ps 1.5 lw 2 lc rgb colorGet("c8") not,\
-Lz128 u 1:2:3 every 2 w yerror pt 8 ps 1.5 lw 2 lc rgb colorGet("c6") not "128",\
+Lz128 u 1:2:3 every 2 w yerror pt 0 lw 2 lc rgb colorGet("c6") not "128",\
+Lz128 u 1:2 every 2 w points pt 8 ps 1.5 lw 2 lc rgb colorGet("c6") not,\
 "< echo '37 18.15 2.5'" u 1:2:3 w xerror pt 8 ps 2 lw 2 lc rgb colorGet("c6") not,\
-Lz128 u 1:4:5 every 2 w yerror pt 9 ps 1.5 lw 2 lc rgb colorGet("c6") not "128",\
+Lz128 u 1:4:5 every 2 w yerror pt 0 lw 2 lc rgb colorGet("c6") not "128",\
+Lz128 u 1:4 every 2 w points pt 9 ps 1.5 lw 2 lc rgb colorGet("c6") not,\
 "< echo '44 18.15 2.5'" u 1:2:3 w xerror pt 9 ps 2.5 lw 2 lc rgb colorGet("c6") not,\
-Lz192 u 1:2:3 every 4 w yerror pt 10 ps 1.5 lw 2 lc rgb colorGet("c7") not "192",\
+Lz192 u 1:2:3 every 4 w yerror pt 0 lw 2 lc rgb colorGet("c7") not "192",\
+Lz192 u 1:2 every 4 w points pt 10 ps 1.5 lw 2 lc rgb colorGet("c7") not,\
 "< echo '37 18.0 2.5'" u 1:2:3 w xerror pt 10 ps 2 lw 2 lc rgb colorGet("c7") not,\
-Lz192 u 1:4:5 every 4::2 w yerror pt 11 ps 1.5 lw 2 lc rgb colorGet("c7") not "192",\
+Lz192 u 1:4:5 every 4::2 w yerror pt 0 lw 2 lc rgb colorGet("c7") not "192",\
+Lz192 u 1:4 every 4::2 w points pt 11 ps 1.5 lw 2 lc rgb colorGet("c7") not,\
 "< echo '44 18.0 2.5'" u 1:2:3 w xerror pt 11 ps 2.5 lw 2 lc rgb colorGet("c7") not
 
 

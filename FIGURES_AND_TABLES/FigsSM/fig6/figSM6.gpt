@@ -53,18 +53,28 @@ set label 3 '\scriptsize $\lbrace Q, Q^3\rbrace$' left at 0,10.2
 set label 4 '\scriptsize $L\!=\!24$' center at 2.3,14.5
 set label 5 '\scriptsize $L\!=\!16$' center at 3.3,14.5
 
+# White-disc-free plotting (see PARI Figs/fig3): the yerror style draws an
+# opaque white disc behind each point that masks neighbouring data.  Plot the
+# yerror series in passes: (1) error bars with pt 0 (no disc), (2) the markers
+# with "points".  The xerror legend markers are left unchanged.
 plot \
-L24_MIN_0 u 1:(1+$2):3 w yerror pt 7 lc rgb colorGet("c2") not,\
+L24_MIN_0 u 1:(1+$2):3 w yerror pt 0 lc rgb colorGet("c2") not,\
+L24_MIN_0 u 1:(1+$2) w points pt 7 lc rgb colorGet("c2") not,\
 "< echo '2.3 12.06 0.3'" u 1:(1+$2):3 w xerror pt 7 ps 1.5 lw 2 lc rgb colorGet("c2") not,\
-L24_MIN_1 u ($1+0.15):(1+$2):3 w yerror pt 5 lc rgb colorGet("c7") not,\
+L24_MIN_1 u ($1+0.15):(1+$2):3 w yerror pt 0 lc rgb colorGet("c7") not,\
+L24_MIN_1 u ($1+0.15):(1+$2) w points pt 5 lc rgb colorGet("c7") not,\
 "< echo '2.3 10.56 0.3'" u 1:(1+$2):3 w xerror pt 5 ps 1.5 lw 2 lc rgb colorGet("c7") not,\
-L24_MIN_2 u ($1+0.30):(1+$2):3 w yerror pt 13 lc rgb colorGet("c5") not,\
+L24_MIN_2 u ($1+0.30):(1+$2):3 w yerror pt 0 lc rgb colorGet("c5") not,\
+L24_MIN_2 u ($1+0.30):(1+$2) w points pt 13 lc rgb colorGet("c5") not,\
 "< echo '2.3 9.06 0.3'" u 1:(1+$2):3 w xerror pt 13 ps 2 lw 2 lc rgb colorGet("c5") not,\
-L16_MIN_0 u ($1+0.45):(1+$2):3 w yerror pt 6 lc rgb colorGet("c3") not,\
+L16_MIN_0 u ($1+0.45):(1+$2):3 w yerror pt 0 lc rgb colorGet("c3") not,\
+L16_MIN_0 u ($1+0.45):(1+$2) w points pt 6 lc rgb colorGet("c3") not,\
 "< echo '3.3 12.06 0.3'" u 1:(1+$2):3 w xerror pt 6 ps 1.5 lw 2 lc rgb colorGet("c3") not,\
-L16_MIN_1 u ($1+0.60):(1+$2):3 w yerror pt 4 lc rgb colorGet("c6") not,\
+L16_MIN_1 u ($1+0.60):(1+$2):3 w yerror pt 0 lc rgb colorGet("c6") not,\
+L16_MIN_1 u ($1+0.60):(1+$2) w points pt 4 lc rgb colorGet("c6") not,\
 "< echo '3.3 10.56 0.3'" u 1:(1+$2):3 w xerror pt 4 ps 1.5 lw 2 lc rgb colorGet("c6") not,\
-L16_MIN_2 u ($1+0.75):(1+$2):3 w yerror pt 12 lc rgb colorGet("c4") not,\
+L16_MIN_2 u ($1+0.75):(1+$2):3 w yerror pt 0 lc rgb colorGet("c4") not,\
+L16_MIN_2 u ($1+0.75):(1+$2) w points pt 12 lc rgb colorGet("c4") not,\
 "< echo '3.3 9.06 0.3'" u 1:(1+$2):3 w xerror pt 12 ps 2 lw 2 lc rgb colorGet("c4") not
 
 

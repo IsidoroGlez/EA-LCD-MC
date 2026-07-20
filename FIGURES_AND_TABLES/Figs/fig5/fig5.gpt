@@ -82,8 +82,10 @@ set arrow 1000 nohead from screen cx, screen (cy-dy/2) to (Cx-0.25), (Cy-0.00727
 set arrow 2000 nohead from screen cx, screen (cy+dy/2) to (Cx-0.1), (Cy+0.00745)
 
 plot \
-"< awk '{if($1==0) print $0}' ".PBC."/C_Q_Q_n0_NBLOCKS_1024.txt" u (($3-0.1)<27.1?($3-0.1):-1):4:5 w yerror pt 7 ps 1.5 lc rgb colorGet("c6") not,\
-"< awk '{if($1==0) print $0}' ".OBC."/C_Q_Q_n0_NBLOCKS_16384.txt" u ($3+0.1):4:5 w yerror pt 9 ps 1.5 lc rgb colorGet("c2") not
+"< awk '{if($1==0) print $0}' ".PBC."/C_Q_Q_n0_NBLOCKS_1024.txt" u (($3-0.1)<27.1?($3-0.1):-1):4:5 w yerror pt 0 lc rgb colorGet("c6") not,\
+"< awk '{if($1==0) print $0}' ".PBC."/C_Q_Q_n0_NBLOCKS_1024.txt" u (($3-0.1)<27.1?($3-0.1):-1):4 w points pt 7 ps 1.5 lc rgb colorGet("c6") not,\
+"< awk '{if($1==0) print $0}' ".OBC."/C_Q_Q_n0_NBLOCKS_16384.txt" u ($3+0.1):4:5 w yerror pt 0 lc rgb colorGet("c2") not,\
+"< awk '{if($1==0) print $0}' ".OBC."/C_Q_Q_n0_NBLOCKS_16384.txt" u ($3+0.1):4 w points pt 9 ps 1.5 lc rgb colorGet("c2") not
 
 set border
 set xtics
@@ -125,8 +127,10 @@ set arrow 2 nohead from 10, 1.5e-1 to 20,2.7e-1
 set object 6000 ellipse center screen cx, screen cy size screen dx, screen dy angle 0 front lw 1 fc rgb "gray" fillstyle empty
 
 plot \
-"< awk '{if($1==0) print $0}' ".PBC."/C_Q_Q_n0_NBLOCKS_1024.txt" u 3:4:5 w yerror pt 7 ps 0.7 lc rgb colorGet("c6") not,\
-"< awk '{if($1==0) print $0}' ".OBC."/C_Q_Q_n0_NBLOCKS_16384.txt" u 3:4:5 w yerror pt 9 lc rgb colorGet("c2") not
+"< awk '{if($1==0) print $0}' ".PBC."/C_Q_Q_n0_NBLOCKS_1024.txt" u 3:4:5 w yerror pt 0 lc rgb colorGet("c6") not,\
+"< awk '{if($1==0) print $0}' ".PBC."/C_Q_Q_n0_NBLOCKS_1024.txt" u 3:4 w points pt 7 ps 0.7 lc rgb colorGet("c6") not,\
+"< awk '{if($1==0) print $0}' ".OBC."/C_Q_Q_n0_NBLOCKS_16384.txt" u 3:4:5 w yerror pt 0 lc rgb colorGet("c2") not,\
+"< awk '{if($1==0) print $0}' ".OBC."/C_Q_Q_n0_NBLOCKS_16384.txt" u 3:4 w points pt 9 lc rgb colorGet("c2") not
 
 # Restore margins (so they don't affect the next plot)
 unset lmargin
@@ -170,8 +174,10 @@ set label 2 '\scriptsize OBC, $M\!=\!48$' center at 10, 43.5
 set arrow 1 nohead from 18, 45.3 to 22,44.55
 set arrow 2 nohead from 9, 43.7 to 12,44.35
 
-plot "< awk '{if($1==0) print $0}' ".PBC u 3:4:5 w yerror axis x2y2 pt 7 ps 1.5 lc rgb colorGet("c6") not,\
-"< awk '{if($1==0) print $0}' ".OBC u 3:4:5 w yerror axis x2y2 pt 9 ps 1.5 lc rgb colorGet("c2") not
+plot "< awk '{if($1==0) print $0}' ".PBC u 3:4:5 w yerror axis x2y2 pt 0 lc rgb colorGet("c6") not,\
+"< awk '{if($1==0) print $0}' ".PBC u 3:4 w points axis x2y2 pt 7 ps 1.5 lc rgb colorGet("c6") not,\
+"< awk '{if($1==0) print $0}' ".OBC u 3:4:5 w yerror axis x2y2 pt 0 lc rgb colorGet("c2") not,\
+"< awk '{if($1==0) print $0}' ".OBC u 3:4 w points axis x2y2 pt 9 ps 1.5 lc rgb colorGet("c2") not
 
 unset multiplot
  

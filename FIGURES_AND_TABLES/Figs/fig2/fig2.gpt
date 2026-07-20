@@ -166,8 +166,10 @@ set object rect from screen 0.05, screen 0.55 to screen 0.45, screen 0.972 fc rg
 plot \
 f07(x) w lines lw 1.5 lc rgb colorGet("c2") not,\
 fc(x) w lines lw 1.5 lc rgb colorGet("c6") not,\
-data_T07 u 1:2:3 w yerror pt 7 ps 1 lc rgb colorGet("c2") not,\
-data_Tc u 1:2:3 w yerror pt 9 ps 1 lc rgb colorGet("c6") not 
+data_T07 u 1:2:3 w yerror pt 0 lc rgb colorGet("c2") not,\
+data_T07 u 1:2 w points pt 7 ps 1 lc rgb colorGet("c2") not,\
+data_Tc u 1:2:3 w yerror pt 0 lc rgb colorGet("c6") not,\
+data_Tc u 1:2 w points pt 9 ps 1 lc rgb colorGet("c6") not
 
 set rmargin screen 0.45
 set bmargin screen 0.55
@@ -191,13 +193,17 @@ set y2tics ('\scriptsize $1$' 1, '\scriptsize $10$' 10) offset -0.85
 set y2label '\scriptsize $\Delta\xi(T,L)$' offset -5
 
 plot for [i=-20:10:4]  x**(4./3)*10**(i/10.) w l dt 2 lw 0.75 lc rgb "grey" not,\
-data_T07 u 1:2:3 w yerror pt 7 ps 1 lc rgb colorGet("c2") not,\
+data_T07 u 1:2:3 w yerror pt 0 lc rgb colorGet("c2") not,\
+data_T07 u 1:2 w points pt 7 ps 1 lc rgb colorGet("c2") not,\
 f07(x) w lines lw 1 lc rgb colorGet("c2") not,\
-data_T08 u 1:2:3 w yerror pt 11 ps 1 lc rgb colorGet("c4") not,\
+data_T08 u 1:2:3 w yerror pt 0 lc rgb colorGet("c4") not,\
+data_T08 u 1:2 w points pt 11 ps 1 lc rgb colorGet("c4") not,\
 f08(x) w lines lw 1 lc rgb colorGet("c4") not,\
-data_T09 u 1:2:3 w yerror pt 13 ps 1 lc rgb colorGet("c7") not,\
+data_T09 u 1:2:3 w yerror pt 0 lc rgb colorGet("c7") not,\
+data_T09 u 1:2 w points pt 13 ps 1 lc rgb colorGet("c7") not,\
 f09(x) w lines lw 1 lc rgb colorGet("c7") not,\
-data_T1 u 1:2:3 w yerror pt 5 ps 1 lc rgb colorGet("c3") not,\
+data_T1 u 1:2:3 w yerror pt 0 lc rgb colorGet("c3") not,\
+data_T1 u 1:2 w points pt 5 ps 1 lc rgb colorGet("c3") not,\
 f1(x) w lines lw 1 lc rgb colorGet("c3") not
 
 unset multiplot

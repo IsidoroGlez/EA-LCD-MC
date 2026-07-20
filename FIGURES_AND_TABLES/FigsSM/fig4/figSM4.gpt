@@ -67,7 +67,14 @@ x2=48
 
 set object 1 rect from x1,ymin to x2,ymax fc rgb "#aaccee" fs solid 0.4 back
 
-plot "< awk '$1==0{i=int($3/48);j=$3-i*48;if(i==j)print i,$4,$5}' ".OBC u 1:2:3 w yerror pt 9 ps 2 lc rgb colorGet("c2") not, y w line lw 1.5 lc rgb "black" not
+# White-disc-free plotting (see PARI Figs/fig3): the error-bar style draws an
+# opaque white disc behind each point that masks neighbouring data / the
+# reference line.  Plot in passes: (1) error bars with pt 0 (no disc), then the
+# black reference line, then (2) the markers with "points" on top.
+plot \
+"< awk '$1==0{i=int($3/48);j=$3-i*48;if(i==j)print i,$4,$5}' ".OBC u 1:2:3 w yerror pt 0 lc rgb colorGet("c2") not,\
+"< awk '$1==0{i=int($3/48);j=$3-i*48;if(i==j)print i,$4,$5}' ".OBC u 1:2 w points pt 9 ps 2 lc rgb colorGet("c2") not,\
+y w line lw 1.5 lc rgb "black" not
 
 ###########
 # CLOSE
