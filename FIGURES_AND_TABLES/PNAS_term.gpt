@@ -1,0 +1,21 @@
+#####################################
+# PNAS column widths (single-blind
+# and double-blind manuscript style)
+#####################################
+# C=1    -> one column    (8.7 cm)
+# C=1.5  -> 1.5 columns   (11.4 cm)
+# C=2    -> two columns   (17.8 cm)
+if (C == 1) {
+   W=8.7
+} else { if (C == 1.5) {
+   W=11.4
+} else { if (C == 2) {
+   W=17.8
+} else {
+   print "ERROR: C must be 1, 1.5, or 2 (PNAS column widths) in PNAS_term.gpt"
+   exit
+}}}
+
+H=R*W
+set term epslatex color size W cm, H cm font "cmr,12" lw 2 standalone header \
+"\\usepackage{amsmath}"

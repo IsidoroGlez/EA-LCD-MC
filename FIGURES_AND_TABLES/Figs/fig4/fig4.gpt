@@ -6,14 +6,14 @@ set fit noerrorscaling
 #COLOR PALETE
 ##############
 PALETTE=0
-load "my_color_palette.gpt"
+load "../../my_color_palette.gpt"
 
 ###############
-# APS TERMINAL
+# PNAS TERMINAL
 ###############
 C=1.  # One column
-R=.75  # Square ratio
-load "APS_term.gpt"
+R=0.6897  # H ~ 6cm (common height across figures)
+load "../../PNAS_term.gpt"
 
 #############
 # OUTPUT
@@ -26,11 +26,11 @@ set output "fig4.tex"
 
 set multiplot
 
-set tmargin screen 0.98
+set tmargin screen 0.97
 set bmargin screen 0.14
 
 set lmargin screen 0.15
-set rmargin screen 0.98
+set rmargin screen 0.99
 
 OBC_4R="< paste DATA/OBC/INDEPENDENT/16x48/C_2nR_over_C_2R_Q_Q_n0_NBLOCKS_16384.txt DATA/OBC/INDEPENDENT/16x48/C_2nR_over_C_2R_Q_Q_n1_NBLOCKS_16384.txt | awk '($1==0){print $4,$5,$11,$12}'"
 OBC_6R="< paste DATA/OBC/INDEPENDENT/16x48/C_2nR_over_C_2R_Q_Q_n0_NBLOCKS_16384.txt DATA/OBC/INDEPENDENT/16x48/C_2nR_over_C_2R_Q_Q_n2_NBLOCKS_16384.txt | awk '($1==0){print $4,$5,$11,$12}'"
@@ -40,7 +40,7 @@ OBC_4R_Tc="< paste DATA/OBC/INDEPENDENT/16x48/C_2nR_over_C_2R_Q_Q_n0_NBLOCKS_163
 OBC_6R_Tc="< paste DATA/OBC/INDEPENDENT/16x48/C_2nR_over_C_2R_Q_Q_n0_NBLOCKS_16384.txt DATA/OBC/INDEPENDENT/16x48/C_2nR_over_C_2R_Q_Q_n2_NBLOCKS_16384.txt | awk '(($1==\"I\")&&($2==0.9075)){print $4,$5,$11,$12}'"
 OBC_8R_Tc="< paste DATA/OBC/INDEPENDENT/16x48/C_2nR_over_C_2R_Q_Q_n0_NBLOCKS_16384.txt DATA/OBC/INDEPENDENT/16x48/C_2nR_over_C_2R_Q_Q_n3_NBLOCKS_16384.txt | awk '(($1==\"I\")&&($2==0.9075)){print $4,$5,$11,$12}'"
 
-set xlabel '\footnotesize $C^{(1)}(r)$' offset 0,0.9
+set xlabel '\footnotesize $C^{(1)}(r)$' offset 0,1.0
 set ylabel '\footnotesize $C^{(n)}(r)/[C^{(1)}(r)]^n$' offset 3.7
 
 set yrange [1:200]
@@ -69,8 +69,8 @@ set arrow 3 nohead from x0,y0 to 0.21,1.7
 
 x0=0.16
 y0=15
-set label 8 '\scriptsize $T=1.1019$' left at x0+0.005,y0+3
-set label 9 '\scriptsize $[T_\mathrm{c}=1.1019(29)]$' left at x0+0.005,y0-0.8
+set label 8 '\scriptsize $T=1.1019$' left at x0+0.005,y0+3.4
+set label 9 '\scriptsize $[T_\mathrm{c}=1.1019(29)]$' left at x0+0.005,y0-1.2
 
 set arrow 4 nohead from x0,y0 to 0.1,7
 set arrow 5 nohead from x0,y0 to 0.1,3 

@@ -6,14 +6,14 @@ set fit noerrorscaling
 #COLOR PALETTE
 ##############
 PALETTE=0
-load "my_color_palette.gpt"
+load "../../my_color_palette.gpt"
 
 ###############
-# APS TERMINAL
+# PNAS TERMINAL
 ###############
 C=1.  # One column
-R=0.6  # Square ratio
-load "APS_term.gpt"
+R=0.6897  # H ~ 6cm (common height across figures)
+load "../../PNAS_term.gpt"
 
 #############
 # OUTPUT
@@ -101,13 +101,13 @@ system cmd
 cmd=sprintf("awk '($3==%d)&&($2==1){print 24,$4,$5,$3}' DATA/OBC/INDEPENDENT/24x88/delta_xi_Q_Q_n0_NBLOCKS_2048.txt >> DATA/delta_xi_beta1.dat" , d24)
 system cmd
 
-set xlabel '\footnotesize $L$' offset 0, 1.2
+set xlabel '\footnotesize $L$' offset 0, 1.0
 unset ylabel
 
-set rmargin screen 0.98
+set rmargin screen 0.99
 set lmargin screen 0.05
-set tmargin screen 0.972
-set bmargin screen 0.13
+set tmargin screen 0.97
+set bmargin screen 0.14
 
 set format '\footnotesize $%g$'
 
@@ -161,7 +161,7 @@ fit [3:*] fc(x) data_Tc u 1:2:3 yerror via Ac
 
 set multiplot
 
-set object rect from screen 0.05, screen 0.55 to screen 0.45, screen 0.972 fc rgb "white"
+set object rect from screen 0.05, screen 0.55 to screen 0.45, screen 0.97 fc rgb "white"
 
 plot \
 f07(x) w lines lw 1.5 lc rgb colorGet("c2") not,\
@@ -187,24 +187,24 @@ set format y ''
 set format x '\scriptsize $%g$'
 set format y2 ''
 
-set xtics offset 0, 0.75
+set xtics offset 0, 0.6
 set y2tics ('\scriptsize $1$' 1, '\scriptsize $10$' 10) offset -0.85
 
-set y2label '\scriptsize $\Delta\xi(T,L)$' offset -5
+set y2label '\scriptsize $\Delta\xi(T,L)$' offset -4.5
 
 plot for [i=-20:10:4]  x**(4./3)*10**(i/10.) w l dt 2 lw 0.75 lc rgb "grey" not,\
 data_T07 u 1:2:3 w yerror pt 0 lc rgb colorGet("c2") not,\
 data_T07 u 1:2 w points pt 7 ps 1 lc rgb colorGet("c2") not,\
-f07(x) w lines lw 1 lc rgb colorGet("c2") not,\
+f07(x) w lines lc rgb colorGet("c2") not,\
 data_T08 u 1:2:3 w yerror pt 0 lc rgb colorGet("c4") not,\
 data_T08 u 1:2 w points pt 11 ps 1 lc rgb colorGet("c4") not,\
-f08(x) w lines lw 1 lc rgb colorGet("c4") not,\
+f08(x) w lines lc rgb colorGet("c4") not,\
 data_T09 u 1:2:3 w yerror pt 0 lc rgb colorGet("c7") not,\
 data_T09 u 1:2 w points pt 13 ps 1 lc rgb colorGet("c7") not,\
-f09(x) w lines lw 1 lc rgb colorGet("c7") not,\
+f09(x) w lines lc rgb colorGet("c7") not,\
 data_T1 u 1:2:3 w yerror pt 0 lc rgb colorGet("c3") not,\
 data_T1 u 1:2 w points pt 5 ps 1 lc rgb colorGet("c3") not,\
-f1(x) w lines lw 1 lc rgb colorGet("c3") not
+f1(x) w lines lc rgb colorGet("c3") not
 
 unset multiplot
 

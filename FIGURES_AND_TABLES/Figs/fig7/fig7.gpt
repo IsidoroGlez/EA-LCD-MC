@@ -6,14 +6,14 @@ set fit noerrorscaling
 #COLOR PALETE
 ##############
 PALETTE=0
-load "my_color_palette.gpt"
+load "../../my_color_palette.gpt"
 
 ###############
-# APS TERMINAL
+# PNAS TERMINAL
 ###############
 C=1.  # One column
-R=.75  # Square ratio
-load "APS_term.gpt"
+R=0.6897  # H ~ 6cm (common height across figures)
+load "../../PNAS_term.gpt"
 
 #############
 # OUTPUT
@@ -60,13 +60,13 @@ inv_xi_L24_err=system('paste DATA/OBC/INDEPENDENT/24x88/xi_Q_Q_n0_NBLOCKS_2048.t
  | awk "(\$1==0 && \$5!=\"-nan\"){print \$4,\$12}" | sort -k1 -g | tail -1 | awk "{print \$2}"')
 L24="< awk '$1==0{print $3,$6,$7}' DATA/OBC/INDEPENDENT/24x88/C_Q3_over_C_Q_n0_NBLOCKS_2048.txt"
 
-set tmargin screen 0.98
+set tmargin screen 0.97
 set bmargin screen 0.14
 
-set lmargin screen 0.115
-set rmargin screen 0.985
+set lmargin screen 0.16
+set rmargin screen 0.99
 
-set xlabel '\footnotesize $r/\xi(L)$' offset 0, 1
+set xlabel '\footnotesize $r/\xi(L)$' offset 0, 1.0
 set ylabel '\footnotesize $E(r)$' offset 4.5
 set format '\footnotesize $%g$'
 set xtics offset 0,0.5

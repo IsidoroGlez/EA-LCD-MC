@@ -6,14 +6,14 @@ set fit noerrorscaling
 #COLOR PALETTE
 ##############
 PALETTE=0
-load "my_color_palette.gpt"
+load "../../my_color_palette.gpt"
 
 ###############
-# APS TERMINAL
+# PNAS TERMINAL
 ###############
-C=2.  # One column
-R=0.3  # Square ratio
-load "APS_term.gpt"
+C=2.  # Two columns
+R=0.3371  # H ~ 6cm (common height across figures)
+load "../../PNAS_term.gpt"
 
 #############
 # OUTPUT
@@ -38,12 +38,12 @@ cmd12=sprintf("< grep -v '^I' DATA/PBC/12x320/delta_xi12_Q_Q_n0_NBLOCKS_32768.tx
 cmd16=sprintf("< grep -v '^I' DATA/OBC/INDEPENDENT/16x48/delta_xi_Q_Q_n0_NBLOCKS_16384.txt | awk '$3==%d{print $0}'", d16)
 cmd24=sprintf("< grep -v '^I' DATA/OBC/INDEPENDENT/24x88/delta_xi_Q_Q_n0_NBLOCKS_2048.txt | awk '$3==%d{print $0}'", d24)
 
-set xlabel '\footnotesize $T$' offset 0, 1.2
+set xlabel '\footnotesize $T$' offset 0, 1.0
 set ylabel '\footnotesize $\Delta\xi(T,L)/L^{4/3}$' offset 4
 
 set rmargin screen 0.48
 set lmargin screen 0.07
-set tmargin screen 0.972
+set tmargin screen 0.97
 set bmargin screen 0.14
 
 set format '\footnotesize $%g$'
@@ -85,18 +85,18 @@ cmd4 u (1/$2):($4/4**(4./3)) w points pt 1 ps 1 lc rgb colorGet("c8") not,\
 cmd4 u (NaN):(NaN):(NaN) w yerror pt 1 ps 1 lc rgb colorGet("c8") t '\scriptsize $L=4$'
 
 set lmargin screen 0.52
-set rmargin screen 0.93
+set rmargin screen 0.937
 
 Tc=1.1019
 nu=2.562
 expo=1/nu
 
 unset ylabel
-set y2tics mirror
+set y2tics mirror offset -0.75,0
 set format y ""
 set format y2 '\footnotesize $%g$'
 
-set xlabel '\footnotesize $(T-T_{\text{c}})L^{1/\nu}$' offset 0, 1.2
+set xlabel '\footnotesize $(T-T_{\text{c}})L^{1/\nu}$' offset 0, 1.0
 set y2label '\footnotesize $\Delta\xi(T,L)/L$' offset -4
 
 set xrange [*:0]
