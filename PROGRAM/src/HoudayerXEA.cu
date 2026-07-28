@@ -310,6 +310,7 @@ __global__ void device_ReduceLabels(unsigned long n, unsigned int** d_labelAll[]
      flag = 0;
 
      label_1 = root_find(d_label[offset], index);
+     label_2 = label_1; /* Not strictly necessary but safer: Massimo, July 27 2026 */
      if( (bond>>2)&0x01 == 1 ){
       la = (index-nx*nx+nla)%nla;
       label_2 = root_find(d_label[offset], la);
