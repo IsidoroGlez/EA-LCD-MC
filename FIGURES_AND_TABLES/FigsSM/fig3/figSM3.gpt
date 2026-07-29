@@ -6,14 +6,16 @@ set fit noerrorscaling
 #COLOR PALETE
 #############
 PALETTE=0
-load "my_color_palette.gpt"
+load "../../my_color_palette.gpt"
 
 ###############
-# APS TERMINAL
+# PNAS TERMINAL
 ###############
-C=1.  # One column
-R=0.75 # 
-load "APS_term.gpt"
+C=2.  # Two columns (scaled to \textwidth in the SM)
+R=0.6897  # same R as main-text figs -> H ~ 12.28cm at C=2 (preserves aspect ratio)
+load "../../PNAS_term.gpt"
+set border lw 2.5
+set tics scale 1.5,0.75
 
 #############
 # OUTPUT
@@ -25,35 +27,36 @@ set output "figSM3.tex"
 HOU="DATA/difference_averages_b00_12x320_32768.txt"
 ###########
 
-set lmargin screen 0.175
-set rmargin screen 0.995
-set tmargin screen 0.995
-set bmargin screen 0.175
+set lmargin screen 0.11
+set rmargin screen 0.9951
+set tmargin screen 0.975
+set bmargin screen 0.10
 
-set xlabel '\footnotesize $10^5$ EMCS' offset 0,0.5
-set ylabel '\footnotesize standard deviations' offset 1,0
+set xlabel '\normalsize $10^5$ EMCS' offset 0,0.3
+set ylabel '\normalsize standard deviations' offset 1.7,0
 
 nummed=0.01  #measurements per file
 v=12**2*320
 
 set xrange [0:nummed*512]
 set yrange [-15:3]
-set ytics offset 0.7,0
-set xtics offset 0,0.3
+set ytics offset 0.45,0
+set xtics offset 0,0.4
 
-#set format x '\footnotesize $%g$'
+set format x '\normalsize $%g$'
+set format y '\normalsize $%g$'
 unset key
 
-set label 1 '\footnotesize $q^2$' left at 1.2, -11
-set label 2 '\footnotesize Energy' left at 1.2, -13
+set label 1 '\normalsize $q^2$' left at 1.2, -11
+set label 2 '\normalsize Energy' left at 1.2, -13
 set object 1 rect from 0,-1 to 512*nummed,1 fc rgb "0xFCFAD9"
 
-set arrow 1 nohead from 1.1,-13 to 0.35, -13
-set arrow 2 nohead from 1.1,-11 to 0.7, -11
+set arrow 1 nohead from 1.1,-13 to 0.35, -13 lw 1.3
+set arrow 2 nohead from 1.1,-11 to 0.7, -11 lw 1.3
 
-p HOU u ($1*nummed):($7/$8) w l lw 2 lc rgb colorGet("c7") t "energy",\
-HOU u ($1*nummed):($9/$10) w l lw 2 lc rgb colorGet("c6") t '$q^2$',\
--546.573*exp(-x/3900*1e5) t '$\varDelta_1{\mathrm e}^{-t/\tau_\text{TRW}}$' dt 2 lw 2 lc rgb colorGet("c1")
+p HOU u ($1*nummed):($7/$8) w l lw 2.5 lc rgb colorGet("c7") t "energy",\
+HOU u ($1*nummed):($9/$10) w l lw 2.5 lc rgb colorGet("c6") t '$q^2$',\
+-546.573*exp(-x/3900*1e5) t '$\varDelta_1{\mathrm e}^{-t/\tau_\text{TRW}}$' dt 2 lw 2.5 lc rgb colorGet("c1")
 
 ###########
 # CLOSE

@@ -6,14 +6,16 @@ set fit noerrorscaling
 #COLOR PALETE
 ##############
 PALETTE=0
-load "my_color_palette.gpt"
+load "../../my_color_palette.gpt"
 
 ###############
-# APS TERMINAL
+# PNAS TERMINAL
 ###############
-C=1.  # One column
-R=.75  # Square ratio
-load "APS_term.gpt"
+C=2.  # Two columns (scaled to \textwidth in the SM)
+R=0.6897  # same R as main-text figs -> H ~ 12.28cm at C=2 (preserves aspect ratio)
+load "../../PNAS_term.gpt"
+set border lw 2.5
+set tics scale 1.5,0.75
 
 #############
 # OUTPUT
@@ -31,27 +33,27 @@ Lz96="./DATA/Lz96_xi01-xi12.txt"
 Lz128="./DATA/Lz128_xi01-xi12.txt"
 Lz192="./DATA/Lz192_xi01-xi12.txt"
 
-set lmargin screen 0.11
-set rmargin screen 0.985
+set lmargin screen 0.0856
+set rmargin screen 0.9951
 set tmargin screen 0.975
-set bmargin screen 0.12
+set bmargin screen 0.10
 
-set xlabel '\footnotesize $r_{\mathrm{min}}$' offset 0,1.2
-set ylabel '\footnotesize $\xi$' offset 3.8
+set xlabel '\normalsize $r_{\mathrm{min}}$' offset 0,0.3
+set ylabel '\normalsize $\xi$' offset 1.7
 
-set format x '\footnotesize $%g$'
+set format x '\normalsize $%g$'
 
-set xtics offset 0,0.5
+set xtics offset 0,0.4
 unset ytics
-set ytics 17.8,0.2 format "" offset 0.75
-set ytics add ('\footnotesize $18$' 18, '\footnotesize $19$' 19)
+set ytics 17.8,0.2 format "" offset 0.5
+set ytics add ('\normalsize $18$' 18, '\normalsize $19$' 19)
 
-set label 1 '\scriptsize $M\!=\!96$' left at 25,18.3
-set label 2 '\scriptsize $M\!=\!128$' left at 25,18.15
-set label 3 '\scriptsize $M\!=\!192$' left at 25,18.
+set label 1 '\normalsize $M\!=\!96$' left at 25,18.3
+set label 2 '\normalsize $M\!=\!128$' left at 25,18.15
+set label 3 '\normalsize $M\!=\!192$' left at 25,18.
 
-set label 4 '\scriptsize $\xi_{01}$' center at 37,18.45
-set label 5 '\scriptsize $\xi_{12}$' center at 44,18.45
+set label 4 '\normalsize $\xi_{01}$' center at 33,18.45
+set label 5 '\normalsize $\xi_{12}$' center at 40,18.45
 
 set xrange [-0.5:49]
 set yrange [17.7:19.3]
@@ -61,24 +63,24 @@ set yrange [17.7:19.3]
 # The hand-drawn xerror legend swatches KEEP their disc on purpose: it isolates
 # each key marker from the data curves that pass behind it (they are not data).
 plot \
-Lz96 u 1:2:3 every 2 w yerror pt 0 lw 2 lc rgb colorGet("c8") not "96",\
-Lz96 u 1:2 every 2 w points pt 6 ps 1.5 lw 2 lc rgb colorGet("c8") not,\
-"< echo '37 18.3 2.5'" u 1:2:3 w xerror pt 6 ps 1.5 lw 2 lc rgb colorGet("c8") not,\
-Lz96 u 1:4:5 every 2 w yerror pt 0 lw 2 lc rgb colorGet("c8") not "96",\
-Lz96 u 1:4 every 2 w points pt 7 ps 1.5 lw 2 lc rgb colorGet("c8") not,\
-"< echo '44 18.3 2.5'" u 1:2:3 w xerror pt 7 ps 1.5 lw 2 lc rgb colorGet("c8") not,\
-Lz128 u 1:2:3 every 2 w yerror pt 0 lw 2 lc rgb colorGet("c6") not "128",\
-Lz128 u 1:2 every 2 w points pt 8 ps 1.5 lw 2 lc rgb colorGet("c6") not,\
-"< echo '37 18.15 2.5'" u 1:2:3 w xerror pt 8 ps 2 lw 2 lc rgb colorGet("c6") not,\
-Lz128 u 1:4:5 every 2 w yerror pt 0 lw 2 lc rgb colorGet("c6") not "128",\
-Lz128 u 1:4 every 2 w points pt 9 ps 1.5 lw 2 lc rgb colorGet("c6") not,\
-"< echo '44 18.15 2.5'" u 1:2:3 w xerror pt 9 ps 2.5 lw 2 lc rgb colorGet("c6") not,\
-Lz192 u 1:2:3 every 4 w yerror pt 0 lw 2 lc rgb colorGet("c7") not "192",\
-Lz192 u 1:2 every 4 w points pt 10 ps 1.5 lw 2 lc rgb colorGet("c7") not,\
-"< echo '37 18.0 2.5'" u 1:2:3 w xerror pt 10 ps 2 lw 2 lc rgb colorGet("c7") not,\
-Lz192 u 1:4:5 every 4::2 w yerror pt 0 lw 2 lc rgb colorGet("c7") not "192",\
-Lz192 u 1:4 every 4::2 w points pt 11 ps 1.5 lw 2 lc rgb colorGet("c7") not,\
-"< echo '44 18.0 2.5'" u 1:2:3 w xerror pt 11 ps 2.5 lw 2 lc rgb colorGet("c7") not
+Lz96 u 1:2:3 every 2 w yerror pt 0 lw 2.5 lc rgb colorGet("c8") not "96",\
+Lz96 u 1:2 every 2 w points pt 6 ps 2.0 lw 2.5 lc rgb colorGet("c8") not,\
+"< echo '33 18.3 2.5'" u 1:2:3 w xerror pt 6 ps 2.0 lw 2.5 lc rgb colorGet("c8") not,\
+Lz96 u 1:4:5 every 2 w yerror pt 0 lw 2.5 lc rgb colorGet("c8") not "96",\
+Lz96 u 1:4 every 2 w points pt 7 ps 2.0 lw 2.5 lc rgb colorGet("c8") not,\
+"< echo '40 18.3 2.5'" u 1:2:3 w xerror pt 7 ps 2.0 lw 2.5 lc rgb colorGet("c8") not,\
+Lz128 u 1:2:3 every 2 w yerror pt 0 lw 2.5 lc rgb colorGet("c6") not "128",\
+Lz128 u 1:2 every 2 w points pt 8 ps 2.0 lw 2.5 lc rgb colorGet("c6") not,\
+"< echo '33 18.15 2.5'" u 1:2:3 w xerror pt 8 ps 2.5 lw 2.5 lc rgb colorGet("c6") not,\
+Lz128 u 1:4:5 every 2 w yerror pt 0 lw 2.5 lc rgb colorGet("c6") not "128",\
+Lz128 u 1:4 every 2 w points pt 9 ps 2.0 lw 2.5 lc rgb colorGet("c6") not,\
+"< echo '40 18.15 2.5'" u 1:2:3 w xerror pt 9 ps 3.0 lw 2.5 lc rgb colorGet("c6") not,\
+Lz192 u 1:2:3 every 4 w yerror pt 0 lw 2.5 lc rgb colorGet("c7") not "192",\
+Lz192 u 1:2 every 4 w points pt 10 ps 2.0 lw 2.5 lc rgb colorGet("c7") not,\
+"< echo '33 18.0 2.5'" u 1:2:3 w xerror pt 10 ps 2.5 lw 2.5 lc rgb colorGet("c7") not,\
+Lz192 u 1:4:5 every 4::2 w yerror pt 0 lw 2.5 lc rgb colorGet("c7") not "192",\
+Lz192 u 1:4 every 4::2 w points pt 11 ps 2.0 lw 2.5 lc rgb colorGet("c7") not,\
+"< echo '40 18.0 2.5'" u 1:2:3 w xerror pt 11 ps 3.0 lw 2.5 lc rgb colorGet("c7") not
 
 
 ###########

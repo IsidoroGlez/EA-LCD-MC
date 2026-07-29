@@ -6,14 +6,16 @@ set fit noerrorscaling
 #COLOR PALETE
 ##############
 PALETTE=0
-load "my_color_palette.gpt"
+load "../../my_color_palette.gpt"
 
 ###############
-# APS TERMINAL
+# PNAS TERMINAL
 ###############
-C=1.  # One column
-R=0.75 # 
-load "APS_term.gpt"
+C=2.  # Two columns (scaled to \textwidth in the SM)
+R=0.6897  # same R as main-text figs -> H ~ 12.28cm at C=2 (preserves aspect ratio)
+load "../../PNAS_term.gpt"
+set border lw 2.5
+set tics scale 1.5,0.75
 
 #############
 # OUTPUT
@@ -26,13 +28,13 @@ MET="DATA/averages_b00.12x320_128_M.txt"
 HOU="DATA/averages_b00.12x320_128_C.txt"
 ###########
 
-set lmargin screen 0.15
-set rmargin screen 0.995
-set tmargin screen 0.995
-set bmargin screen 0.16
+set lmargin screen 0.1051
+set rmargin screen 0.9951
+set tmargin screen 0.975
+set bmargin screen 0.10
 
-set xlabel '\footnotesize EMCS' offset 0,0.5
-set ylabel '\footnotesize $q^2$' offset 4.5,0
+set xlabel '\normalsize EMCS' offset 0,0.3
+set ylabel '\normalsize $q^2$' offset 2.45,0
 
 nummed=1000  #measurements per file
 v=12**2*320
@@ -41,21 +43,21 @@ set log x
 
 set xrange [nummed:3e6]
 set yrange [0.01:0.095]
-set ytics 0.02 0.02 offset 0.8,0
-set xtics offset 0,0.2
-set format x '\footnotesize $10^{%L}$'
-set format y '\footnotesize $%g$'
+set ytics 0.02 0.02 offset 0.55,0
+set xtics offset 0,0.28
+set format x '\normalsize $10^{%L}$'
+set format y '\normalsize $%g$'
 unset key
 
-set label 1 '\footnotesize PT' at 5*10**5, 0.04
-set label 2 '\footnotesize PT+HM' at 3*10**4, 0.08
+set label 1 '\normalsize PT' at 5*10**5, 0.04
+set label 2 '\normalsize PT+HM' at 3*10**4, 0.08
 
 f(x)=-0.079901+0.00982972*log(x)
 g(x)=-0.152958+0.0238554*log(x)
 a=0.0898881
 p MET u ($1*nummed):(($15-$16)/v):(($15+$16)/v) w filledcurves lc rgb colorGet("c6") t "PT",\
 HOU u ($1*nummed):(($15-$16)/v):(($15+$16)/v) w filledcurves lc rgb colorGet("c2") t "PT+HM",\
-f(x) dt 3 lw 1 lc rgb "black" not, g(x) dt 3 lw 1 lc rgb "black" not, a dt 3 lw 1 lc rgb "black" not
+f(x) dt 3 lw 2.5 lc rgb "black" not, g(x) dt 3 lw 2.5 lc rgb "black" not, a dt 3 lw 2.5 lc rgb "black" not
 
 ###########
 # CLOSE
