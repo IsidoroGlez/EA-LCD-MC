@@ -12,6 +12,7 @@ The simulations and the resulting data, figures, and tables correspond to the st
 ├── PROGRAM/            # Source code for the Monte Carlo simulations (see PROGRAM/README.md)
 ├── DATA/             # Processed data obtained from the analysis of simulation configurations
 ├── FIGURES_AND_TABLES/     # Scripts, figures, and tables derived from the processed data
+│   └── style/            # Shared Gnuplot style (Helvetica, PNAS widths, palette) loaded by every figure script
 ├── CITATION.cff         # Citation metadata for this repository
 ├── .gitignore             # Exclusion rules for temporary and auxiliary files
 ├── LICENSE             # MIT License
@@ -51,6 +52,8 @@ Additional information is provided in the corresponding `README.md` files within
 
 2. **Analyze data and reproduce results**  
    Use the contents of `DATA/` and the scripts in `FIGURES_AND_TABLES/` to reproduce the figures and tables presented in the publication.
+
+   Requirements for the figures and tables: Gnuplot, Python 3, a TeX distribution with `xelatex`, `dvisvgm`, and the Helvetica font (or a metric-compatible clone such as Nimbus Sans, selected with `SANS_FONT`). See `FIGURES_AND_TABLES/README.md`.
 
 ---
 

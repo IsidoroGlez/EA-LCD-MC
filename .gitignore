@@ -38,6 +38,10 @@
 # Exclude DATA directories inside figures and tables
 FIGURES_AND_TABLES/**/DATA/
 
+# Keep the generated tables (the generic *.tex / *.dat rules above would hide them)
+!FIGURES_AND_TABLES/Tables/*/table.tex
+!FIGURES_AND_TABLES/Tables/xi_summary/xi_summary.dat
+
 ############################
 # Synchronization / auxiliary scripts
 ############################

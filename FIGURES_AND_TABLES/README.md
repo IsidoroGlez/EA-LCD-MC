@@ -36,6 +36,7 @@ A few directories are exceptions to this layout:
 - `FigsSM/fig2/` is a static image (`figSM2.pdf`/`.svg`) with no generation script at all — it's drawn by hand in Inkscape.
 - `Tables/table1/` is regenerated with the Python script `update_table.py` rather than a Gnuplot script; it writes `table.tex` directly from the raw data in `../../../DATA` (extracting the files it needs on demand, like `fig2.gpt` does).
 - `Tables/table2/` is regenerated with the Python script `update_table.py`, like `table1`: it writes `table.tex` from the raw data in `../../../DATA`.
+- `Tables/xi_summary/` is regenerated with `make_xi_summary.py`: it writes `xi_summary.dat`, a long-format summary of $\xi(L,T)$ and $\Delta\xi(L,T)$ (one row per system size and temperature), from the raw data in `../../../DATA`.
 
 ---
 
@@ -56,14 +57,15 @@ To regenerate a Gnuplot-based figure or table:
    
    This generates intermediate LaTeX/EPS files and compiles them with `xelatex` to produce the final PDF (and `dvisvgm --pdf` for the SVG).
 
-To regenerate `Tables/table1` (Python-based):
+To regenerate the Python-based tables (`Tables/table1`, `Tables/table2`) and the summary `Tables/xi_summary`:
 
 ```bash
-cd Tables/table1
-python3 update_table.py
+cd Tables/table1 && python3 update_table.py        # rewrites table.tex
+cd ../table2     && python3 update_table.py        # rewrites table.tex
+cd ../xi_summary && python3 make_xi_summary.py     # rewrites xi_summary.dat
 ```
 
-This pulls the required raw data out of `../../../DATA` and rewrites `table.tex`.
+Each script pulls the required raw data out of `../../../DATA` (extracting only the files it needs into a local `DATA/` copy). The generated `table.tex` and `xi_summary.dat` are kept under version control.
 
 ---
 
@@ -92,16 +94,18 @@ Since `tmargin`/`bmargin` only depend on the shared height, they use the same va
 - `rmargin=0.99` everywhere there's no secondary (y2) axis or wide last tick label in the way (e.g. `fig1-preview` uses `0.96` to fit its 3-digit rightmost `z` tick; `fig3`'s y2 side uses `0.937`).
 - `lmargin=0.05` for panels with no `ylabel` (just bare tick numbers).
 - `lmargin=0.11` for a short, parenthesis-free `ylabel` (e.g. `$U$`, `$\xi$`, `$x$`) with plain 1–2 digit tick numbers, `ytics`/`ylabel` offset `0.75`/`3.8`.
-- `lmargin=0.16` for a `ylabel` with decimal/3-digit tick numbers, or containing parentheses/superscripts (e.g. `0.44`, `-14`, `$E(r)$`, `$C^{(1)}(r)$`) — parentheses extend further than bare letters when rotated, so they need the wider margin even with short tick numbers — `ytics`/`ylabel` offset `0.75`/`4.5`.
+- `lmargin=0.16` for a `ylabel` with decimal/3-digit tick numbers, or containing parentheses/superscripts (e.g. `0.44`, `-14`, `$E\,(r\,)$`, `$C^{\,(1)}(r\,)$`) — parentheses extend further than bare letters when rotated, so they need the wider margin even with short tick numbers — `ytics`/`ylabel` offset `0.75`/`4.5`.
 - `fig3` (two side-by-side panels at `C=2`) keeps its own margins — its layout is structurally different from the single-panel figures above.
 
 A secondary (`y2`) axis, where present, mirrors the same idea on its own side (own tics/label offset chosen for a small, consistent gap, own outer margin).
 
-### `FigsSM/` sizing (`C=2` instead of `C=1`)
+### `FigsSM/` sizing
 
-The `FigsSM/fig2`–`fig9` scripts are generated at `C=2` (17.8 cm), not `C=1`, even though each is a single-panel figure that would normally fall in the `C=1` group above. This is because the SM figures get scaled to `\textwidth` (the full 2-column width) in the compiled supplement, so generating them at `C=1` and letting LaTeX scale them up by ~2.05× would inflate their `\normalsize` (12 pt) label text to ~24 pt — clearly oversized next to the surrounding body text. Generating them natively at the width they'll actually be displayed at means no LaTeX rescaling happens, so the labels render at their intended 12 pt, matching the terminal's `cmr,12` base font exactly (unlike the main-text `Figs/` figures above, which use smaller `\footnotesize`/`\scriptsize`, i.e. 10 pt/8 pt, labels).
+The `FigsSM/` figures with a script (`figSM1`, `figSM3`–`figSM10`) are single-panel figures generated at `C=1` (8.7 cm) with the same `R=0.6897` as the main-text single-panel figures, and they use the same `style/ealcd_pnas.gpt`. `figSM2` has no script (it is drawn by hand in Inkscape).
 
-To do this without changing how the figure looks (same aspect ratio, same relative margins, same font-to-plot proportions as the `C=1` figures), each script keeps its original `R` and rescales its four margins by the same `C=1→C=2` width ratio (17.8/8.7 ≈ 2.046), e.g. `lmargin_new = lmargin_old / 2.046` and `tmargin_new = 1-(1-tmargin_old)/2.046`. The `xtics`/`ytics`/`xlabel`/`ylabel` offsets are left untouched — they're in character units tied to the terminal's fixed font metric (`font cmr,12`), so they already represent the same absolute distance regardless of `C`.
+### Typography
+
+Text is set in Helvetica (via `fontspec`; maths in `mathastext`), so the `.tex` files must be compiled with `xelatex`. Axis labels use `\footnotesize` and `\scriptsize` relative to the base size set in `style/ealcd_pnas.gpt`. With Helvetica, superscripts and parentheses in labels would touch the adjacent symbols, so labels carry thin spaces (`\,`), e.g. `C^{\,(1)}(r\,)` or `K\,(r\,)`.
 
 ---
 
@@ -115,10 +119,10 @@ To do this without changing how the figure looks (same aspect ratio, same relati
 
 ## Cleaning up
 
-At the end of each Gnuplot script, a cleanup command (rm) removes temporary files like .log, .aux, and .tex. This works on Linux/macOS but not directly on Windows. For running on Windows systems, substitute the Linux command `rm` with `del` in files figX.gpt.
+At the end of each Gnuplot script, a cleanup command (`rm -f`) removes the temporary `.aux`, `.tex`, `.log` and `.eps` files. This works on Linux/macOS but not directly on Windows. For running on Windows systems, substitute the Linux command `rm -f` with `del` in files figX.gpt.
 
 ## Notes
 
-All figure files are version-controlled, but data files are excluded from Git history via .gitignore unless explicitly needed.
+All figure files and the generated tables (`table.tex`, `xi_summary.dat`) are version-controlled, but the `DATA/` directories are excluded from Git history via .gitignore.
 
 Output .pdf files are kept for convenience but can be regenerated as explained above.
