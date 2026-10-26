@@ -6,14 +6,13 @@ set fit noerrorscaling
 #COLOR PALETE
 ##############
 PALETTE=0
-load "../../my_color_palette.gpt"
 
 ###############
 # PNAS TERMINAL
 ###############
 C=1.  # One column
 R=0.6897  # H ~ 6cm (common height across figures)
-load "../../PNAS_term.gpt"
+load "../../style/ealcd_pnas.gpt"
 
 #############
 # OUTPUT
@@ -148,8 +147,7 @@ set out
 #############
 # CREATE PDF
 #############
-!pdflatex fig6.tex
-!latex fig6.tex
-!dvisvgm --no-fonts fig6.dvi
-!rm *.aux *.tex *conver* *.log *.eps *.dvi
+!xelatex fig6.tex
+!dvisvgm --pdf --no-fonts fig6.pdf
+!rm *.aux *.tex *conver* *.log *.eps *.dvi *.xdv
 

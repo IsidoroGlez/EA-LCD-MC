@@ -6,19 +6,18 @@ set fit noerrorscaling
 #COLOR PALETE
 ##############
 PALETTE=0
-load "../../my_color_palette.gpt"
 
 ###############
 # PNAS TERMINAL
 ###############
 C=1.  # One column
 R=0.6897  # kept as in the two-column layout (unchanged per request)
-load "../../PNAS_term.gpt"
+load "../../style/ealcd_pnas.gpt"
 
 #############
 # OUTPUT
 ############
-set output "fig SM1.tex"
+set output "figSM1.tex"
 
 ############
 # DATA
@@ -66,7 +65,6 @@ set out
 #############
 # CREATE PDF
 #############
-!pdflatex fig SM1.tex
-!latex fig SM1.tex
-!dvisvgm --no-fonts fig SM1.dvi
-!rm *.aux *.tex *conver* *.log *.eps *.dvi
+!xelatex figSM1.tex
+!dvisvgm --pdf --no-fonts figSM1.pdf
+!rm *.aux *.tex *conver* *.log *.eps *.dvi *.xdv

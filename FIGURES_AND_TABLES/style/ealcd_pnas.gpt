@@ -1,0 +1,40 @@
+############################################################
+# EA-LCD figures: PNAS profile of the shared style (style/core, style/journals/pnas.gpt)
+# with the values that keep the layout of the previous PNAS_term.gpt (epslatex, lw 2,
+# \normalsize = 10 pt from the LaTeX class, \footnotesize = 8 pt, \scriptsize = 7 pt).
+# Only the typeface changes: Helvetica (text) and mathastext (maths) instead of Computer Modern.
+#
+# USAGE in a figure script (C and R set before; run from figX/ with gnuplot, compile with xelatex):
+#   C=1.  R=0.6897
+#   load "../../style/ealcd_pnas.gpt"
+#   set output "figX.tex"
+# If "Helvetica" is not installed, set SANS_FONT = "Nimbus Sans" (or "TeX Gyre Heros") before loading.
+############################################################
+FIG_ROOT = "../../style"
+JOURNAL  = "pnas"
+
+TERM_FONT = "default,12"   # size gnuplot uses to place labels (as the old "cmr,12")
+TERM_LW   = 2
+TEXT_PT   = 10             # actual \normalsize, used only by PT()
+# fontspec Helvetica + sans maths; no \normalsize redefinition, so the class sizes above stay
+if (!exists("SANS_FONT")) SANS_FONT = "Helvetica"
+TERM_HEADER = "\\usepackage[no-math]{fontspec}\n\
+    \\setsansfont{".SANS_FONT."}[Scale=0.92]\n\
+    \\renewcommand{\\familydefault}{\\sfdefault}\n\
+    \\usepackage{amsmath}\n\
+    \\usepackage[italic,symbolgreek,symbolmisc,defaultmathsizes]{mathastext}"
+
+# axes as gnuplot's own defaults (what the figures were tuned with)
+BORDER_LW  = 1.0
+TIC_LEN    = 0.1111
+MTIC_RATIO = 0.5
+POINT_SIZE = 1             # linetype ps; the figures rely on gnuplot's default of 1 when a plot gives no ps
+
+load FIG_ROOT."/core/fig_core.gpt"
+
+# fig_core.gpt starts with "reset"; restore what the figure scripts set up front
+set auto
+set fit noerrorscaling
+# The figures were tuned with gnuplot's automatic margins unless a script sets its own
+# (set lmargin screen ...), so drop the cm margins that style.gpt installs.
+unset lmargin; unset rmargin; unset tmargin; unset bmargin

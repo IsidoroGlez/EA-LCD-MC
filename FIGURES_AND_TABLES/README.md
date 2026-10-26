@@ -10,12 +10,12 @@ The directory is organized into three main subdirectories:
 
 Each figure or table is stored in its own subdirectory.
 
-Two Gnuplot helpers used by every figure script are kept once, at the top of `FIGURES_AND_TABLES/` (not duplicated per figure):
+The shared Gnuplot style used by every figure script is kept once, in `FIGURES_AND_TABLES/style/` (not duplicated per figure):
 
-- `my_color_palette.gpt` — color-blind-friendly palette definitions.
-- `PNAS_term.gpt` — sets the `epslatex` terminal size for PNAS column widths (see below).
+- `style/ealcd_pnas.gpt` — the file each figure loads. It sets the PNAS profile (column widths, see below), Helvetica text and the line/tick settings the figures were tuned with, and loads the files below.
+- `style/core/` and `style/journals/pnas.gpt` — copy of the shared figure-style template (commit `c18e43e` of the `GNUPLOT` style repository): `epslatex` terminal, margins, tics and the color-blind-friendly palette (`core/palette.gpt`).
 
-Each figure script loads them via a relative path, e.g. `load "../../my_color_palette.gpt"`.
+Each figure script loads it via a relative path: `load "../../style/ealcd_pnas.gpt"`. The text is typeset with Helvetica (`fontspec`), so figures are compiled with `xelatex`; if Helvetica is not installed, set `SANS_FONT = "Nimbus Sans"` before the `load`.
 
 ---
 
@@ -35,7 +35,7 @@ A few directories are exceptions to this layout:
 - `Figs/fig1/` has no `fig1.gpt`: `fig1-preview.gpt` generates a draft (`fig1-preview.pdf`/`.svg`), which is then finished by hand (e.g. in Inkscape) into the final `fig1.pdf`/`.svg`.
 - `FigsSM/fig1/` is a static image (`figSM1.pdf`/`.svg`) with no generation script at all — it's produced and edited entirely by hand.
 - `Tables/table1/` is regenerated with the Python script `update_table.py` rather than a Gnuplot script; it writes `table.tex` directly from the raw data in `../../../DATA` (extracting the files it needs on demand, like `fig2.gpt` does).
-- `Tables/table2/` contains `get_singularity_spectrum.gpt`, a standalone analysis script that prints the singularity-spectrum values to the terminal rather than producing a `.pdf`/`.tex` table.
+- `Tables/table2/` is regenerated with the Python script `update_table.py`, like `table1`: it writes `table.tex` from the raw data in `../../../DATA`.
 
 ---
 
@@ -54,7 +54,7 @@ To regenerate a Gnuplot-based figure or table:
    gnuplot fig2.gpt
    ```
    
-   This generates intermediate LaTeX/EPS files and compiles them with `pdflatex` to produce the final PDF.
+   This generates intermediate LaTeX/EPS files and compiles them with `xelatex` to produce the final PDF (and `dvisvgm --pdf` for the SVG).
 
 To regenerate `Tables/table1` (Python-based):
 
@@ -69,7 +69,7 @@ This pulls the required raw data out of `../../../DATA` and rewrites `table.tex`
 
 ## Figure width (PNAS column sizes)
 
-Each figure script sets a `C` variable before `load "../../PNAS_term.gpt"` to pick the figure width in PNAS units:
+Each figure script sets a `C` variable before `load "../../style/ealcd_pnas.gpt"` to pick the figure width in PNAS units:
 
 - `C=1` — one column (8.7 cm)
 - `C=1.5` — 1.5 columns (11.4 cm)
@@ -109,7 +109,7 @@ To do this without changing how the figure looks (same aspect ratio, same relati
 
 - Gnuplot with LaTeX terminal support.
 
-- A TeX distribution (e.g., TeX Live, MiKTeX) with `pdflatex` available in the system path.
+- A TeX distribution (e.g., TeX Live, MiKTeX) with `xelatex` and `dvisvgm` available in the system path, and the Helvetica font (or a metric-compatible clone such as Nimbus Sans).
 
 ---
 

@@ -1,0 +1,128 @@
+############################################################
+# fig_core.gpt - common base for journal-ready gnuplot figures (epslatex, standalone PDF)
+#
+# USAGE (in your own gnuplot script, run from the directory where the figure should be written)
+#   FIG_ROOT = "/path/to/this/repo"   # optional, default "."; where core/ and journals/ live
+#   JOURNAL  = "nature"               # optional: loads journals/<JOURNAL>.gpt (aps, nature, pnas, ...)
+#   C        = 1                      # required: number of columns; allowed values come from the profile
+#   R        = 0.75                   # required: height / width
+#   OUTNAME  = "fig1"                 # optional: opens fig1.tex (in the current directory)
+#   load FIG_ROOT."/core/fig_core.gpt"
+#   set xlabel 'x'; set ylabel 'y'    # plain gnuplot from here on; every "set" is yours to change
+#   plot ...
+#   set output                        # then compile fig1.tex with the engine in TEX_ENGINE
+#
+# PRECEDENCE of every setting (highest first)
+#   1. a variable set by you BEFORE loading this file (e.g. TIC_LEN = 0.2)
+#   2. the value given by the journal profile (journals/<JOURNAL>.gpt)
+#   3. the default defined below
+# To change a variable AFTER loading, set it and re-run   load FIG_ROOT."/core/style.gpt"
+# Variables stay defined after a load, so a second figure in the same session inherits them.
+# Use one gnuplot run per journal (several journals in one session would mix their settings).
+#
+# UNITS  lengths in cm, font sizes in pt, line widths in gnuplot "lw" units
+#        (in epslatex lw 1 = 0.25 pt; the effective width is lw * TERM_LW * 0.25 pt).
+#
+# VARIABLES (defaults below; journal profiles override some of them)
+#   geometry   WIDTH (cm, bypasses colwidth/C), MARGIN_L/R/B/T
+#   terminal   TERM_FONT, TERM_LW, TERM_HEADER (LaTeX preamble), TEX_ENGINE
+#   axes       BORDER, BORDER_LW, TIC_LEN, MTIC_RATIO, TIC_DIR, TIC_MIRROR, MINOR_TICS,
+#              TIC_FORMAT, TIC_OFFSET_X/Y, GRID
+#   text       TEXT_PT, LABEL_PT, TITLE_PT, XLABEL_OFFSET, YLABEL_OFFSET
+#   key        KEY_POS, KEY_BOX, KEY_SPACING, KEY_SAMPLEN, KEY_WIDTH
+#   data       LINE_LW, POINT_SIZE, PALETTE (0 normal, 1 gray, 2 protan, 3 deutan, 4 tritan)
+#
+# TEXT SIZES  tic labels and key entries are set at the profile's \normalsize (TEXT_PT points).
+#   Any other text can be set at an exact size in points:
+#       set label PT(6, 'Fig. 1a') at 1,2 center
+#       set xlabel LBL('x')          # LBL/TTL use LABEL_PT / TITLE_PT (0 = leave at TEXT_PT)
+#   Text wrapped in a size (PT, LBL, TTL) is centred on its anchor by gnuplot, not left-aligned,
+#   so give such labels the "center" keyword. Tic labels and key entries are not wrapped on
+#   purpose, because that breaks their alignment.
+#
+# FUNCTIONS defined by style.gpt: PT(size, text), LBL(text), TTL(text).
+# COLOURS  core/palette.gpt defines color_c1..color_c9 (colour-blind friendly); linetypes 1-8
+#   use them in the order black, blue, vermilion, green, reddish purple, sky blue, orange, wine.
+############################################################
+reset
+set encoding utf8
+
+if (!exists("FIG_ROOT")) FIG_ROOT = "."
+if (!exists("C")) { print "ERROR: set C (columns) before loading fig_core.gpt"; exit gnuplot }
+if (!exists("R")) { print "ERROR: set R (height/width) before loading fig_core.gpt"; exit gnuplot }
+
+# --- 1. journal profile (only defines variables not already set by the user) ---
+if (exists("JOURNAL")) load FIG_ROOT."/journals/".JOURNAL.".gpt"
+
+# --- 2. defaults -------------------------------------------------------------
+# Page geometry: colwidth(c) returns the width in cm, or NaN if c is not allowed.
+# (exists() does not work on functions, so COLS_HELP marks "the profile defined colwidth").
+# A user can bypass it by presetting WIDTH (cm).
+if (!exists("COLS_HELP")) {
+    COLS_HELP = "1 or 2"
+    colwidth(c) = (c==1) ? 8.5 : (c==2) ? 17.5 : NaN
+}
+
+# Terminal
+if (!exists("TERM_FONT"))   TERM_FONT   = "cmr,10"      # "family,size" understood by epslatex
+if (!exists("TERM_LW"))     TERM_LW     = 1.0           # global line-width multiplier
+if (!exists("TERM_HEADER")) TERM_HEADER = "\\usepackage{amsmath}"   # LaTeX preamble (profile may replace it)
+if (!exists("TEX_ENGINE"))  TEX_ENGINE  = "pdflatex"    # informative: engine needed to compile the .tex
+
+# Margins (cm, distance from figure edge to the plotting box)
+if (!exists("MARGIN_L"))    MARGIN_L = 1.7
+if (!exists("MARGIN_R"))    MARGIN_R = 0.3
+if (!exists("MARGIN_B"))    MARGIN_B = 1.2
+if (!exists("MARGIN_T"))    MARGIN_T = 0.3
+
+# Axes and tics
+if (!exists("BORDER_LW"))   BORDER_LW  = 1.0            # frame line width
+if (!exists("BORDER"))      BORDER     = 31             # 31 = bottom,left,top,right (see "help border")
+if (!exists("TIC_LEN"))     TIC_LEN    = 0.15           # major tic length (cm)
+if (!exists("MTIC_RATIO"))  MTIC_RATIO = 0.5            # minor / major tic length
+if (!exists("TIC_DIR"))     TIC_DIR    = "in"           # "in" or "out"
+if (!exists("TIC_MIRROR"))  TIC_MIRROR = 1              # 1: tics also on top/right axes
+if (!exists("MINOR_TICS"))  MINOR_TICS = 0              # 0: none; N>1: N sub-intervals per major tic
+if (!exists("TIC_FORMAT"))  TIC_FORMAT = "%g"
+if (!exists("TIC_OFFSET_X")) TIC_OFFSET_X = 0.0         # nudge of the x tic labels, in character widths (gnuplot units)
+if (!exists("TIC_OFFSET_Y")) TIC_OFFSET_Y = 0.0         # idem, vertical
+
+# Text. Tic labels and key entries are typeset at the profile's \normalsize, which has TEXT_PT
+# points (profiles define it; otherwise it is the size in TERM_FONT). Any other text can be set
+# at an exact size with PT(size, 'text'), e.g.  set label PT(6, 'Fig. 1a') ...  (see style.gpt).
+# Axis labels and title can be resized for the whole figure with LABEL_PT / TITLE_PT (0 = leave at
+# TEXT_PT) when written as  set xlabel LBL('x'),  set title TTL('...').
+# Tic labels and key entries are NOT wrapped on purpose: size commands break their alignment in
+# epslatex. To change their size, change \normalsize in the profile's TERM_HEADER (and TEXT_PT).
+if (!exists("TEXT_PT"))     TEXT_PT = real(TERM_FONT[strstrt(TERM_FONT, ",")+1:])
+if (!exists("LABEL_PT"))    LABEL_PT = 0
+if (!exists("TITLE_PT"))    TITLE_PT = 0
+if (!exists("XLABEL_OFFSET")) XLABEL_OFFSET = 0.0       # nudge of axis labels in character widths/heights (gnuplot units)
+if (!exists("YLABEL_OFFSET")) YLABEL_OFFSET = 0.0
+
+# Key (legend)
+if (!exists("KEY_POS"))     KEY_POS    = "top right"
+if (!exists("KEY_BOX"))     KEY_BOX    = 0
+if (!exists("KEY_SPACING")) KEY_SPACING = 1.0
+if (!exists("KEY_SAMPLEN")) KEY_SAMPLEN = 2.0
+if (!exists("KEY_WIDTH"))   KEY_WIDTH   = 0              # gnuplot sizes the key from the raw LaTeX string; use a negative value to shrink it
+
+# Data styles
+if (!exists("LINE_LW"))     LINE_LW  = 1.0              # default line width for data
+if (!exists("POINT_SIZE"))  POINT_SIZE = 0.6
+if (!exists("PALETTE"))     PALETTE  = 0                # 0 normal, 1 gray, 2 protan, 3 deutan, 4 tritan
+if (!exists("GRID"))        GRID     = 0
+
+# --- 3. geometry and terminal ----------------------------------------------
+W = exists("WIDTH") ? WIDTH : colwidth(C)
+if (W != W) { print sprintf("ERROR: C=%g not allowed for this journal (use %s)", C, COLS_HELP); exit gnuplot }
+H = R*W
+
+set term epslatex color size W cm, H cm font TERM_FONT lw TERM_LW standalone header TERM_HEADER
+# gnuplot writes the name given here into \includegraphics, so the file is created in the
+# current directory and must be compiled from there.
+if (exists("OUTNAME")) set output OUTNAME.".tex"
+
+# --- 4. palette and style ---------------------------------------------------
+load FIG_ROOT."/core/palette.gpt"
+load FIG_ROOT."/core/style.gpt"

@@ -2,18 +2,13 @@ reset
 set auto
 set fit noerrorscaling
 
-##############
-#COLOR PALETTE
-##############
+##############################
+# PNAS TERMINAL, STYLE, PALETTE
+##############################
 PALETTE=0
-load "../../my_color_palette.gpt"
-
-###############
-# PNAS TERMINAL
-###############
 C=2.  # Two columns
 R=0.3371  # H ~ 6cm (common height across figures)
-load "../../PNAS_term.gpt"
+load "../../style/ealcd_pnas.gpt"
 
 #############
 # OUTPUT
@@ -135,7 +130,6 @@ set out
 #############
 # CREATE PDF
 #############
-!pdflatex fig3.tex
-!latex fig3.tex
-!dvisvgm --no-fonts fig3.dvi
-!rm *.aux *.tex *conver* *.log *.eps *.dvi
+!xelatex fig3.tex
+!dvisvgm --pdf --no-fonts fig3.pdf
+!rm *.aux *.tex *conver* *.log *.eps *.dvi *.xdv

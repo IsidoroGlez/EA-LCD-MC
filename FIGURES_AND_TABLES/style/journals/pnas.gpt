@@ -1,0 +1,34 @@
+############################################################
+# PNAS
+#   C=1   one column   8.7 cm
+#   C=1.5 1.5 columns 11.4 cm
+#   C=2   two columns 17.8 cm
+# Checked 2026-10-20 against the PNAS "Digital art" guide (digitalart.pdf):
+#   widths 8.7 / 11.4 / 17.8 cm; max height 22.5 cm; text >= 6-8 pt after reduction;
+#   lines >= 0.25 pt (lw 1 = 0.25 pt in epslatex); standard fonts (Arial, Helvetica,
+#   Times, Symbol) with fonts embedded; the same font in all figures.
+# Text is Helvetica 8 pt, set up like journals/nature.gpt (fontspec): needs xelatex or
+# lualatex and a "Helvetica" font; see docs/journals/pnas.md.
+############################################################
+colwidth(c) = (c==1) ? 8.7 : (c==1.5) ? 11.4 : (c==2) ? 17.8 : NaN
+COLS_HELP = "1, 1.5 or 2"
+
+# gnuplot places axis labels using this size, so it must match the final text size
+if (!exists("TERM_FONT"))   TERM_FONT   = "default,8"
+if (!exists("TERM_LW"))     TERM_LW     = 1.0
+if (!exists("TEXT_PT"))     TEXT_PT     = 8          # what \normalsize is set to in the header below
+# Sans font as fontspec names it. The journals ask for Helvetica or Arial; if Helvetica is not
+# installed, a metric-compatible clone can be given by name, e.g. SANS_FONT = "Nimbus Sans" or
+# "TeX Gyre Heros" (both tested; set it before loading fig_core.gpt).
+if (!exists("SANS_FONT"))   SANS_FONT   = "Helvetica"
+if (!exists("TEX_ENGINE"))  TEX_ENGINE  = "xelatex"
+if (!exists("TERM_HEADER")) TERM_HEADER = "\\usepackage[no-math]{fontspec}\n\
+    \\setsansfont{".SANS_FONT."}[Scale=0.92]\n\
+    \\renewcommand{\\familydefault}{\\sfdefault}\n\
+    \\renewcommand{\\normalsize}{\\fontsize{8}{9}\\selectfont}\n\
+    \\usepackage{amsmath}\n\
+    \\usepackage[italic,symbolgreek,defaultmathsizes]{mathastext}"
+
+if (!exists("MARGIN_L"))    MARGIN_L = 1.4
+if (!exists("MARGIN_B"))    MARGIN_B = 1.0
+if (!exists("TIC_LEN"))     TIC_LEN  = 0.12

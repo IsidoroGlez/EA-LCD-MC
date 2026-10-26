@@ -6,7 +6,6 @@ set fit noerrorscaling
 #COLOR PALETE
 ##############
 PALETTE=0
-load "../../my_color_palette.gpt"
 
 ###############
 # PNAS TERMINAL
@@ -16,7 +15,7 @@ C=1.  # One column
 # figure (x spanned 8 values across a narrow panel, z spanned 513 values
 # across the full height) -- not a literal square, just the same "shape".
 R=0.2775
-load "../../PNAS_term.gpt"
+load "../../style/ealcd_pnas.gpt"
 
 #############
 # OUTPUT
@@ -71,9 +70,9 @@ set out
 #############
 # CREATE PDF
 #############
-!pdflatex fig1-preview.tex
+!xelatex fig1-preview.tex
 !pdf2svg fig1-preview.pdf fig1-preview.svg
 #!latex fig1-preview.tex
 #!dvisvgm --no-fonts fig1-preview.dvi
 
-!rm *.aux *.tex *conver* *.log *.eps *.dvi
+!rm *.aux *.tex *conver* *.log *.eps *.dvi *.xdv

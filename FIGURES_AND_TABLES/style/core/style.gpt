@@ -1,0 +1,46 @@
+############################################################
+# style.gpt - turns the variables of fig_core.gpt into "set" commands.
+# Safe to re-load after changing any variable (margins, tics, text, key...).
+############################################################
+
+# --- margins: cm -> fraction of figure ---
+set lmargin at screen MARGIN_L/W
+set rmargin at screen 1 - MARGIN_R/W
+set bmargin at screen MARGIN_B/H
+set tmargin at screen 1 - MARGIN_T/H
+
+# --- frame and tics ---
+set border BORDER lw BORDER_LW
+# epslatex draws a tic of "scale 1" with a length of 63 * 0.05 bp = 0.111 cm
+TIC_UNIT = 0.1111
+eval sprintf("set tics %s scale %g, %g", TIC_DIR, TIC_LEN/TIC_UNIT, MTIC_RATIO*TIC_LEN/TIC_UNIT)
+if (TIC_MIRROR) { set xtics mirror; set ytics mirror } else { set xtics nomirror; set ytics nomirror }
+set format xy TIC_FORMAT
+set xtics offset TIC_OFFSET_X, TIC_OFFSET_Y
+if (MINOR_TICS > 1) { set mxtics MINOR_TICS; set mytics MINOR_TICS } else { unset mxtics; unset mytics }
+if (GRID) { set grid xtics ytics lw 0.5 dt 3 lc rgb "gray" } else { unset grid }
+
+# --- text ---
+# gnuplot cannot pass a size to epslatex text, so the size is put in the text itself.
+# PT(size, text) typesets text at exactly `size` pt with 1.2 line spacing, in any journal profile.
+# Wrapped text is centred on its anchor by gnuplot, not aligned, so use `center` in labels.
+PT(size, s) = sprintf('{\fontsize{%g}{%g}\selectfont %s}', size, 1.2*size, s)
+LBL(s) = (LABEL_PT > 0) ? PT(LABEL_PT, s) : s
+TTL(s) = (TITLE_PT > 0) ? PT(TITLE_PT, s) : s
+set xlabel offset 0, XLABEL_OFFSET
+set ylabel offset YLABEL_OFFSET, 0
+
+# --- key ---
+eval sprintf("set key %s spacing %g samplen %g width %g", KEY_POS, KEY_SPACING, KEY_SAMPLEN, KEY_WIDTH)
+if (KEY_BOX) { set key box lw BORDER_LW } else { set key nobox }
+
+# --- data styles: linetypes 1..8 from the colour-blind palette (c1 black first) ---
+set linetype 1 lc rgb color_c1 lw LINE_LW pt 7  ps POINT_SIZE
+set linetype 2 lc rgb color_c6 lw LINE_LW pt 9  ps POINT_SIZE
+set linetype 3 lc rgb color_c7 lw LINE_LW pt 5  ps POINT_SIZE
+set linetype 4 lc rgb color_c4 lw LINE_LW pt 11 ps POINT_SIZE
+set linetype 5 lc rgb color_c8 lw LINE_LW pt 13 ps POINT_SIZE
+set linetype 6 lc rgb color_c3 lw LINE_LW pt 15 ps POINT_SIZE
+set linetype 7 lc rgb color_c2 lw LINE_LW pt 4  ps POINT_SIZE
+set linetype 8 lc rgb color_c5 lw LINE_LW pt 6  ps POINT_SIZE
+set linetype cycle 8
