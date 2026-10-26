@@ -75,4 +75,4 @@ set out
 #!latex fig1-preview.tex
 #!dvisvgm --no-fonts fig1-preview.dvi
 
-!rm *.aux *.tex *conver* *.log *.eps *.dvi *.xdv
+!rm -f *.aux *.tex *.log *.eps

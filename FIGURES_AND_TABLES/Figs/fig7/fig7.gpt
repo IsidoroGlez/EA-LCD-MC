@@ -125,5 +125,5 @@ set out
 #############
 !xelatex fig7.tex
 !dvisvgm --pdf --no-fonts fig7.pdf
-!rm *.aux *.tex *conver* *.log *.eps *.dvi *.xdv
+!rm -f *.aux *.tex *.log *.eps
 

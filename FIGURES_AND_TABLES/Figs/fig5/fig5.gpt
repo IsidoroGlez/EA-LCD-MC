@@ -191,4 +191,4 @@ set out
 #############
 !xelatex fig5.tex
 !dvisvgm --pdf --no-fonts fig5.pdf
-!rm *.aux *.tex *conver* *.log *.eps *.dvi *.xdv
+!rm -f *.aux *.tex *.log *.eps

@@ -106,4 +106,4 @@ set out
 #############
 !xelatex figSM10.tex
 !dvisvgm --pdf --no-fonts figSM10.pdf
-!rm *.aux *.tex *conver* *.log *.eps *.dvi *.xdv
+!rm -f *.aux *.tex *.log *.eps

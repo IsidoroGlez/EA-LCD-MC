@@ -77,4 +77,4 @@ set out
 #############
 !xelatex figSM5.tex
 !dvisvgm --pdf --no-fonts figSM5.pdf
-!rm *.aux *.tex *conver* *.log *.eps *.dvi *.xdv
+!rm -f *.aux *.tex *.log *.eps

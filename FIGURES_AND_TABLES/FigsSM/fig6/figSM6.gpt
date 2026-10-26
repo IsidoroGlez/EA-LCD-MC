@@ -88,4 +88,4 @@ set out
 #############
 !xelatex figSM6.tex
 !dvisvgm --pdf --no-fonts figSM6.pdf
-!rm *.aux *.tex *conver* *.log *.eps *.dvi *.xdv
+!rm -f *.aux *.tex *.log *.eps
