@@ -103,7 +103,7 @@ set origin 0,0
 set size 1,1
 
 set xlabel '\footnotesize $r$' offset 0,1.0
-set ylabel '\footnotesize $C^{(1)}(r)$' offset 4.5
+set ylabel '\footnotesize $C^{\,(1)}(r\,)$' offset 4.5
 
 set xrange [0:150]
 set yrange [1e-3:7e-1]

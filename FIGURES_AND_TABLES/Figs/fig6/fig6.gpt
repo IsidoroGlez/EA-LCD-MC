@@ -78,7 +78,7 @@ set lmargin screen 0.15
 set rmargin screen 0.99
 
 set xlabel '\footnotesize $r/\xi(L)$' offset 0, 1.0
-set ylabel '\footnotesize $K(r)$' offset 3.8
+set ylabel '\footnotesize $K\,(r\,)$' offset 3.8
 set format '\footnotesize $%g$'
 set xtics offset 0,0.5
 set ytics offset 0.75

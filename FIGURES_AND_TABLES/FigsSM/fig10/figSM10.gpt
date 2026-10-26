@@ -53,7 +53,7 @@ set tmargin screen 0.97
 set bmargin screen 0.14
 
 set xlabel '\footnotesize $L$' offset 0,1.0
-set ylabel '\footnotesize $\xi(T=0.7,L)$' offset 3.2
+set ylabel '\footnotesize $\xi\,(T=0.7,L)$' offset 3.2
 
 set format '\footnotesize $%g$'
 
@@ -69,7 +69,7 @@ set ytics (10,20,30,40,50,60,70,80) offset 0.75
 
 set errorbars 3
 
-set label 1 '\footnotesize Fit to $\xi(T\!=\!0.7,L) = b_1 L^{4/3} + b_2 L$' left at 3.9,70
+set label 1 '\footnotesize Fit to $\xi\,(T\!=\!0.7,L) = b_1 L^{\,4/3} + b_2 L$' left at 3.9,70
 
 r=4./3
 f(x)=b1*x**r+b2*x

@@ -29,7 +29,7 @@ set rmargin screen 0.99
 set tmargin screen 0.97
 set bmargin screen 0.14
 
-set xlabel '\footnotesize $10^5$ EMCS' offset 0,1.0
+set xlabel '\footnotesize $10^{\,5}$ EMCS' offset 0,1.0
 set ylabel '\footnotesize standard deviations' offset 3.,0
 
 nummed=0.01  #measurements per file
@@ -44,7 +44,7 @@ set format x '\footnotesize $%g$'
 set format y '\footnotesize $%g$'
 unset key
 
-set label 1 '\footnotesize $q^2$' left at 1.2, -11
+set label 1 '\footnotesize $q^{\,2}$' left at 1.2, -11
 set label 2 '\footnotesize Energy' left at 1.2, -13
 set object 1 rect from 0,-1 to 512*nummed,1 fc rgb "0xFCFAD9"
 

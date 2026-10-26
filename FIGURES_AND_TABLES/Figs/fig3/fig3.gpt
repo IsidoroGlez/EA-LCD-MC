@@ -92,7 +92,7 @@ set format y ""
 set format y2 '\footnotesize $%g$'
 
 set xlabel '\footnotesize $(T-T_{\text{c}})L^{1/\nu}$' offset 0, 1.0
-set y2label '\footnotesize $\Delta\xi(T,L)/L$' offset -4
+set y2label '\footnotesize $\Delta\xi(T,L)/L$' offset -4.5
 
 set xrange [*:0]
 set yrange [0:2.2]

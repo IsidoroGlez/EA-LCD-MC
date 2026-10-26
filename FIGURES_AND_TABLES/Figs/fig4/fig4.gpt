@@ -49,8 +49,8 @@ TSEL[3] = "($1==6)"                            ; TCOL[3] = "c2" ; TKEY[3] = '\sc
 TSEL[4] = "($1==9)"                            ; TCOL[4] = "c7" ; TKEY[4] = '\scriptsize $1.0$'
 TSEL[5] = "(($1==\"I\")&&($2==0.9075))"        ; TCOL[5] = "c5" ; TKEY[5] = '\scriptsize $T_\mathrm{c}$'
 
-set xlabel '\footnotesize $C^{(1)}(r)$' offset 0,1.0
-set ylabel '\footnotesize $C^{(n)}(r)/[C^{(1)}(r)]^n$' offset 3.7
+set xlabel '\footnotesize $C^{\,(1)}(r\,)$' offset 0,1.0
+set ylabel '\footnotesize $C^{\,(n\,)}(r\,)/[C^{\,(1)}(r\,)]^{\,n}$' offset 3.7
 
 set yrange [1:200]
 set xrange [0.02:0.5]
@@ -130,7 +130,7 @@ do for[i=0:9]{
    }
    x=x+dx
 }
-set label 200 '\scriptsize $1 \times 10^{-3}$' center at x-2*dx, y-0.17
+set label 200 '\scriptsize $1 \times 10^{-3}$' center at x-4*dx, y-0.17
 
 set object 200 rect from 0.0555,17.5 to 0.0585,19.5 front lw 1 fc rgb "gray" fillstyle empty
 

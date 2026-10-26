@@ -33,7 +33,7 @@ figX/ or tableX/
 A few directories are exceptions to this layout:
 
 - `Figs/fig1/` has no `fig1.gpt`: `fig1-preview.gpt` generates a draft (`fig1-preview.pdf`/`.svg`), which is then finished by hand (e.g. in Inkscape) into the final `fig1.pdf`/`.svg`.
-- `FigsSM/fig1/` is a static image (`figSM1.pdf`/`.svg`) with no generation script at all — it's produced and edited entirely by hand.
+- `FigsSM/fig2/` is a static image (`figSM2.pdf`/`.svg`) with no generation script at all — it's drawn by hand in Inkscape.
 - `Tables/table1/` is regenerated with the Python script `update_table.py` rather than a Gnuplot script; it writes `table.tex` directly from the raw data in `../../../DATA` (extracting the files it needs on demand, like `fig2.gpt` does).
 - `Tables/table2/` is regenerated with the Python script `update_table.py`, like `table1`: it writes `table.tex` from the raw data in `../../../DATA`.
 
