@@ -105,7 +105,7 @@ The `FigsSM/` figures with a script (`figSM1`, `figSM3`–`figSM10`) are single-
 
 ### Typography
 
-Text is set in Helvetica (via `fontspec`; maths in `mathastext`), so the `.tex` files must be compiled with `xelatex`. Axis labels use `\footnotesize` and `\scriptsize` relative to the base size set in `style/ealcd_pnas.gpt`. With Helvetica, superscripts and parentheses in labels would touch the adjacent symbols, so labels carry thin spaces (`\,`), e.g. `C^{\,(1)}(r\,)` or `K\,(r\,)`.
+Text is set in Helvetica (via `fontspec`; maths in `mathastext`), so the `.tex` files must be compiled with `xelatex`. The base text size is 12 pt (`\normalsize`, set by the terminal font size in `style/ealcd_pnas.gpt`); axis labels and annotations use `\footnotesize` (10 pt) and `\scriptsize` (8 pt), as measured in the compiled figures. The figures are compiled at their final width, so these are the sizes printed in the figure. With Helvetica, superscripts and parentheses in labels would touch the adjacent symbols, so labels carry thin spaces (`\,`), e.g. `C^{\,(1)}(r\,)` or `K\,(r\,)`.
 
 ---
 

@@ -1,7 +1,7 @@
 ############################################################
 # EA-LCD figures: PNAS profile of the shared style (style/core, style/journals/pnas.gpt)
 # with the values that keep the layout of the previous PNAS_term.gpt (epslatex, lw 2,
-# \normalsize = 10 pt from the LaTeX class, \footnotesize = 8 pt, \scriptsize = 7 pt).
+# \normalsize = 12 pt, \footnotesize = 10 pt, \scriptsize = 8 pt, as measured in the compiled figures).
 # Only the typeface changes: Helvetica (text) and mathastext (maths) instead of Computer Modern.
 #
 # USAGE in a figure script (C and R set before; run from figX/ with gnuplot, compile with xelatex):
@@ -15,8 +15,8 @@ JOURNAL  = "pnas"
 
 TERM_FONT = "default,12"   # size gnuplot uses to place labels (as the old "cmr,12")
 TERM_LW   = 2
-TEXT_PT   = 10             # actual \normalsize, used only by PT()
-# fontspec Helvetica + sans maths; no \normalsize redefinition, so the class sizes above stay
+TEXT_PT   = 12             # actual \normalsize, used only by PT()
+# fontspec Helvetica + sans maths; no \normalsize redefinition, so the sizes above (set by TERM_FONT) stay
 if (!exists("SANS_FONT")) SANS_FONT = "Helvetica"
 TERM_HEADER = "\\usepackage[no-math]{fontspec}\n\
     \\setsansfont{".SANS_FONT."}[Scale=0.92]\n\
