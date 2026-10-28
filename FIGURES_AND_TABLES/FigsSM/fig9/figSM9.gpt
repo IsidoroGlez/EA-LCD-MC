@@ -31,7 +31,7 @@ set tmargin screen 0.97
 set bmargin screen 0.14
 
 set xlabel '\footnotesize $M$' offset 0,1.0
-set ylabel '\footnotesize $R\,(M)$' offset 4.5
+set ylabel '\footnotesize $R\,(M\,)$' offset 4.5
 
 set format '\footnotesize $%g$'
 

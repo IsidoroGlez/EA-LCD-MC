@@ -37,7 +37,7 @@ set tmargin screen 0.97
 set bmargin screen 0.14
 
 set xlabel '\footnotesize $z$' offset 0,1.0
-set ylabel '\footnotesize $C^{\,(1)}(z,z)$' offset 4.6
+set ylabel '\footnotesize $C^{\,(1)}(z,z\,)$' offset 4.6
 
 set xtics offset 0,0.25
 set ytics offset 0.75
