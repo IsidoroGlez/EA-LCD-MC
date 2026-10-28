@@ -12,7 +12,8 @@ The system size is defined by:
 Check the values of the following macros in the `Makefile`:
 
 - `L`: lattice size in X and Y directions (default: 16)
-- `LZ`: lattice size in Z direction (default: 48)
+- `Lz`: lattice size in Z direction (default: 48)
+- `NBITSPREBUSQUEDAS`: number of bits of the lookup table (default: 12); it must match the `nbits` used to generate the LUT
 - `NBETAS`: number of temperatures in Parallel Tempering (default: 40)
 - `OBC`: Open Boundary Conditions flag (default: 1)
 - `WEAK` / `STRONG`: type of open boundary conditions (default: INDEPENDENT)
@@ -27,7 +28,7 @@ make
 This generates an executable of the form:
 
 ```bash
-bin/EA_CUBE_L16_LZ48_NB40_...
+bin/EA_CUBE_L16_Lz48_NB40_NBPRE12_OBC
 ```
 
 ## Execution
@@ -35,7 +36,7 @@ bin/EA_CUBE_L16_LZ48_NB40_...
 If the program is executed without arguments, or with -h:
 
 ```bash
-./bin/EA_CUBE_L16_LZ48_...
+./bin/EA_CUBE_L16_Lz48_NB40_NBPRE12_OBC
 ```
 
 it prints the usage information:
@@ -49,7 +50,7 @@ Usage: progname isample nbits beta.dat input.in LUT device [max_time [list_sampl
 | Argument       | Type                            | Description                                          |
 | -------------- | ------------------------------- | ---------------------------------------------------- |
 | `isample`      | `int`                           | Sample index                                         |
-| `nbits`        | `int`                           | Number of subsamples                                 |
+| `nbits`        | `int`                           | Number of subsamples (called `ibit` in the usage printed by `io.c`) |
 | `beta.dat`     | `string`                        | File with inverse temperature list                   |
 | `input.in`     | `string`                        | Main simulation input file                           |
 | `LUT`          | `string`                        | Lookup table (binary file)                           |
@@ -60,9 +61,9 @@ Usage: progname isample nbits beta.dat input.in LUT device [max_time [list_sampl
 ### Example
 
 ```bash
-./bin/EA_CUBE_L16_LZ48_... \
-    0 1 input/beta.dat input/input.in \
-    input/LUT.bin 0 0
+./bin/EA_CUBE_L16_Lz48_NB40_NBPRE12_OBC \
+    0 1 input/betas_T07_T20_N40 input/input.16x48 \
+    input/LUT_for_PRNG_nbits12_NB40.bin 0 0
 ```
 
 ### Notes on execution
@@ -87,7 +88,7 @@ The simulation requires three main inputs:
 
 Controls simulation parameters (system size, Monte Carlo steps, seeds, etc.).
 
-#### 2. `beta.dat`
+#### 2. `beta.dat` (e.g. `input/betas_T07_T20_N40`)
 
 List of inverse temperature values used in Parallel Tempering.
 
@@ -124,19 +125,19 @@ LUT_for_PRNG_nbitsX_NBYY.bin
 make
 ```
 
-2. Generate temperature list beta.dat
+2. Use the temperature list `input/betas_T07_T20_N40` (or generate your own)
 
 3. Build LUT (from `input/`):
 
 ```bash
 cd input/
-./compile_and_generate_LUT.sh 10 40 beta.dat
+./compile_and_generate_LUT.sh 12 40 betas_T07_T20_N40
 ```
 
 4. Run simulation:
 
 ```bash
-./bin/EA_CUBE_L16_LZ48_... 0 1 beta.dat input.in LUT.bin 0
+./bin/EA_CUBE_L16_Lz48_NB40_NBPRE12_OBC 0 1 input/betas_T07_T20_N40 input/input.16x48 input/LUT_for_PRNG_nbits12_NB40.bin 0
 ```
 
 ## License and citation

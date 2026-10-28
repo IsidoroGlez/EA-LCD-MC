@@ -17,6 +17,8 @@ authors:
     given-names: "Federico"                      
 repository-code: "https://github.com/IsidoroGlez/EA-LCD"
 license: MIT
+version: v3
+date-released: 2026-10-28
 keywords:
   - Monte Carlo simulations
   - Spin glasses
